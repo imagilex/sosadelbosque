@@ -25,6 +25,7 @@ from .models_documentos import *
 from .models_actividades import *
 from .models_cliente import *
 from .models_historialaboral import *
+from .models_reportes_control_tmp import *
 
 
 class AssocCteTarea(models.Model):
@@ -70,14 +71,14 @@ class AssocActTarea(models.Model):
         Usr, on_delete=models.SET_NULL,
         null=True, blank=True, related_name="+")
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = [
             'actividad',
             'tarea',
             'created_at',
         ]
-        
+
     def __str__(self):
         return "{}-{}".format(self.actividad, self.tarea)
 
@@ -99,7 +100,7 @@ class AssocHistLabTarea(models.Model):
         Usr, on_delete=models.SET_NULL,
         null=True, blank=True, related_name="+")
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = [
             'historial',
