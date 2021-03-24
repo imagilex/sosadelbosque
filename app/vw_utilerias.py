@@ -69,7 +69,10 @@ def simulador(request):
                   * (porcentaje_factor_actualizacion) \
                   * ( 1 + porcentaje_asignaciones_familiares / 100) \
                   * salario_promedio_mensual
-        porcentaje_pension = pension * 100 / salario_promedio_mensual
+        if salario_promedio_mensual > 0:
+            porcentaje_pension = pension * 100 / salario_promedio_mensual
+        else:
+            porcentaje_pension = 0
         results = {
             'semanas_cotizadas': data['semanas_amt'],
             'porcentaje_cuantia_basica': porcentaje_cuantia_basica,
@@ -90,7 +93,7 @@ def simulador(request):
         request,
         'app/utilerias/simulador.html', {
             'menu_main': {'perms': None},
-            'titulo': "Simulador de Pension",
+            'titulo': "Simulador de Pension IMSS Ley 73",
             'req_ui': requires_jquery_ui(request),
             'data': data,
             'results': results,

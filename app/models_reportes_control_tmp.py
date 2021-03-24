@@ -57,6 +57,10 @@ class TmpReporteControlProximoPensionMod40(models.Model):
         max_length=15,
         choices=TIPO_PROXIMO_EVTO,
         default=TIPO_PROXIMO_EVTO_PENSION)
+    autor = models.ForeignKey(
+        Usr,
+        on_delete=models.CASCADE,
+        related_name='+')
 
     class Meta:
         ordering = ["tipo", "fecha_del_evento"]
@@ -80,6 +84,10 @@ class TmpReporteControlPatronSustituto(models.Model):
     )
     fecha_de_alta = models.DateField(default=date.today)
     fecha_estimada_de_baja = models.DateField(default=date.today)
+    autor = models.ForeignKey(
+        Usr,
+        on_delete=models.CASCADE,
+        related_name='+')
 
     class Meta:
         ordering = ["fecha_de_alta"]
@@ -99,6 +107,10 @@ class TmpReporteControlPatronSustitutoDetalle(models.Model):
     )
     fecha_de_pago = models.DateField(default=date.today)
     cantidad = models.DecimalField(max_digits=9, decimal_places=2, default=0.0)
+    autor = models.ForeignKey(
+        Usr,
+        on_delete=models.CASCADE,
+        related_name='+')
 
     class Meta:
         ordering = ["fecha_de_pago"]
@@ -121,6 +133,10 @@ class TmpReporteControlInscritosMod40(models.Model):
         related_name="+"
     )
     fecha_estimada_de_baja = models.DateField(default=date.today)
+    autor = models.ForeignKey(
+        Usr,
+        on_delete=models.CASCADE,
+        related_name='+')
 
     class Meta:
         ordering = ["fecha_estimada_de_baja"]
@@ -145,6 +161,10 @@ class TmpReporteControlInscritosMod40Detalle(models.Model):
         max_length=15,
         choices=ESTATUS_ENVIO,
         default=ESTATUS_ENVIO_PENDIENTE)
+    autor = models.ForeignKey(
+        Usr,
+        on_delete=models.CASCADE,
+        related_name='+')
 
     class Meta:
         ordering = ["fecha_de_pago"]
@@ -169,6 +189,10 @@ class TmpReportPensionesEnProceso(models.Model):
     fecha_de_envio = models.DateField(default=date.today)
     fecha_de_pago_inicial = models.DateField(default=date.today)
     fecha_de_retiro_total = models.DateField(default=date.today)
+    autor = models.ForeignKey(
+        Usr,
+        on_delete=models.CASCADE,
+        related_name='+')
 
     class Meta:
         ordering = ["fecha_de_envio"]
@@ -189,6 +213,10 @@ class TmpReportPensionesEnProcesoDetalle(models.Model):
     prorroga_o_incorformidad = models.CharField(max_length=250)
     fecha_de_envio = models.DateField(default=date.today)
     fecha_de_correccion = models.DateField(default=date.today)
+    autor = models.ForeignKey(
+        Usr,
+        on_delete=models.CASCADE,
+        related_name='+')
 
     class Meta:
         ordering = ["fecha_de_envio"]
@@ -219,6 +247,10 @@ class TmpReportTramitesYCorrecciones(models.Model):
     fecha_de_conclusion = models.DateField(default=date.today)
     costo = models.DecimalField(max_digits=9, decimal_places=2, default=0.0)
     fecha_de_liquidacion = models.DateField(default=date.today)
+    autor = models.ForeignKey(
+        Usr,
+        on_delete=models.CASCADE,
+        related_name='+')
 
     class Meta:
         ordering = ["fecha_de_envio"]

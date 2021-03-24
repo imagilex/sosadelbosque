@@ -9,7 +9,11 @@
             <div class="card-header" id="encabezado_01">
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_01" aria-expanded="false"
-                            aria-controls="cuerpo_01">Recepción, Cartera en Espera y Otros
+                            aria-controls="cuerpo_01">
+                        Recepción, Cartera en Espera y Otros
+                        <span class="badge badge-pill badge-secondary">
+                            {{ data_ultimo_contacto|length }}
+                        </span>
                     </button>
                 </h5>
             </div>
@@ -55,16 +59,58 @@
                 </div>
             </div>
         </div>
-        <div class="d-none card">
+        <div class="card">
             <div class="card-header" id="encabezado_02">
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_02" aria-expanded="false"
-                            aria-controls="cuerpo_02">Próximo a Pensión y/o Modalidad 40
+                            aria-controls="cuerpo_02">
+                        Próximo a Pensión y/o Modalidad 40
+                        <span class="badge badge-pill badge-secondary">
+                            {{ data_prox_pension_mod40|length }}
+                        </span>
                     </button>
                 </h5>
             </div>
             <div id="cuerpo_02" class="collapse" aria-labelledby="encabezado_02" data-parent="#control-accordion">
-                <div class="card-body">Cuerpo 02</div>
+                <div class="card-body">
+                    <table class="table table-striped table-sm table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th>Ejecutivo</th>
+                                <th>Tipo de Evento</th>
+                                <th>Fecha del Evento</th>
+                                <th>
+                                    <button onclick="open_frm_prox_pension_mod40_add()" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-plus-square"></i>
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for reg in data_prox_pension_mod40 %}
+                            <tr>
+                                <td>
+                                    {{ reg.autor }}
+                                </td>
+                                <td>
+                                    {{ reg.tipo }}
+                                </td>
+                                <td>
+                                    {{ reg.fecha_del_evento|date:'d/m/Y' }}
+                                </td>
+                                <td>
+                                    <button onclick="open_frm_prox_pension_mod40_update({{ reg.pk }}, '{{ reg.fecha_del_evento|date:'Y-m-d' }}', `{{ reg.tipo }}`)" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-edit"></i>
+                                    </button>
+                                    <button onclick="open_frm_prox_pension_mod40_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="d-none card">
@@ -181,6 +227,88 @@
         <div class="row">
             <div class="col-sm-12">
                 Confirma que desea eliminar el registro de último contacto?
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Sí, eliminar</button>
+    </form>
+    </script>
+
+    <script type="text/javascript">
+    let open_frm_prox_pension_mod40_add = () => {
+        App.openPanel($("#tpl-prox-pension-mod40-add").html(), "Captura Datos de Próximo a Pensión y/o Modalidad 40" );
+    }
+    let open_frm_prox_pension_mod40_update = (id_record, fecha_del_evento, tipo) => {
+        let template = Handlebars.compile($("#tpl-prox-pension-mod40-upd").html());
+        let html = template({id_record, fecha_del_evento});
+        App.openPanel( html, "Actualización de Datos");
+        $("#tipo").val(tipo);
+    }
+    let open_frm_prox_pension_mod40_delete = (id_record) => {
+        let template = Handlebars.compile($("#tpl-prox-pension-mod40-del").html());
+        let html = template({id_record});
+        App.openPanel( html, "Eliminar Registro?");
+    }
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-prox-pension-mod40-add">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add-prox-pension-mod40" />
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="tipo">Tipo:</label>
+                <select name="tipo" id="tipo" class="form-control" required="required">
+                    {% for opc in cbo_opt.TIPO_PROXIMO_EVTO %}
+                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="fecha_del_evento">Fecha del Evento:</label>
+                <input type="date" class="form-control" id="fecha_del_evento" name="fecha_del_evento" value="" required="required"/>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-prox-pension-mod40-upd">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="upd-prox-pension-mod40" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        {% endverbatim %}
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="tipo">Tipo:</label>
+                <select name="tipo" id="tipo" class="form-control" required="required">
+                    {% for opc in cbo_opt.TIPO_PROXIMO_EVTO %}
+                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="fecha_del_evento">Fecha del Evento:</label>
+                {% verbatim %}
+                <input type="date" class="form-control" id="fecha_del_evento" name="fecha_del_evento" value="{{ fecha_del_evento }}" required="required"/>
+                {% endverbatim %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-prox-pension-mod40-del">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete-prox-pension-mod40" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-12">
+                Confirma que desea eliminar el registro?
             </div>
         </div>
         {% endverbatim %}

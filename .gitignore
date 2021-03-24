@@ -113,3 +113,6 @@ managed/
 managed/managed.imgx
 *.imgx
 .vscode/launch.json
+.idea/*
+.idea/
+.idea
