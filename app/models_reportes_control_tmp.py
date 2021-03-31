@@ -93,7 +93,7 @@ class TmpReporteControlPatronSustituto(models.Model):
         ordering = ["fecha_de_alta"]
 
     def __str__(self):
-        return f"{self.fecha_de_alta:%d/%m%Y}"
+        return f"{self.fecha_de_alta:%d/%m/%Y}"
 
     def __unicode__(self):
         return self.__str__()
@@ -101,7 +101,7 @@ class TmpReporteControlPatronSustituto(models.Model):
 
 class TmpReporteControlPatronSustitutoDetalle(models.Model):
     raiz = models.ForeignKey(
-        'TmpReporteControlPatronSustitutoDetalle',
+        'TmpReporteControlPatronSustituto',
         on_delete=models.CASCADE,
         related_name='detalle',
     )
@@ -121,6 +121,12 @@ class TmpReporteControlPatronSustitutoDetalle(models.Model):
     def __unicode__(self):
         return self.__str__()
 
+    @property
+    def isMaxDate(self):
+        return self.__class__.objects.filter(
+            fecha_de_pago__gt=self.fecha_de_pago,
+            raiz__pk__exact=self.raiz.pk).count() == 0
+
 
 class TmpReporteControlInscritosMod40(models.Model):
     cliente = models.ForeignKey(
@@ -132,6 +138,7 @@ class TmpReporteControlInscritosMod40(models.Model):
         on_delete=models.PROTECT,
         related_name="+"
     )
+    fecha_de_alta = models.DateField(default=date.today)
     fecha_estimada_de_baja = models.DateField(default=date.today)
     autor = models.ForeignKey(
         Usr,
@@ -174,6 +181,12 @@ class TmpReporteControlInscritosMod40Detalle(models.Model):
 
     def __unicode__(self):
         return self.__str__()
+
+    @property
+    def isMaxDate(self):
+        return self.__class__.objects.filter(
+            fecha_de_pago__gt=self.fecha_de_pago,
+            raiz__pk__exact=self.raiz.pk).count() == 0
 
 
 class TmpReportPensionesEnProceso(models.Model):
