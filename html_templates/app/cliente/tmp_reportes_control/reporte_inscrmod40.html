@@ -1,0 +1,179 @@
+{% extends "global/html_struct.html" %}
+{% load i18n %}
+{% load util_filters %}
+
+{% block content %}
+
+    <div class="card card-body">
+        <form method="post" autocomplete="off" enctype="multipart/form-data" id="filter-form" action="">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_tipo_expediente">Tipo de Expediente</label>
+                    <select name="ftr_tipo_expediente" id="ftr_tipo_expediente" class="form-control">
+                        <option value=""></option>
+                        {% for opt in combo_options.tipo_expediente %}
+                            <option value="{{ opt.pk }}" {% if opt.pk == filters.ftr_tipo_expediente %}selected="select"{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_ejecutivo">Ejecutivo</label>
+                    <select name="ftr_ejecutivo" id="ftr_ejecutivo" class="form-control">
+                        <option value=""></option>
+                        {% for opt in combo_options.responsables %}
+                            <option value="{{ opt.0 }}" {% if opt.0 == filters.ftr_ejecutivo %}selected="select"{% endif %}>{{ opt.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_gestor">Gestor</label>
+                    <select name="ftr_gestor" id="ftr_gestor" class="form-control">
+                        <option value=""></option>
+                        {% for opt in combo_options.responsables %}
+                            <option value="{{ opt.0 }}" {% if opt.0 == filters.ftr_gestor %}selected="select"{% endif %}>{{ opt.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_medio">Medio</label>
+                    <select name="ftr_medio" id="ftr_medio" class="form-control">
+                        <option value=""></option>
+                        {% for opt in combo_options.medio %}
+                            <option value="{{ opt.pk0 }}" {% if opt.pk == filters.ftr_medio %}selected="select"{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-outline-primary" id="btn-save" >Procesar</button>
+        </form>
+    </div>
+
+    {% if regs %}
+    <table id="data-grid-report" class="table table-striped table-sm table-responsive-md">
+        <thead>
+            <tr>
+                <th onclick="App.sortDataGridReport(0, 'str')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Cliente
+                </th>
+                <th onclick="App.sortDataGridReport(1, 'str')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Tipo de Expediente
+                </th>
+                <th onclick="App.sortDataGridReport(2, 'str')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Ejecutivo
+                </th>
+                <th onclick="App.sortDataGridReport(3, 'str')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Gestor
+                </th>
+                <th onclick="App.sortDataGridReport(4, 'str')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Medio
+                </th>
+                <th onclick="App.sortDataGridReport(5, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Fecha de Alta
+                </th>
+                <th onclick="App.sortDataGridReport(6, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Fecha Estimada de Baja
+                </th>
+                <th onclick="App.sortDataGridReport(7, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Ultimo Pago
+                </th>
+                <th onclick="App.sortDataGridReport(8, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Cantidad
+                </th>
+                <th onclick="App.sortDataGridReport(9, 'str')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Línea de Captura
+                </th>
+                <th onclick="App.sortDataGridReport(10, 'str')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Estatus
+                </th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Cliente</th>
+                <th>Tipo de Expediente</th>
+                <th>Ejecutivo</th>
+                <th>Gestor</th>
+                <th>Medio</th>
+                <th>Fecha de Alta</th>
+                <th>Fecha Estimada de Baja</th>
+                <th>Ultimo Pago</th>
+                <th>Cantidad</th>
+                <th>Línea de Captura</th>
+                <th>Estatus</th>
+            </tr>
+        </tfoot>
+        <tbody id="data-tbl">
+            {% for reg in regs %}
+            <tr>
+                <td data-rawsortvalue="{{ reg.cliente|lower }}">
+                    <a href="{% url 'cliente_see' pk=reg.cliente.pk %}">
+                        {{ reg.cliente }}
+                    </a>
+                </td>
+                <td data-rawsortvalue="{{ reg.cliente.tipo|lower }}">
+                    {{ reg.cliente.tipo }}
+                </td>
+                <td data-rawsortvalue="{{ reg.cliente.responsable|lower }}">
+                    {% if reg.cliente.responsable %}{{ reg.cliente.responsable }}{% endif %}
+                </td>
+                <td data-rawsortvalue="{{ reg.cliente.gestor|lower }}">
+                    {% if reg.cliente.gestor %}{{ reg.cliente.gestor }}{% endif %}
+                </td>
+                <td data-rawsortvalue="{{ reg.medio|lower }}">
+                    {{ reg.medio }}
+                </td>
+                <td data-rawsortvalue="{{ reg.fecha_de_alta|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_alta|date:'d/m/Y' }}
+                </td>
+                <td data-rawsortvalue="{{ reg.fecha_estimada_de_baja|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_estimada_de_baja|date:'d/m/Y' }}
+                </td>
+                {% for d in reg.detalle.all %}
+                    {% if d.isMaxDate %}
+                    <td data-rawsortvalue="{{ d.fecha_de_pago|date:'Ymd' }}" class="text-right">
+                        {{ d.fecha_de_pago|date:'d/m/Y' }}
+                    </td>
+                    <td data-rawsortvalue="{{ d.cantidad }}" class="text-right">
+                        $ {{ d.cantidad|money2display }}
+                    </td>
+                    <td data-rawsortvalue="{{ d.linea_de_captura|lower }}">
+                        {{ d.linea_de_captura }}
+                    </td>
+                    <td data-rawsortvalue="{{ d.estatus_de_envio|lower }}">
+                        {{ d.estatus_de_envio }}
+                    </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+{% endblock %}
+
+

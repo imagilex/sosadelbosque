@@ -15,19 +15,19 @@
             <input type="number" class="form-control text-right" id="semanas_amt" name="semanas_amt" min="500" max="4500" required="required" value="{{ data.semanas_amt }}" />
         </div>
         <div class="form-group col-sm-4">
-            <label for="hijos_qty">Número de Hijos</label>
+            <label for="hijos_qty">Número de Hijos (menores de 16 años)</label>
             <input class="form-control text-right" type="number" id="hijos_qty" name="hijos_qty" class="form-control" min="0" max="10" value="{{ data.hijos_qty }}" />
         </div>
     </div>
     <div class="form-row">
         <div class="form-group col-sm-6">
             <input class="form-check-input" type="checkbox" id="concubino_flg" name="concubino_flg" class="form-control" value="yes" checked="checked" disabled="disabled"/>
-            <label class="form-check-label" for="concubino_flg">Esposa(o) o concubina(o)</label>
+            <label class="form-check-label" for="concubino_flg">Esposa(o), concubina(o)  o ayuda asistencial</label>
         </div>
     </div>
     <div class="form-row">
         <div class="form-group text-right offset-8 col-sm-4">
-            <label>Captura el salario mensual de los últimos cinco años:</label>
+            <label>Captura el salario mensual de cada uno de los últimos cinco años:</label>
         </div>
     </div>
     <div class="form-row">
@@ -72,27 +72,27 @@
 
 <table class="table table-striped table-sm table-responsive-md">
     <tr>
-        <th class="text-right">Semanas Cotizadas:</th>
-        <th class="text-left">{{ results.semanas_cotizadas }}</th>
+        <td class="text-right">Semanas Cotizadas:</td>
+        <td class="text-left">{{ results.semanas_cotizadas }}</td>
     </tr>
     <tr>
-        <th class="text-right">Salario Promedio Mensual:</th>
-        <th class="text-left">$ {{ results.salario_promedio_mensual | money2display }}</th>
+        <td class="text-right">Salario Promedio Mensual:</td>
+        <td class="text-left">$ {{ results.salario_promedio_mensual | money2display }}</td>
     </tr>
     <tr>
-        <th class="text-right">Porcentaje respecto a Cuantía de Vejez:</th>
-        <th class="text-left">{{ results.porcentaje_factor_edad | money2display }} %</th>
+        <td class="text-right">Porcentaje de Edad:</td>
+        <td class="text-left">{{ results.porcentaje_factor_edad | money2display }} %</td>
     </tr>
     <tr>
-        <th class="text-right">Asignaciones Familiares - esposa(o), concubina(n) o ayuda asistencial:</th>
-        <th class="text-left">{{ results.porcentaje_asignaciones_familiares | money2display }} %</th>
+        <td class="text-right">Asignaciones Familiares:</td>
+        <td class="text-left">{{ results.porcentaje_asignaciones_familiares | money2display }} %</td>
+    </tr>
+    <tr class="d-none">
+        <td class="text-right">Porcentaje de Pensión:</td>
+        <td class="text-left">{{ results.porcentaje_pension | money2display }} %</td>
     </tr>
     <tr>
-        <th class="text-right">Porcentaje de Pensión:</th>
-        <th class="text-left">{{ results.porcentaje_pension | money2display }} %</th>
-    </tr>
-    <tr>
-        <th class="text-right">Pensión:</th>
+        <th class="text-right">Pensión mensual:</th>
         <th class="text-left">$ {{ results.pension | money2display }}</th>
     </tr>
 </table>
@@ -100,7 +100,7 @@
 <div><strong>*Nota:</strong> La información mostrada es de caracter informativo y carece de validez oficial.</div>
 
 <div class="h5 text-dark">
-    Si quieres saber el monto preciso de tu pensión solicita una asesoria con nosotros en:
+    Si quieres saber el monto exacto de tu pensión solicitanos una asesoria en:
     <a class="btn btn-info" href="https://grupo.sosadelbosque.mx/#contacto" target="_blank" a>https://grupo.sosadelbosque.mx</a>
 </div>
 

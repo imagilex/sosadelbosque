@@ -9,7 +9,11 @@
             <div class="card-header" id="encabezado_01">
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_01" aria-expanded="false"
-                            aria-controls="cuerpo_01">Recepción, Cartera en Espera y Otros
+                            aria-controls="cuerpo_01">
+                        Recepción, Cartera en Espera y Otros
+                        <span class="badge badge-pill badge-secondary">
+                            {{ data_ultimo_contacto|length }}
+                        </span>
                     </button>
                 </h5>
             </div>
@@ -55,40 +59,218 @@
                 </div>
             </div>
         </div>
-        <div class="d-none card">
+        <div class="card">
             <div class="card-header" id="encabezado_02">
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_02" aria-expanded="false"
-                            aria-controls="cuerpo_02">Próximo a Pensión y/o Modalidad 40
+                            aria-controls="cuerpo_02">
+                        Próximo a Pensión y/o Modalidad 40
+                        <span class="badge badge-pill badge-secondary">
+                            {{ data_prox_pension_mod40|length }}
+                        </span>
                     </button>
                 </h5>
             </div>
             <div id="cuerpo_02" class="collapse" aria-labelledby="encabezado_02" data-parent="#control-accordion">
-                <div class="card-body">Cuerpo 02</div>
+                <div class="card-body">
+                    <table class="table table-striped table-sm table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th>Ejecutivo</th>
+                                <th>Tipo de Evento</th>
+                                <th>Fecha del Evento</th>
+                                <th>
+                                    <button onclick="open_frm_prox_pension_mod40_add()" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-plus-square"></i>
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for reg in data_prox_pension_mod40 %}
+                            <tr>
+                                <td>
+                                    {{ reg.autor }}
+                                </td>
+                                <td>
+                                    {{ reg.tipo }}
+                                </td>
+                                <td>
+                                    {{ reg.fecha_del_evento|date:'d/m/Y' }}
+                                </td>
+                                <td>
+                                    <button onclick="open_frm_prox_pension_mod40_update({{ reg.pk }}, '{{ reg.fecha_del_evento|date:'Y-m-d' }}', `{{ reg.tipo }}`)" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-edit"></i>
+                                    </button>
+                                    <button onclick="open_frm_prox_pension_mod40_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <div class="d-none card">
+        <div class="card">
             <div class="card-header" id="encabezado_03">
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_03" aria-expanded="false"
-                            aria-controls="cuerpo_03">Patron Sustituto
+                            aria-controls="cuerpo_03">
+                        Patron Sustituto
+                        <span class="badge badge-pill badge-secondary">
+                            {{ data_patron_sustituo|length }}
+                        </span>
                     </button>
                 </h5>
             </div>
             <div id="cuerpo_03" class="collapse" aria-labelledby="encabezado_03" data-parent="#control-accordion">
-                <div class="card-body">Cuerpo 03</div>
+                <div class="card-body">
+                    <button onclick="open_frm_patron_sustituto_add()" type="button" class="btn btn-outline-secondary">
+                        <i class="far fa-plus-square"></i> Agregar Patrón sustituto
+                    </button>
+                    <div class="list-group">
+                        {% for main_reg in data_patron_sustituo %}
+                        <div class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="row">
+                                <div class="form-group col-sm-3">
+                                    <label>Medio:</label>
+                                    <input value="{{ main_reg.medio }}" disabled="disabled" class="form-control" type="text" />
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label>Fecha de alta</label>
+                                    <input value="{{ main_reg.fecha_de_alta|date:"Y-m-d" }}" disabled="disabled" class="form-control" type="date" />
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label>Fecha estimada de baja</label>
+                                    <input value="{{ main_reg.fecha_estimada_de_baja|date:"Y-m-d" }}" disabled="disabled" class="form-control" type="date" />
+                                </div>
+                                <div class="col-sm-2 offset-sm-1">
+                                    <button title="Actualizar Patrón Sustituto" onclick="open_frm_patron_sustituto_update({{ main_reg.pk }}, {{ main_reg.medio.pk }}, '{{ main_reg.fecha_de_alta|date:"Y-m-d" }}', `{{ main_reg.fecha_estimada_de_baja|date:"Y-m-d" }}`)" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-edit"></i>
+                                    </button>
+                                    <button title="Eliminar Patrón Sustituto" onclick="open_frm_patron_sustituto_delete({{ main_reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-sm table-responsive-md">
+                                <thead>
+                                    <tr>
+                                        <th>Ejecutivo</th>
+                                        <th>Fecha del Pago</th>
+                                        <th>Cantidad</th>
+                                        <th class="text-center">
+                                            <button title="Agregar Pago" onclick="open_frm_patron_sustituto_detalle_add({{ main_reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                                <i class="far fa-plus-square"></i> <i class="fas fa-dollar-sign"></i>
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for reg in main_reg.detalle.all  %}
+                                        <tr>
+                                            <td>{{ reg.autor }}</td>
+                                            <td>{{ reg.fecha_de_pago|date:'d/M/Y' }}</td>
+                                            <td class="text-right">$ {{ reg.cantidad|money2display }}</td>
+                                            <td class="text-center">
+                                                <button title="Actualizar Pago" onclick="open_frm_patron_sustituto_detalle_update({{ reg.pk }}, '{{ reg.fecha_de_pago|date:'Y-m-d' }}', '{{ reg.cantidad }}')" type="button" class="btn btn-outline-secondary">
+                                                    <i class="far fa-edit"></i>
+                                                </button>
+                                                <button title="Eliminar Pago" onclick="open_frm_patron_sustituto_detalle_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="d-none card">
+        <div class="card">
             <div class="card-header" id="encabezado_04">
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_04" aria-expanded="false"
-                            aria-controls="cuerpo_04">Inscripción a Modalidad 40
+                            aria-controls="cuerpo_04">
+                        Inscripción a Modalidad 40
+                        <span class="badge badge-pill badge-secondary">
+                            {{ data_insc_mod40|length }}
+                        </span>
                     </button>
                 </h5>
             </div>
             <div id="cuerpo_04" class="collapse" aria-labelledby="encabezado_04" data-parent="#control-accordion">
-                <div class="card-body">Cuerpo 04</div>
+                <div class="card-body">
+                    <button onclick="open_frm_insc_mod_40_add()" type="button" class="btn btn-outline-secondary">
+                        <i class="far fa-plus-square"></i> Agregar Inscripción a Modalidad 40
+                    </button>
+                    <div class="list-group">
+                        {% for main_reg in data_insc_mod40 %}
+                            <div class="row">
+                                <div class="form-group col-sm-3">
+                                    <label>Medio:</label>
+                                    <input value="{{ main_reg.medio }}" disabled="disabled" class="form-control" type="text" />
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label>Fecha de alta</label>
+                                    <input value="{{ main_reg.fecha_de_alta|date:"Y-m-d" }}" disabled="disabled" class="form-control" type="date" />
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label>Fecha estimada de baja</label>
+                                    <input value="{{ main_reg.fecha_estimada_de_baja|date:"Y-m-d" }}" disabled="disabled" class="form-control" type="date" />
+                                </div>
+                                <div class="col-sm-2 offset-sm-1">
+                                    <button title="Actualizar Inscripción a Modalidad 40" onclick="open_frm_insc_mod_40_update({{ main_reg.pk }}, {{ main_reg.medio.pk }}, '{{ main_reg.fecha_de_alta|date:"Y-m-d" }}', `{{ main_reg.fecha_estimada_de_baja|date:"Y-m-d" }}`)" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-edit"></i>
+                                    </button>
+                                    <button title="Eliminar Inscripción a Modalidad 40" onclick="open_frm_insc_mod_40_delete({{ main_reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-sm table-responsive-md">
+                                <thead>
+                                    <tr>
+                                        <th>Ejecutivo</th>
+                                        <th>Fecha del Pago</th>
+                                        <th>Cantidad</th>
+                                        <th>Linea de Captura</th>
+                                        <th>Estatus de Envío</th>
+                                        <th class="text-center">
+                                            <button title="Agregar Pago" onclick="open_frm_insc_mod_40_detalle_add({{ main_reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                                <i class="far fa-plus-square"></i> <i class="fas fa-dollar-sign"></i>
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for reg in main_reg.detalle.all  %}
+                                        <tr>
+                                            <td>{{ reg.autor }}</td>
+                                            <td>{{ reg.fecha_de_pago|date:'d/M/Y' }}</td>
+                                            <td class="text-right">$ {{ reg.cantidad|money2display }}</td>
+                                            <td>{{ reg.linea_de_captura }}</td>
+                                            <td>{{ reg.estatus_de_envio }}</td>
+                                            <td class="text-center">
+                                                <button title="Actualizar Pago" onclick="open_frm_insc_mod_40_detalle_update({{ reg.pk }}, '{{ reg.fecha_de_pago|date:'Y-m-d' }}', '{{ reg.cantidad }}', '{{ reg.linea_de_captura }}', '{{ reg.estatus_de_envio }}')" type="button" class="btn btn-outline-secondary">
+                                                    <i class="far fa-edit"></i>
+                                                </button>
+                                                <button title="Eliminar Pago" onclick="open_frm_insc_mod_40_detalle_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="d-none card">
@@ -181,6 +363,455 @@
         <div class="row">
             <div class="col-sm-12">
                 Confirma que desea eliminar el registro de último contacto?
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Sí, eliminar</button>
+    </form>
+    </script>
+
+    <script type="text/javascript">
+    let open_frm_prox_pension_mod40_add = () => {
+        App.openPanel($("#tpl-prox-pension-mod40-add").html(), "Captura Datos de Próximo a Pensión y/o Modalidad 40" );
+    }
+    let open_frm_prox_pension_mod40_update = (id_record, fecha_del_evento, tipo) => {
+        let template = Handlebars.compile($("#tpl-prox-pension-mod40-upd").html());
+        let html = template({id_record, fecha_del_evento});
+        App.openPanel( html, "Actualización de Datos");
+        $("#tipo").val(tipo);
+    }
+    let open_frm_prox_pension_mod40_delete = (id_record) => {
+        let template = Handlebars.compile($("#tpl-prox-pension-mod40-del").html());
+        let html = template({id_record});
+        App.openPanel( html, "Eliminar Registro?");
+    }
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-prox-pension-mod40-add">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add-prox-pension-mod40" />
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="tipo">Tipo:</label>
+                <select name="tipo" id="tipo" class="form-control" required="required">
+                    {% for opc in cbo_opt.TIPO_PROXIMO_EVTO %}
+                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="fecha_del_evento">Fecha del Evento:</label>
+                <input type="date" class="form-control" id="fecha_del_evento" name="fecha_del_evento" value="" required="required"/>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-prox-pension-mod40-upd">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="upd-prox-pension-mod40" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        {% endverbatim %}
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="tipo">Tipo:</label>
+                <select name="tipo" id="tipo" class="form-control" required="required">
+                    {% for opc in cbo_opt.TIPO_PROXIMO_EVTO %}
+                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="fecha_del_evento">Fecha del Evento:</label>
+                {% verbatim %}
+                <input type="date" class="form-control" id="fecha_del_evento" name="fecha_del_evento" value="{{ fecha_del_evento }}" required="required"/>
+                {% endverbatim %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-prox-pension-mod40-del">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete-prox-pension-mod40" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-12">
+                Confirma que desea eliminar el registro?
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Sí, eliminar</button>
+    </form>
+    </script>
+
+    <script type="text/javascript">
+    let open_frm_patron_sustituto_add = () => {
+        App.openPanel($("#tpl-patron-sustituto-add").html(), "Captura Datos de Patrón Sustituto" );
+    }
+    let open_frm_patron_sustituto_update = (id_record, medio, fecha_de_alta, fecha_estimada_de_baja) => {
+        let template = Handlebars.compile($("#tpl-patron-sustituto-upd").html());
+        let html = template({id_record, fecha_de_alta, fecha_estimada_de_baja});
+        App.openPanel( html, "Actualización de Patrón Sustituto");
+        $("#medio").val(medio);
+    }
+    let open_frm_patron_sustituto_delete = (id_record) => {
+        let template = Handlebars.compile($("#tpl-patron-sustituto-del").html());
+        let html = template({id_record});
+        App.openPanel( html, "Eliminar Registro de Patrón Sustituto");
+    }
+    let open_frm_patron_sustituto_detalle_add = raiz => {
+        let template = Handlebars.compile($("#tpl-patron-sustituto-detalle-add").html());
+        let html = template({raiz});
+        App.openPanel(html, "Captura Datos de Pago a Patrón Sustituto" );
+    }
+    let open_frm_patron_sustituto_detalle_update = (id_record, fecha_de_pago, cantidad) => {
+        let template = Handlebars.compile($("#tpl-patron-sustituto-detalle-upd").html());
+        let html = template({id_record, fecha_de_pago, cantidad});
+        App.openPanel( html, "Actualización de Pago a Patrón Sustituto");
+    }
+    let open_frm_patron_sustituto_detalle_delete = (id_record) => {
+        let template = Handlebars.compile($("#tpl-patron-sustituto-detalle-del").html());
+        let html = template({id_record});
+        App.openPanel( html, "Eliminar Registro de Pago a Patrón Sustituto");
+    }
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-patron-sustituto-add">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add-patron-sustituto" />
+        {% verbatim %}
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="medio">Medio:</label>
+                <select class="form-control" name="medio" id="medio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.MEDIO_ACTIVIDAD %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_alta">Fecha de alta</label>
+                <input class="form-control" type="date" name="fecha_de_alta" id="fecha_de_alta" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_estimada_de_baja">Fecha estimada de baja</label>
+                <input class="form-control" type="date" name="fecha_estimada_de_baja" id="fecha_estimada_de_baja" required="required"/>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-patron-sustituto-upd">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update-patron-sustituto" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="medio">Medio:</label>
+                <select class="form-control" name="medio" id="medio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.MEDIO_ACTIVIDAD %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_alta">Fecha de alta</label>
+                <input value="{{ fecha_de_alta }}" class="form-control" type="date" name="fecha_de_alta" id="fecha_de_alta" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_estimada_de_baja">Fecha estimada de baja</label>
+                <input value="{{fecha_estimada_de_baja}}" class="form-control" type="date" name="fecha_estimada_de_baja" id="fecha_estimada_de_baja" required="required"/>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-patron-sustituto-del">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete-patron-sustituto" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-12">
+                Confirma que desea eliminar el registro?
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Sí, eliminar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-patron-sustituto-detalle-add">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add-patron-sustituto-detalle" />
+        {% verbatim %}
+        <input type="hidden" name="raiz" id="raiz" value="{{ raiz }}" />
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="fecha_de_pago">Fecha de Pago</label>
+                <input type="date" class="form-control" id="fecha_de_pago" name="fecha_de_pago" value="" />
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="cantidad">Cantidad</label>
+                <input type="number" class="form-control" id="cantidad" name="cantidad" value="" />
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-patron-sustituto-detalle-upd">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update-patron-sustituto-detalle" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="fecha_de_pago">Fecha de Pago</label>
+                <input value="{{ fecha_de_pago }}" type="date" class="form-control" id="fecha_de_pago" name="fecha_de_pago" value="" />
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="cantidad">Cantidad</label>
+                <input value="{{ cantidad }}" type="number" class="form-control" id="cantidad" name="cantidad" value="" />
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-patron-sustituto-detalle-del">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete-patron-sustituto-detalle" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-12">
+                Confirma que desea eliminar el registro?
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Sí, eliminar</button>
+    </form>
+    </script>
+
+    <script type="text/javascript">
+    let open_frm_insc_mod_40_add = () => {
+        App.openPanel($("#tpl-insc-mod-40-add").html(), "Captura Datos de Inscripción a Modalidad 40" );
+    }
+    let open_frm_insc_mod_40_update = (id_record, medio, fecha_de_alta, fecha_estimada_de_baja) => {
+        let template = Handlebars.compile($("#tpl-insc-mod-40-upd").html());
+        let html = template({id_record, fecha_de_alta, fecha_estimada_de_baja});
+        App.openPanel( html, "Actualización de Inscripción a Modalidad 40");
+        $("#medio").val(medio);
+    }
+    let open_frm_insc_mod_40_delete = (id_record) => {
+        let template = Handlebars.compile($("#tpl-insc-mod-40-del").html());
+        let html = template({id_record});
+        App.openPanel( html, "Eliminar Registro de Inscripción a Modalidad 40");
+    }
+    let open_frm_insc_mod_40_detalle_add = raiz => {
+        let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-add").html());
+        let html = template({raiz});
+        App.openPanel(html, "Captura Datos de Pago por Inscripción a Modalidad 40" );
+    }
+    let open_frm_insc_mod_40_detalle_update = (id_record, fecha_de_pago, cantidad, linea_captura, estatus_de_envio) => {
+        let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-upd").html());
+        let html = template({id_record, fecha_de_pago, cantidad, linea_captura});
+        App.openPanel( html, "Actualización de Pago por Inscripción a Modalidad 40");
+        $("#estatus_de_envio").val(estatus_de_envio);
+    }
+    let open_frm_insc_mod_40_detalle_delete = (id_record) => {
+        let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-del").html());
+        let html = template({id_record});
+        App.openPanel( html, "Eliminar Registro de Pago por Inscripción a Modalidad 40");
+    }
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-insc-mod-40-add">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add-insc-mod-40" />
+        {% verbatim %}
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="medio">Medio:</label>
+                <select class="form-control" name="medio" id="medio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.MEDIO_ACTIVIDAD %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_alta">Fecha de alta</label>
+                <input class="form-control" type="date" name="fecha_de_alta" id="fecha_de_alta" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_estimada_de_baja">Fecha estimada de baja</label>
+                <input class="form-control" type="date" name="fecha_estimada_de_baja" id="fecha_estimada_de_baja" required="required"/>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-insc-mod-40-upd">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update-insc-mod-40" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="medio">Medio:</label>
+                <select class="form-control" name="medio" id="medio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.MEDIO_ACTIVIDAD %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_alta">Fecha de alta</label>
+                <input value="{{ fecha_de_alta }}" class="form-control" type="date" name="fecha_de_alta" id="fecha_de_alta" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_estimada_de_baja">Fecha estimada de baja</label>
+                <input value="{{fecha_estimada_de_baja}}" class="form-control" type="date" name="fecha_estimada_de_baja" id="fecha_estimada_de_baja" required="required"/>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-insc-mod-40-del">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete-insc-mod-40" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-12">
+                Confirma que desea eliminar el registro?
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Sí, eliminar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-insc-mod-40-detalle-add">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add-insc-mod-40-detalle" />
+        {% verbatim %}
+        <input type="hidden" name="raiz" id="raiz" value="{{ raiz }}" />
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="fecha_de_pago">Fecha de Pago</label>
+                <input type="date" class="form-control" id="fecha_de_pago" name="fecha_de_pago" value="" />
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="cantidad">Cantidad</label>
+                <input type="number" class="form-control" id="cantidad" name="cantidad" value="" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="linea_de_captura">Línea de Captura</label>
+                <input type="text" class="form-control" id="linea_de_captura" name="linea_de_captura" value="" />
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="estatus_de_envio">Estatus de Envío</label>
+                <select class="form-control" name="estatus_de_envio" id="estatus_de_envio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.ESTATUS_ENVIO %}
+                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-insc-mod-40-detalle-upd">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update-insc-mod-40-detalle" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="fecha_de_pago">Fecha de Pago</label>
+                <input value="{{ fecha_de_pago }}" type="date" class="form-control" id="fecha_de_pago" name="fecha_de_pago" />
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="cantidad">Cantidad</label>
+                <input value="{{ cantidad }}" type="number" class="form-control" id="cantidad" name="cantidad" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="linea_de_captura">Línea de Captura</label>
+                <input value="{{ linea_captura }}" type="text" class="form-control" id="linea_de_captura" name="linea_de_captura" />
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="estatus_de_envio">Estatus de Envío</label>
+                <select class="form-control" name="estatus_de_envio" id="estatus_de_envio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.ESTATUS_ENVIO %}
+                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-insc-mod-40-detalle-del">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete-insc-mod-40-detalle" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-12">
+                Confirma que desea eliminar el registro?
             </div>
         </div>
         {% endverbatim %}
