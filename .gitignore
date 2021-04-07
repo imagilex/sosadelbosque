@@ -116,3 +116,6 @@ managed/managed.imgx
 .idea/*
 .idea/
 .idea
+
+tmp/*
+passenger_wsgi.py
