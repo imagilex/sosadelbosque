@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,7 +87,7 @@
       <workItem from="1617718188615" duration="5846000" />
       <workItem from="1617893795035" duration="1030000" />
       <workItem from="1617899004652" duration="13171000" />
-      <workItem from="1617980818799" duration="919000" />
+      <workItem from="1617980818799" duration="1730000" />
     </task>
     <servers />
   </component>

@@ -183,7 +183,7 @@ def vwReporteControlRecepcion(request):
         request,
         'app/cliente/tmp_reportes_control/reporte_recepcion.html', {
             'menu_main': usuario.main_menu_struct(),
-            'titulo': 'Reporte de Recepción, Cartera en Espera y Otros',
+            'titulo': 'Reporte de Recepción, Cartera en Espera y Otro Estatus',
             'req_ui': requires_jquery_ui(request),
             'regs': data,
             'filters': {
