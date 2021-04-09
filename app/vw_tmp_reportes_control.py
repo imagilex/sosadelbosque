@@ -333,13 +333,14 @@ def vwReporteControlPatronSustituto(request):
                             'fecha_de_pago': det.fecha_de_pago,
                             'cantidad': det.cantidad,
                         })
+        data = tmp_data
     return render(
         request,
         'app/cliente/tmp_reportes_control/reporte_patronsustituto.html', {
             'menu_main': usuario.main_menu_struct(),
             'titulo': 'Reporte de Patrón Sustituto',
             'req_ui': requires_jquery_ui(request),
-            'regs': tmp_data,
+            'regs': data,
             'filters': {
                 'ftr_tipo_expediente': ftr_tipo_expediente,
                 'ftr_ejecutivo': ftr_ejecutivo,

@@ -2,27 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/forms_tmp_rep_control.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/migrations/0062_auto_20210405_2211.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/url_tmp_estatus_envio.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/url_tmp_medio_insc_mod_40.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/url_tmp_medio_patron_sustituto.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/url_tmp_prox_evt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_envio.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_medio_insc_mod_40.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_medio_patron_sustituto.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_prox_evt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_estatus_envio.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_medio_insc_mod_40.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_medio_patron_sustituo.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_prox_evt.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_reportes_control_tmp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_reportes_control_tmp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/url_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/url_tmp_reportes_control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_patronsustituto.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_patronsustituto.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_proxpensionmod40.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_proxpensionmod40.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,6 +88,7 @@
       <workItem from="1617718188615" duration="5846000" />
       <workItem from="1617893795035" duration="1030000" />
       <workItem from="1617899004652" duration="13171000" />
+      <workItem from="1617980818799" duration="919000" />
     </task>
     <servers />
   </component>
