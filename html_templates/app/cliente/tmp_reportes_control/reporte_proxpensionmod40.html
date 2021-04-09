@@ -40,7 +40,7 @@
                     <select name="ftr_tipo" id="ftr_tipo" class="form-control">
                         <option value=""></option>
                         {% for opt in combo_options.tipo_proximo_evto %}
-                            <option value="{{ opt.0 }}" {% if opt.0 == filters.ftr_tipo  %}selected="selected"{% endif %}>{{ opt.1 }}</option>
+                            <option value="{{ opt.pk }}" {% if opt.pk == filters.ftr_tipo  %}selected="selected"{% endif %}>{{ opt }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -86,7 +86,7 @@
                 <th onclick="App.sortDataGridReport(4, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha de Último Contacto
+                    Fecha del Evento
                 </th>
                 <th onclick="App.sortDataGridReport(5, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>

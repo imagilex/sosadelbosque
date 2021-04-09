@@ -99,7 +99,7 @@
                                     {{ reg.fecha_del_evento|date:'d/m/Y' }}
                                 </td>
                                 <td>
-                                    <button onclick="open_frm_prox_pension_mod40_update({{ reg.pk }}, '{{ reg.fecha_del_evento|date:'Y-m-d' }}', `{{ reg.tipo }}`)" type="button" class="btn btn-outline-secondary">
+                                    <button onclick="open_frm_prox_pension_mod40_update({{ reg.pk }}, '{{ reg.fecha_del_evento|date:'Y-m-d' }}', `{{ reg.tipo.pk }}`)" type="button" class="btn btn-outline-secondary">
                                         <i class="far fa-edit"></i>
                                     </button>
                                     <button onclick="open_frm_prox_pension_mod40_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
@@ -237,12 +237,10 @@
                                 <thead>
                                     <tr>
                                         <th>Ejecutivo</th>
-                                        <th>Fecha del Pago</th>
-                                        <th>Cantidad</th>
-                                        <th>Linea de Captura</th>
+                                        <th>Fecha de Línea de Captura</th>
                                         <th>Estatus de Envío</th>
                                         <th class="text-center">
-                                            <button title="Agregar Pago" onclick="open_frm_insc_mod_40_detalle_add({{ main_reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                            <button title="Agregar Fecha de Línea de Captura" onclick="open_frm_insc_mod_40_detalle_add({{ main_reg.pk }})" type="button" class="btn btn-outline-secondary">
                                                 <i class="far fa-plus-square"></i> <i class="fas fa-dollar-sign"></i>
                                             </button>
                                         </th>
@@ -253,11 +251,9 @@
                                         <tr>
                                             <td>{{ reg.autor }}</td>
                                             <td>{{ reg.fecha_de_pago|date:'d/M/Y' }}</td>
-                                            <td class="text-right">$ {{ reg.cantidad|money2display }}</td>
-                                            <td>{{ reg.linea_de_captura }}</td>
                                             <td>{{ reg.estatus_de_envio }}</td>
                                             <td class="text-center">
-                                                <button title="Actualizar Pago" onclick="open_frm_insc_mod_40_detalle_update({{ reg.pk }}, '{{ reg.fecha_de_pago|date:'Y-m-d' }}', '{{ reg.cantidad }}', '{{ reg.linea_de_captura }}', '{{ reg.estatus_de_envio }}')" type="button" class="btn btn-outline-secondary">
+                                                <button title="Actualizar Pago" onclick="open_frm_insc_mod_40_detalle_update({{ reg.pk }}, '{{ reg.fecha_de_pago|date:'Y-m-d' }}', '{{ reg.estatus_de_envio.pk }}')" type="button" class="btn btn-outline-secondary">
                                                     <i class="far fa-edit"></i>
                                                 </button>
                                                 <button title="Eliminar Pago" onclick="open_frm_insc_mod_40_detalle_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
@@ -396,7 +392,7 @@
                 <label for="tipo">Tipo:</label>
                 <select name="tipo" id="tipo" class="form-control" required="required">
                     {% for opc in cbo_opt.TIPO_PROXIMO_EVTO %}
-                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -421,7 +417,7 @@
                 <label for="tipo">Tipo:</label>
                 <select name="tipo" id="tipo" class="form-control" required="required">
                     {% for opc in cbo_opt.TIPO_PROXIMO_EVTO %}
-                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -494,7 +490,7 @@
                 <label for="medio">Medio:</label>
                 <select class="form-control" name="medio" id="medio" required="required">
                     {% endverbatim %}
-                    {% for opc in cbo_opt.MEDIO_ACTIVIDAD %}
+                    {% for opc in cbo_opt.MEDIO_PATRON_SUST %}
                         <option value="{{ opc.pk }}">{{ opc }}</option>
                     {% endfor %}
                     {% verbatim %}
@@ -525,7 +521,7 @@
                 <label for="medio">Medio:</label>
                 <select class="form-control" name="medio" id="medio" required="required">
                     {% endverbatim %}
-                    {% for opc in cbo_opt.MEDIO_ACTIVIDAD %}
+                    {% for opc in cbo_opt.MEDIO_PATRON_SUST %}
                         <option value="{{ opc.pk }}">{{ opc }}</option>
                     {% endfor %}
                     {% verbatim %}
@@ -637,18 +633,18 @@
     let open_frm_insc_mod_40_detalle_add = raiz => {
         let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-add").html());
         let html = template({raiz});
-        App.openPanel(html, "Captura Datos de Pago por Inscripción a Modalidad 40" );
+        App.openPanel(html, "Captura Datos de Línea de Captura por Inscripción a Modalidad 40" );
     }
-    let open_frm_insc_mod_40_detalle_update = (id_record, fecha_de_pago, cantidad, linea_captura, estatus_de_envio) => {
+    let open_frm_insc_mod_40_detalle_update = (id_record, fecha_de_pago, estatus_de_envio) => {
         let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-upd").html());
-        let html = template({id_record, fecha_de_pago, cantidad, linea_captura});
-        App.openPanel( html, "Actualización de Pago por Inscripción a Modalidad 40");
+        let html = template({id_record, fecha_de_pago});
+        App.openPanel( html, "Actualización de Línea de Captura por Inscripción a Modalidad 40");
         $("#estatus_de_envio").val(estatus_de_envio);
     }
     let open_frm_insc_mod_40_detalle_delete = (id_record) => {
         let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-del").html());
         let html = template({id_record});
-        App.openPanel( html, "Eliminar Registro de Pago por Inscripción a Modalidad 40");
+        App.openPanel( html, "Eliminar Registro de Línea de Captura por Inscripción a Modalidad 40");
     }
     </script>
 
@@ -662,7 +658,7 @@
                 <label for="medio">Medio:</label>
                 <select class="form-control" name="medio" id="medio" required="required">
                     {% endverbatim %}
-                    {% for opc in cbo_opt.MEDIO_ACTIVIDAD %}
+                    {% for opc in cbo_opt.MEDIO_INSC_MOD40 %}
                         <option value="{{ opc.pk }}">{{ opc }}</option>
                     {% endfor %}
                     {% verbatim %}
@@ -693,7 +689,7 @@
                 <label for="medio">Medio:</label>
                 <select class="form-control" name="medio" id="medio" required="required">
                     {% endverbatim %}
-                    {% for opc in cbo_opt.MEDIO_ACTIVIDAD %}
+                    {% for opc in cbo_opt.MEDIO_INSC_MOD40 %}
                         <option value="{{ opc.pk }}">{{ opc }}</option>
                     {% endfor %}
                     {% verbatim %}
@@ -737,25 +733,15 @@
         <input type="hidden" name="raiz" id="raiz" value="{{ raiz }}" />
         <div class="row">
             <div class="col-sm-6 form-group">
-                <label for="fecha_de_pago">Fecha de Pago</label>
+                <label for="fecha_de_pago">Fecha de Línea de Captura</label>
                 <input type="date" class="form-control" id="fecha_de_pago" name="fecha_de_pago" value="" />
-            </div>
-            <div class="col-sm-6 form-group">
-                <label for="cantidad">Cantidad</label>
-                <input type="number" class="form-control" id="cantidad" name="cantidad" value="" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="linea_de_captura">Línea de Captura</label>
-                <input type="text" class="form-control" id="linea_de_captura" name="linea_de_captura" value="" />
             </div>
             <div class="col-sm-6 form-group">
                 <label for="estatus_de_envio">Estatus de Envío</label>
                 <select class="form-control" name="estatus_de_envio" id="estatus_de_envio" required="required">
                     {% endverbatim %}
                     {% for opc in cbo_opt.ESTATUS_ENVIO %}
-                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
                     {% endfor %}
                     {% verbatim %}
                 </select>
@@ -774,25 +760,15 @@
         <input type="hidden" name="id_record" value="{{ id_record }}" />
         <div class="row">
             <div class="col-sm-6 form-group">
-                <label for="fecha_de_pago">Fecha de Pago</label>
+                <label for="fecha_de_pago">Fecha de Línea de Captura</label>
                 <input value="{{ fecha_de_pago }}" type="date" class="form-control" id="fecha_de_pago" name="fecha_de_pago" />
-            </div>
-            <div class="col-sm-6 form-group">
-                <label for="cantidad">Cantidad</label>
-                <input value="{{ cantidad }}" type="number" class="form-control" id="cantidad" name="cantidad" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="linea_de_captura">Línea de Captura</label>
-                <input value="{{ linea_captura }}" type="text" class="form-control" id="linea_de_captura" name="linea_de_captura" />
             </div>
             <div class="col-sm-6 form-group">
                 <label for="estatus_de_envio">Estatus de Envío</label>
                 <select class="form-control" name="estatus_de_envio" id="estatus_de_envio" required="required">
                     {% endverbatim %}
                     {% for opc in cbo_opt.ESTATUS_ENVIO %}
-                        <option value="{{ opc.0 }}">{{ opc.1 }}</option>
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
                     {% endfor %}
                     {% verbatim %}
                 </select>
