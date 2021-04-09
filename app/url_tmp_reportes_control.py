@@ -15,7 +15,7 @@ urlpatterns = [
     path('patron-sustituto/',
          views.vwReporteControlPatronSustituto,
          name="tpm_reporte_patronsustito"),
-    path('inscripción-a-modalidad-40/',
+    path('inscripcion-a-modalidad-40/',
          views.vwReporteControlInscripcionModalidad40,
          name="tpm_reporte_inscmod40"),
 
