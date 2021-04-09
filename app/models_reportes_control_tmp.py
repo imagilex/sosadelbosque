@@ -4,19 +4,60 @@ from datetime import date
 from .models_cliente import Cliente, Usr
 from .models_actividades import MedioActividad, TipoActividad
 
-TIPO_PROXIMO_EVTO_PENSION = 'Pensión'
-TIPO_PROXIMO_EVTO_MOD40 = 'MOD 40'
-TIPO_PROXIMO_EVTO = (
-    (TIPO_PROXIMO_EVTO_PENSION, "Pension"),
-    (TIPO_PROXIMO_EVTO_MOD40, "MOD 40"),
-)
+class TmpProxEvt(models.Model):
+    medio = models.CharField(max_length=50, verbose_name='Tipo de Evento')
 
-ESTATUS_ENVIO_ENVIADO = 'Enviado'
-ESTATUS_ENVIO_PENDIENTE = 'Pendiente'
-ESTATUS_ENVIO = (
-    (ESTATUS_ENVIO_ENVIADO, 'Enviado'),
-    (ESTATUS_ENVIO_PENDIENTE, 'Pendiente'),
-)
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()
+
+
+class TmpEstatusEnvio(models.Model):
+    medio = models.CharField(max_length=50, verbose_name="Estatus de Envío")
+
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()
+
+
+class TmpMedioPatronSustituto(models.Model):
+    medio = models.CharField(max_length=50)
+
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()
+
+
+class TmpMedioInscMod40(models.Model):
+    medio = models.CharField(max_length=50)
+
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()
 
 
 class TmpReporteControlRecepcion(models.Model):
@@ -53,10 +94,10 @@ class TmpReporteControlProximoPensionMod40(models.Model):
         on_delete=models.CASCADE,
         related_name='+')
     fecha_del_evento = models.DateField(default=date.today)
-    tipo = models.CharField(
-        max_length=15,
-        choices=TIPO_PROXIMO_EVTO,
-        default=TIPO_PROXIMO_EVTO_PENSION)
+    tipo = models.ForeignKey(
+        TmpProxEvt, on_delete=models.PROTECT,
+        related_name='+'
+    )
     autor = models.ForeignKey(
         Usr,
         on_delete=models.CASCADE,
@@ -78,7 +119,7 @@ class TmpReporteControlPatronSustituto(models.Model):
         on_delete=models.CASCADE,
         related_name='+')
     medio = models.ForeignKey(
-        MedioActividad,
+        TmpMedioPatronSustituto,
         on_delete=models.PROTECT,
         related_name="+"
     )
@@ -134,7 +175,7 @@ class TmpReporteControlInscritosMod40(models.Model):
         on_delete=models.CASCADE,
         related_name='+')
     medio = models.ForeignKey(
-        MedioActividad,
+        TmpMedioInscMod40,
         on_delete=models.PROTECT,
         related_name="+"
     )
@@ -162,12 +203,10 @@ class TmpReporteControlInscritosMod40Detalle(models.Model):
         related_name='detalle',
     )
     fecha_de_pago = models.DateField(default=date.today)
-    cantidad = models.DecimalField(max_digits=9, decimal_places=2, default=0.0)
-    linea_de_captura = models.CharField(max_length=100)
-    estatus_de_envio = models.CharField(
-        max_length=15,
-        choices=ESTATUS_ENVIO,
-        default=ESTATUS_ENVIO_PENDIENTE)
+    estatus_de_envio = models.ForeignKey(
+        TmpEstatusEnvio, on_delete=models.PROTECT,
+        related_name='+'
+    )
     autor = models.ForeignKey(
         Usr,
         on_delete=models.CASCADE,

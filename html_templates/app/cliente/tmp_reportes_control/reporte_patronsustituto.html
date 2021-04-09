@@ -40,9 +40,37 @@
                     <select name="ftr_medio" id="ftr_medio" class="form-control">
                         <option value=""></option>
                         {% for opt in combo_options.medio %}
-                            <option value="{{ opt.pk0 }}" {% if opt.pk == filters.ftr_medio %}selected="select"{% endif %}>{{ opt }}</option>
+                            <option value="{{ opt.pk }}" {% if opt.pk == filters.ftr_medio %}selected="select"{% endif %}>{{ opt }}</option>
                         {% endfor %}
                     </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_fecha_de_alta_inicio">Fecha de Alta (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_alta_inicio" name="ftr_fecha_de_alta_inicio" value="{{ filters.ftr_fecha_de_alta_inicio }}"/>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_fecha_de_alta_fin">Fecha de Alta (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_alta_fin" name="ftr_fecha_de_alta_fin" value="{{ filters.ftr_fecha_de_alta_fin }}"/>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_fecha_estimada_de_baja_inicio">Fecha Estimada de Baja (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_estimada_de_baja_inicio" name="ftr_fecha_estimada_de_baja_inicio" value="{{ filters.ftr_fecha_estimada_de_baja_inicio}}"/>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_fecha_estimada_de_baja_fin">Fecha Estimada de Baja (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_estimada_de_baja_fin" name="ftr_fecha_estimada_de_baja_fin" value="{{ filters.ftr_fecha_estimada_de_baja_fin}}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label for="ftr_fecha_de_pago_inicio">Fecha de Último Pago (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_pago_inicio" name="ftr_fecha_de_pago_inicio" value="{{ filters.ftr_fecha_de_pago_inicio}}"/>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <label for="ftr_fecha_de_pago_fin">Fecha de Último Pago (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_pago_fin" name="ftr_fecha_de_pago_fin" value="{{ filters.ftr_fecha_de_pago_fin}}"/>
                 </div>
             </div>
             <button type="submit" class="btn btn-outline-primary" id="btn-save" >Procesar</button>
@@ -139,16 +167,12 @@
                 <td data-rawsortvalue="{{ reg.fecha_estimada_de_baja|date:'Ymd' }}" class="text-right">
                     {{ reg.fecha_estimada_de_baja|date:'d/m/Y' }}
                 </td>
-                {% for d in reg.detalle.all %}
-                    {% if d.isMaxDate %}
-                    <td data-rawsortvalue="{{ d.fecha_de_pago|date:'Ymd' }}" class="text-right">
-                        {{ d.fecha_de_pago|date:'d/m/Y' }}
-                    </td>
-                    <td data-rawsortvalue="{{ d.cantidad }}" class="text-right">
-                        $ {{ d.cantidad|money2display }}
-                    </td>
-                    {% endif %}
-                {% endfor %}
+                <td data-rawsortvalue="{{ reg.fecha_de_pago|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_pago|date:'d/m/Y' }}
+                </td>
+                <td data-rawsortvalue="{{ reg.cantidad }}" class="text-right">
+                    $ {{ reg.cantidad|money2display }}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
