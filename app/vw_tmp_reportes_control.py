@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from datetime import datetime
+from datetime import datetime, date
 
 from routines.mkitsafe import valida_acceso
 from routines.utils import requires_jquery_ui
@@ -486,3 +486,45 @@ def vwReporteControlInscripcionModalidad40(request):
             },
         }
     )
+
+@valida_acceso(['cliente.clientes_cliente'])
+def vwGenerarLCInscMod40(request):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if "GET" == request.method:
+        data = TmpReporteControlInscritosMod40.objects.filter(
+            fecha_de_alta__lte=date.today(),
+            fecha_estimada_de_baja__gte=date.today(),
+            cliente__tipo__nombre__icontains="Mod 40 Inscr"
+        )
+        return render(
+            request,
+            'app/cliente/tmp_reportes_control/gen_lc_inscrmod40.html',
+            {
+                'menu_main': usuario.main_menu_struct(),
+                'titulo':
+                    'Generador de Líneas de Captura de Inscritos a Modalidad 40',
+                'req_ui': requires_jquery_ui(request),
+                'regs': data,
+                'hoy': date.today(),
+            })
+    elif "POST" == request.method:
+        regs = request.POST.getlist("reg_pk", [])
+        data = []
+        for reg in regs:
+            data.append(TmpReporteControlInscritosMod40Detalle.objects.create(
+                raiz=TmpReporteControlInscritosMod40.objects.get(pk=int(reg)),
+                fecha_de_pago=date.today(),
+                estatus_de_envio=TmpEstatusEnvio.objects.get(
+                    medio__icontains='pend'),
+                autor=usuario
+            ))
+        return render(
+            request,
+            'app/cliente/tmp_reportes_control/gen_lc_inscrmod40_resultado.html',
+            {
+                'menu_main': usuario.main_menu_struct(),
+                'titulo':
+                    'Generador de Líneas de Captura de Inscritos a Modalidad 40',
+                'req_ui': requires_jquery_ui(request),
+                'regs': data,
+            })
