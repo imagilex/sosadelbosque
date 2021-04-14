@@ -19,6 +19,10 @@ urlpatterns = [
          views.vwReporteControlInscripcionModalidad40,
          name="tpm_reporte_inscmod40"),
 
+    path('lc-insc-mod40/',
+         views.vwGenerarLCInscMod40,
+         name="tmp_generar_lc_insc_mod40"),
+
     path('medio-inscripcion-modalidad-40/', include('app.url_tmp_medio_insc_mod_40')),
     path('estatus-de-envio/', include('app.url_tmp_estatus_envio')),
     path('medio-patron-sustituto/', include('app.url_tmp_medio_patron_sustituto')),
