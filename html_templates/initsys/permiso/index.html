@@ -13,10 +13,10 @@
             <th class="text-right" colspan="3"></th>
         </tr>
     </thead>
-    <tbody id="data-tbl">
+    <tbody id="data-tbl" class="small">
         {% for reg in data %}
-            <tr class="{% if reg.vista %}bg-primary{% endif %}">
-                <td>{{ reg.depth_name | safe }}</td>
+            <tr class="{% if reg.vista %}table-primary{% endif %}">
+                <td>{{ reg.depth_name | safe }} ({{ reg.posicion }})</td>
                 <td>{% if reg.vista %}{{ reg.vista }}{% endif %}</td>
                 <td>{{ reg.codename }}</td>
                 <td>{% language 'en' %}{{ reg.content_type }}{% endlanguage %}</td>

@@ -313,3 +313,44 @@ class TmpReportTramitesYCorrecciones(models.Model):
     def __unicode__(self):
         return self.__str__()
 
+
+class TmpMedioPensPso(models.Model):
+    medio = models.CharField(max_length=50)
+
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()
+
+
+class TmpMedioTramCorr(models.Model):
+    medio = models.CharField(max_length=50)
+
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()
+
+
+class TmpTipoTramCorr(models.Model):
+    medio = models.CharField(max_length=50, verbose_name="Tipo de Tramite")
+
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()
