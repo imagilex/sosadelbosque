@@ -27,5 +27,9 @@ urlpatterns = [
     path('estatus-de-envio/', include('app.url_tmp_estatus_envio')),
     path('medio-patron-sustituto/', include('app.url_tmp_medio_patron_sustituto')),
     path('proximo-evento/', include('app.url_tmp_prox_evt')),
+
+    path('medio-pensiones-proceso/', include('app.url_tmp_medio_pensiones_proceso')),
+    path('medio-tamites-correciones/', include('app.url_tmp_medio_tramites_correcciones')),
+    path('tipo-tamites-correcciones/', include('app.url_tmp_tipo_tramites_correcciones')),
     ]
 

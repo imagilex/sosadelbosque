@@ -2,12 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/gen_lc_inscrmod40.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/gen_lc_inscrmod40_resultado.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0064_tmpmediopenspso_tmpmediotramcorr_tmptipotramcorr.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/url_tmp_medio_pensiones_proceso.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/url_tmp_medio_tramites_correcciones.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/url_tmp_tipo_tramites_correcciones.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_medio_pensiones_proceso.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_medio_tramites_correcciones.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_tipo_tramites_correcciones.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_medio_pens_pso.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_medio_tram_corr.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_tipo_tram_corr.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms_tmp_rep_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms_tmp_rep_control.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models_reportes_control_tmp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_reportes_control_tmp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/url_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/url_tmp_reportes_control.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_inscrmod40.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_inscrmod40.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html_templates/initsys/permiso/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/initsys/permiso/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +44,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -44,6 +54,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control" />
     </key>
   </component>
@@ -94,7 +105,9 @@
       <workItem from="1617899004652" duration="13171000" />
       <workItem from="1617980818799" duration="4457000" />
       <workItem from="1618005045744" duration="21000" />
-      <workItem from="1618349447424" duration="5137000" />
+      <workItem from="1618349447424" duration="5573000" />
+      <workItem from="1618417519394" duration="6676000" />
+      <workItem from="1618530620483" duration="75000" />
     </task>
     <servers />
   </component>
