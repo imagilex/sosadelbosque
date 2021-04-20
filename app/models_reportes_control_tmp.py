@@ -2,7 +2,7 @@ from django.db import models
 from datetime import date
 
 from .models_cliente import Cliente, Usr
-from .models_actividades import MedioActividad, TipoActividad
+
 
 class TmpProxEvt(models.Model):
     medio = models.CharField(max_length=50, verbose_name='Tipo de Evento')
@@ -234,7 +234,7 @@ class TmpReportPensionesEnProceso(models.Model):
         on_delete=models.CASCADE,
         related_name='+')
     medio = models.ForeignKey(
-        MedioActividad,
+        "TmpMedioPensPso",
         on_delete=models.PROTECT,
         related_name="+"
     )
@@ -246,35 +246,17 @@ class TmpReportPensionesEnProceso(models.Model):
         on_delete=models.CASCADE,
         related_name='+')
 
+    prorroga_o_incorformidad = models.BooleanField(default=False)
+    fecha_de_envio_p = models.DateField(default=date.today)
+    fecha_de_correccion = models.DateField(default=date.today)
+
+    concluido = models.BooleanField(default=False)
+
     class Meta:
         ordering = ["fecha_de_envio"]
 
     def __str__(self):
         return f"{self.fecha_de_envio:%d/%m/%Y}"
-
-    def __unicode__(self):
-        return self.__str__()
-
-
-class TmpReportPensionesEnProcesoDetalle(models.Model):
-    raiz = models.ForeignKey(
-        'TmpReportPensionesEnProceso',
-        on_delete=models.CASCADE,
-        related_name='detalle',
-    )
-    prorroga_o_incorformidad = models.CharField(max_length=250)
-    fecha_de_envio = models.DateField(default=date.today)
-    fecha_de_correccion = models.DateField(default=date.today)
-    autor = models.ForeignKey(
-        Usr,
-        on_delete=models.CASCADE,
-        related_name='+')
-
-    class Meta:
-        ordering = ["fecha_de_envio"]
-
-    def __str__(self):
-        return f"{self.prorroga_o_incorformidad}"
 
     def __unicode__(self):
         return self.__str__()
@@ -286,12 +268,12 @@ class TmpReportTramitesYCorrecciones(models.Model):
         on_delete=models.CASCADE,
         related_name='+')
     tipo_de_tramite = models.ForeignKey(
-        TipoActividad,
+        "TmpTipoTramCorr",
         on_delete=models.PROTECT,
         related_name="+"
     )
     medio = models.ForeignKey(
-        MedioActividad,
+        "TmpMedioTramCorr",
         on_delete=models.PROTECT,
         related_name="+"
     )
@@ -354,3 +336,16 @@ class TmpTipoTramCorr(models.Model):
 
     def __unicode__(self):
         return self.__str__()
+
+
+class ItemEstatusDeTramite():
+    def __init__(self, pk=0, estatus=""):
+        self.pk = pk
+        self.estatus = estatus
+    def __str__(self):
+        return self.estatus
+
+EstatusDeTramite = [
+    ItemEstatusDeTramite(1, "Concluido"),
+    ItemEstatusDeTramite(2, "En Prorroga o Incorformidad"),
+]

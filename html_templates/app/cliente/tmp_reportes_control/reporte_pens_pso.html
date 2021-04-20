@@ -47,30 +47,39 @@
             </div>
             <div class="row">
                 <div class="col-sm-3 form-group">
-                    <label for="ftr_fecha_de_alta_inicio">Fecha de Alta (incio)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_de_alta_inicio" name="ftr_fecha_de_alta_inicio" value="{{ filters.ftr_fecha_de_alta_inicio }}"/>
+                    <label for="ftr_fecha_de_envio_inicio">Fecha de Envío (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_envio_inicio" name="ftr_fecha_de_envio_inicio" value="{{ filters.ftr_fecha_de_envio_inicio }}"/>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <label for="ftr_fecha_de_alta_fin">Fecha de Alta (fin)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_de_alta_fin" name="ftr_fecha_de_alta_fin" value="{{ filters.ftr_fecha_de_alta_fin }}"/>
+                    <label for="ftr_fecha_de_envio_fin">Fecha de Envío (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_envio_fin" name="ftr_fecha_de_envio_fin" value="{{ filters.ftr_fecha_de_envio_fin }}"/>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <label for="ftr_fecha_estimada_de_baja_inicio">Fecha Estimada de Baja (incio)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_estimada_de_baja_inicio" name="ftr_fecha_estimada_de_baja_inicio" value="{{ filters.ftr_fecha_estimada_de_baja_inicio}}"/>
+                    <label for="ftr_fecha_de_pago_inicial_inicio">Fecha de Pago Inicial (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_pago_inicial_inicio" name="ftr_fecha_de_pago_inicial_inicio" value="{{ filters.ftr_fecha_de_pago_inicial_inicio}}"/>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <label for="ftr_fecha_estimada_de_baja_fin">Fecha Estimada de Baja (fin)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_estimada_de_baja_fin" name="ftr_fecha_estimada_de_baja_fin" value="{{ filters.ftr_fecha_estimada_de_baja_fin}}"/>
+                    <label for="ftr_fecha_de_pago_inicial_fin">Fecha de Pago Inicial (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_pago_inicial_fin" name="ftr_fecha_de_pago_inicial_fin" value="{{ filters.ftr_fecha_de_pago_inicial_fin}}"/>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6 form-group">
-                    <label for="ftr_fecha_de_pago_inicio">Fecha de Último Pago (incio)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_de_pago_inicio" name="ftr_fecha_de_pago_inicio" value="{{ filters.ftr_fecha_de_pago_inicio}}"/>
+                <div class="col-sm-4 form-group">
+                    <label for="ftr_fecha_de_retiro_total_inicio">Fecha de Retiro Total (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_retiro_total_inicio" name="ftr_fecha_de_retiro_total_inicio" value="{{ filters.ftr_fecha_de_retiro_total_inicio}}"/>
                 </div>
-                <div class="col-sm-6 form-group">
-                    <label for="ftr_fecha_de_pago_fin">Fecha de Último Pago (fin)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_de_pago_fin" name="ftr_fecha_de_pago_fin" value="{{ filters.ftr_fecha_de_pago_fin}}"/>
+                <div class="col-sm-4 form-group">
+                    <label for="ftr_fecha_de_retiro_total_fin">Fecha de Retiro Total (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_retiro_total_fin" name="ftr_fecha_de_retiro_total_fin" value="{{ filters.ftr_fecha_de_retiro_total_fin}}"/>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label for="ftr_estatus">Estatus</label>
+                    <select name="ftr_estatus" id="ftr_estatus" class="form-control">
+                        <option value=""></option>
+                        {% for opt in combo_options.estatus %}
+                            <option value="{{ opt.pk }}" {% if opt.pk == filters.ftr_estatus %}selected="select"{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <button type="submit" class="btn btn-outline-primary" id="btn-save" >Procesar</button>
@@ -99,27 +108,47 @@
                 <th onclick="App.sortDataGridReport(3, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Medio
+                    Gestor
                 </th>
-                <th onclick="App.sortDataGridReport(4, 'number')" style="cursor: pointer;">
+                <th onclick="App.sortDataGridReport(4, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha de Alta
+                    Medio
                 </th>
                 <th onclick="App.sortDataGridReport(5, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha Estimada de Baja
+                    Fecha de Envío
                 </th>
                 <th onclick="App.sortDataGridReport(6, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Ultimo Pago
+                    Fecha de Pago Inicial
                 </th>
                 <th onclick="App.sortDataGridReport(7, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Cantidad
+                    Fecha de Retiro Total
+                </th>
+                <th onclick="App.sortDataGridReport(8, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Prorroga o Inconformidad
+                </th>
+                <th onclick="App.sortDataGridReport(9, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Fecha de Envío
+                </th>
+                <th onclick="App.sortDataGridReport(10, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Fecha de Corrección
+                </th>
+                <th onclick="App.sortDataGridReport(11, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Concluido
                 </th>
             </tr>
         </thead>
@@ -128,11 +157,15 @@
                 <th>Cliente</th>
                 <th>Tipo de Expediente</th>
                 <th>Ejecutivo</th>
+                <th>Gestor</th>
                 <th>Medio</th>
-                <th>Fecha de Alta</th>
-                <th>Fecha Estimada de Baja</th>
-                <th>Ultimo Pago</th>
-                <th>Cantidad</th>
+                <th>Fecha de Envío</th>
+                <th>Fecha de Pago Inicial</th>
+                <th>Fecha de Retiro Total</th>
+                <th>Prorroga o Inconformidad</th>
+                <th>Fecha de Envío</th>
+                <th>Fecha de Corrección</th>
+                <th>Concluido</th>
             </tr>
         </tfoot>
         <tbody id="data-tbl">
@@ -149,20 +182,32 @@
                 <td data-rawsortvalue="{{ reg.cliente.responsable|lower }}">
                     {% if reg.cliente.responsable %}{{ reg.cliente.responsable }}{% endif %}
                 </td>
+                <td data-rawsortvalue="{{ reg.cliente.gestor|lower }}">
+                    {% if reg.cliente.gestor %}{{ reg.cliente.gestor }}{% endif %}
+                </td>
                 <td data-rawsortvalue="{{ reg.medio|lower }}">
                     {{ reg.medio }}
                 </td>
-                <td data-rawsortvalue="{{ reg.fecha_de_alta|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_de_alta|date:'d/m/Y' }}
+                <td data-rawsortvalue="{{ reg.fecha_de_envio|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_envio|date:'d/m/Y' }}
                 </td>
-                <td data-rawsortvalue="{{ reg.fecha_estimada_de_baja|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_estimada_de_baja|date:'d/m/Y' }}
+                <td data-rawsortvalue="{{ reg.fecha_de_pago_inicial|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_pago_inicial|date:'d/m/Y' }}
                 </td>
-                <td data-rawsortvalue="{{ reg.fecha_de_pago|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_de_pago|date:'d/m/Y' }}
+                <td data-rawsortvalue="{{ reg.fecha_de_retiro_total|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_retiro_total|date:'d/m/Y' }}
                 </td>
-                <td data-rawsortvalue="{{ reg.cantidad }}" class="text-right">
-                    $ {{ reg.cantidad|money2display }}
+                <td data-rawsortvalue="{% if reg.prorroga_o_incorformidad %}0{% else %}1{% endif %}" class="text-right">
+                    {% if reg.prorroga_o_incorformidad %}Sí{% else %}No{% endif %}
+                </td>
+                <td data-rawsortvalue="{{ reg.fecha_de_envio_p|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_envio_p|date:'d/m/Y' }}
+                </td>
+                <td data-rawsortvalue="{{ reg.fecha_de_correccion|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_correccion|date:'d/m/Y' }}
+                </td>
+                <td data-rawsortvalue="{% if reg.concluido %}0{% else %}1{% endif %}" class="text-right">
+                    {% if reg.concluido %}Sí{% else %}No{% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -171,4 +216,5 @@
     {% endif %}
 
 {% endblock %}
+
 

@@ -103,12 +103,12 @@
                 <th onclick="App.sortDataGridReport(2, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Ejecutivo
+                    Datos
                 </th>
                 <th onclick="App.sortDataGridReport(3, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Gestor
+                    Ejecutivo
                 </th>
                 <th onclick="App.sortDataGridReport(4, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
@@ -118,19 +118,14 @@
                 <th onclick="App.sortDataGridReport(5, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha de Alta
+                    Fecha Estimada de Baja
                 </th>
                 <th onclick="App.sortDataGridReport(6, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha Estimada de Baja
-                </th>
-                <th onclick="App.sortDataGridReport(7, 'number')" style="cursor: pointer;">
-                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
-                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
                     Última LC
                 </th>
-                <th onclick="App.sortDataGridReport(10, 'str')" style="cursor: pointer;">
+                <th onclick="App.sortDataGridReport(7, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
                     Estatus
@@ -141,10 +136,9 @@
             <tr>
                 <th>Cliente</th>
                 <th>Tipo de Expediente</th>
+                <th>Datos</th>
                 <th>Ejecutivo</th>
-                <th>Gestor</th>
                 <th>Medio</th>
-                <th>Fecha de Alta</th>
                 <th>Fecha Estimada de Baja</th>
                 <th>Ultimo Pago</th>
                 <th>Estatus</th>
@@ -161,17 +155,22 @@
                 <td data-rawsortvalue="{{ reg.cliente.tipo|lower }}">
                     {{ reg.cliente.tipo }}
                 </td>
+                <td data-rawsortvalue="{{ reg.cliente.email|lower }}---{{ reg.cliente.CURP|lower }}---{{ reg.cliente.celular}}">
+                    <a href="mailto:{{ reg.cliente.email }}" target="_blank">
+                        {{ reg.cliente.email }}
+                    </a>
+                    <br />
+                    {{ reg.cliente.CURP }}
+                    <br />
+                    <a href="https://api.whatsapp.com/send?phone=52{{ reg.cliente.celular}}" target="_blank">
+                        {{ reg.cliente.celular}}
+                    </a>
+                </td>
                 <td data-rawsortvalue="{{ reg.cliente.responsable|lower }}">
                     {% if reg.cliente.responsable %}{{ reg.cliente.responsable }}{% endif %}
                 </td>
-                <td data-rawsortvalue="{{ reg.cliente.gestor|lower }}">
-                    {% if reg.cliente.gestor %}{{ reg.cliente.gestor }}{% endif %}
-                </td>
                 <td data-rawsortvalue="{{ reg.medio|lower }}">
                     {{ reg.medio }}
-                </td>
-                <td data-rawsortvalue="{{ reg.fecha_de_alta|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_de_alta|date:'d/m/Y' }}
                 </td>
                 <td data-rawsortvalue="{{ reg.fecha_estimada_de_baja|date:'Ymd' }}" class="text-right">
                     {{ reg.fecha_estimada_de_baja|date:'d/m/Y' }}

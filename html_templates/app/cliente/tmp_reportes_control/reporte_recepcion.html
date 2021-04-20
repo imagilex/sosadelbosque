@@ -67,12 +67,7 @@
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
                     Ejecutivo
                 </th>
-                <th onclick="App.sortDataGridReport(3, 'str')" style="cursor: pointer;">
-                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
-                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Gestor
-                </th>
-                <th onclick="App.sortDataGridReport(4, 'number')" style="cursor: pointer;">
+                <th onclick="App.sortDataGridReport(3, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
                     Fecha de Último Contacto
@@ -85,7 +80,6 @@
                 <th>Cliente</th>
                 <th>Tipo de Expediente</th>
                 <th>Ejecutivo</th>
-                <th>Gestor</th>
                 <th>Fecha de Último Contacto</th>
                 <th>Nota</th>
             </tr>
@@ -103,9 +97,6 @@
                 </td>
                 <td data-rawsortvalue="{{ reg.cliente.responsable|lower }}">
                     {% if reg.cliente.responsable %}{{ reg.cliente.responsable }}{% endif %}
-                </td>
-                <td data-rawsortvalue="{{ reg.cliente.gestor|lower }}">
-                    {% if reg.cliente.gestor %}{{ reg.cliente.gestor }}{% endif %}
                 </td>
                 <td data-rawsortvalue="{{ reg.fecha_de_ultimo_contacto|date:'Ymd' }}">
                     {{ reg.fecha_de_ultimo_contacto|date:'d/m/Y' }}

@@ -1,6 +1,7 @@
 {% extends "global/html_struct.html" %}
 {% load i18n %}
 {% load util_filters %}
+{% load humanize %}
 
 {% block content %}
 
@@ -47,30 +48,39 @@
             </div>
             <div class="row">
                 <div class="col-sm-3 form-group">
-                    <label for="ftr_fecha_de_alta_inicio">Fecha de Alta (incio)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_de_alta_inicio" name="ftr_fecha_de_alta_inicio" value="{{ filters.ftr_fecha_de_alta_inicio }}"/>
+                    <label for="ftr_fecha_de_envio_inicio">Fecha de Envío (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_envio_inicio" name="ftr_fecha_de_envio_inicio" value="{{ filters.ftr_fecha_de_envio_inicio }}"/>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <label for="ftr_fecha_de_alta_fin">Fecha de Alta (fin)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_de_alta_fin" name="ftr_fecha_de_alta_fin" value="{{ filters.ftr_fecha_de_alta_fin }}"/>
+                    <label for="ftr_fecha_de_envio_fin">Fecha de Envío (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_envio_fin" name="ftr_fecha_de_envio_fin" value="{{ filters.ftr_fecha_de_envio_fin }}"/>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <label for="ftr_fecha_estimada_de_baja_inicio">Fecha Estimada de Baja (incio)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_estimada_de_baja_inicio" name="ftr_fecha_estimada_de_baja_inicio" value="{{ filters.ftr_fecha_estimada_de_baja_inicio}}"/>
+                    <label for="ftr_fecha_de_conclusion_inicio">Fecha de Conclusión (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_conclusion_inicio" name="ftr_fecha_de_conclusion_inicio" value="{{ filters.ftr_fecha_de_conclusion_inicio}}"/>
                 </div>
                 <div class="col-sm-3 form-group">
-                    <label for="ftr_fecha_estimada_de_baja_fin">Fecha Estimada de Baja (fin)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_estimada_de_baja_fin" name="ftr_fecha_estimada_de_baja_fin" value="{{ filters.ftr_fecha_estimada_de_baja_fin}}"/>
+                    <label for="ftr_fecha_de_conclusion_fin">Fecha de Conclusión (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_conclusion_fin" name="ftr_fecha_de_conclusion_fin" value="{{ filters.ftr_fecha_de_conclusion_fin}}"/>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6 form-group">
-                    <label for="ftr_fecha_de_pago_inicio">Fecha de Último Pago (incio)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_de_pago_inicio" name="ftr_fecha_de_pago_inicio" value="{{ filters.ftr_fecha_de_pago_inicio}}"/>
+                <div class="col-sm-4 form-group">
+                    <label for="ftr_fecha_de_liquidacion_inicio">Fecha de Liquidación (incio)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_liquidacion_inicio" name="ftr_fecha_de_liquidacion_inicio" value="{{ filters.ftr_fecha_de_liquidacion_inicio}}"/>
                 </div>
-                <div class="col-sm-6 form-group">
-                    <label for="ftr_fecha_de_pago_fin">Fecha de Último Pago (fin)</label>
-                    <input type="date" class="form-control" id="ftr_fecha_de_pago_fin" name="ftr_fecha_de_pago_fin" value="{{ filters.ftr_fecha_de_pago_fin}}"/>
+                <div class="col-sm-4 form-group">
+                    <label for="ftr_fecha_de_liquidacion_fin">Fecha de Liquidación (fin)</label>
+                    <input type="date" class="form-control" id="ftr_fecha_de_liquidacion_fin" name="ftr_fecha_de_liquidacion_fin" value="{{ filters.ftr_fecha_de_liquidacion_fin}}"/>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <label for="ftr_tipo_de_tramite">Tipo de Trámite</label>
+                    <select name="ftr_tipo_de_tramite" id="ftr_tipo_de_tramite" class="form-control">
+                        <option value=""></option>
+                        {% for opt in combo_options.tipo_tram %}
+                            <option value="{{ opt.pk }}" {% if opt.pk == filters.ftr_tipo_de_tramite %}selected="select"{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <button type="submit" class="btn btn-outline-primary" id="btn-save" >Procesar</button>
@@ -99,27 +109,37 @@
                 <th onclick="App.sortDataGridReport(3, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Gestor
+                </th>
+                <th onclick="App.sortDataGridReport(4, 'str')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
                     Medio
                 </th>
-                <th onclick="App.sortDataGridReport(4, 'number')" style="cursor: pointer;">
+                <th onclick="App.sortDataGridReport(5, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha de Alta
-                </th>
-                <th onclick="App.sortDataGridReport(5, 'number')" style="cursor: pointer;">
-                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
-                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha Estimada de Baja
+                    Tipo de Trámite
                 </th>
                 <th onclick="App.sortDataGridReport(6, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Ultimo Pago
+                    Fecha de Envío
                 </th>
                 <th onclick="App.sortDataGridReport(7, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Cantidad
+                    Fecha de Conclusión
+                </th>
+                <th onclick="App.sortDataGridReport(8, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Costo
+                </th>
+                <th onclick="App.sortDataGridReport(9, 'number')" style="cursor: pointer;">
+                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
+                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
+                    Fecha de Liquidación
                 </th>
             </tr>
         </thead>
@@ -128,11 +148,13 @@
                 <th>Cliente</th>
                 <th>Tipo de Expediente</th>
                 <th>Ejecutivo</th>
+                <th>Gestor</th>
                 <th>Medio</th>
-                <th>Fecha de Alta</th>
-                <th>Fecha Estimada de Baja</th>
-                <th>Ultimo Pago</th>
-                <th>Cantidad</th>
+                <th>Tipo de Trámite</th>
+                <th>Fecha de Envío</th>
+                <th>Fecha de Conclusión</th>
+                <th>Costo</th>
+                <th>Fecha de Liquidación</th>
             </tr>
         </tfoot>
         <tbody id="data-tbl">
@@ -149,20 +171,26 @@
                 <td data-rawsortvalue="{{ reg.cliente.responsable|lower }}">
                     {% if reg.cliente.responsable %}{{ reg.cliente.responsable }}{% endif %}
                 </td>
+                <td data-rawsortvalue="{{ reg.cliente.gestor|lower }}">
+                    {% if reg.cliente.gestor %}{{ reg.cliente.gestor }}{% endif %}
+                </td>
                 <td data-rawsortvalue="{{ reg.medio|lower }}">
                     {{ reg.medio }}
                 </td>
-                <td data-rawsortvalue="{{ reg.fecha_de_alta|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_de_alta|date:'d/m/Y' }}
+                <td data-rawsortvalue="{{ reg.tipo_de_tramite|lower }}">
+                    {{ reg.tipo_de_tramite }}
                 </td>
-                <td data-rawsortvalue="{{ reg.fecha_estimada_de_baja|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_estimada_de_baja|date:'d/m/Y' }}
+                <td data-rawsortvalue="{{ reg.fecha_de_envio|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_envio|date:'d/m/Y' }}
                 </td>
-                <td data-rawsortvalue="{{ reg.fecha_de_pago|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_de_pago|date:'d/m/Y' }}
+                <td data-rawsortvalue="{{ reg.fecha_de_conclusion|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_conclusion|date:'d/m/Y' }}
                 </td>
-                <td data-rawsortvalue="{{ reg.cantidad }}" class="text-right">
-                    $ {{ reg.cantidad|money2display }}
+                <td data-rawsortvalue="{{ reg.costo }}" class="text-right">
+                    {{ reg.costo|floatformat:2|intcomma }}
+                </td>
+                <td data-rawsortvalue="{{ reg.fecha_de_liquidacion|date:'Ymd' }}" class="text-right">
+                    {{ reg.fecha_de_liquidacion|date:'d/m/Y' }}
                 </td>
             </tr>
             {% endfor %}
@@ -171,4 +199,5 @@
     {% endif %}
 
 {% endblock %}
+
 
