@@ -10,7 +10,10 @@ from .models import (
     TmpReporteControlRecepcion, TmpReporteControlProximoPensionMod40,
     TmpReporteControlPatronSustituto, TmpReporteControlPatronSustitutoDetalle,
     TmpReporteControlInscritosMod40, TmpReporteControlInscritosMod40Detalle,
-    TmpProxEvt, TmpEstatusEnvio, TmpMedioInscMod40, TmpMedioPatronSustituto
+    TmpProxEvt, TmpEstatusEnvio, TmpMedioInscMod40, TmpMedioPatronSustituto,
+    TmpMedioPensPso, TmpMedioTramCorr, TmpTipoTramCorr,
+    TmpReportPensionesEnProceso, TmpReportTramitesYCorrecciones,
+    EstatusDeTramite
     )
 from .models import Usr, Cliente, TaxonomiaExpediente, UsrResponsables
 
@@ -124,6 +127,58 @@ def admin(request, pk_cte):
         elif "delete-insc-mod-40-detalle" == action:
             TmpReporteControlInscritosMod40Detalle.objects.get(
                 pk=request.POST.get('id_record')).delete()
+        elif "add-pens-pso" == action:
+            TmpReportPensionesEnProceso.objects.create(
+                medio=TmpMedioPensPso.objects.get(pk=request.POST.get('medio')),
+                fecha_de_envio=request.POST.get('fecha_de_envio'),
+                fecha_de_pago_inicial=request.POST.get('fecha_de_pago_inicial'),
+                fecha_de_retiro_total=request.POST.get('fecha_de_retiro_total'),
+                fecha_de_envio_p=request.POST.get('fecha_de_envio_p'),
+                fecha_de_correccion=request.POST.get('fecha_de_correccion'),
+                prorroga_o_incorformidad= request.POST.get('prorroga_o_incorformidad')=="yes",
+                concluido= request.POST.get('concluido')=="yes",
+                cliente=cte,
+                autor=usuario
+            )
+        elif "update-pens-pso" == action:
+            reg = TmpReportPensionesEnProceso.objects.get(
+                pk=request.POST.get('id_record'))
+            reg.medio = TmpMedioPensPso.objects.get(pk=request.POST.get('medio'))
+            reg.fecha_de_envio = request.POST.get('fecha_de_envio')
+            reg.fecha_de_pago_inicial = request.POST.get('fecha_de_pago_inicial')
+            reg.fecha_de_retiro_total = request.POST.get('fecha_de_retiro_total')
+            reg.fecha_de_envio_p = request.POST.get('fecha_de_envio_p')
+            reg.fecha_de_correccion = request.POST.get('fecha_de_correccion')
+            reg.prorroga_o_incorformidad = request.POST.get('prorroga_o_incorformidad') == "yes"
+            reg.concluido = request.POST.get('concluido') == "yes"
+            reg.save()
+        elif "delete-pens-pso" == action:
+            TmpReportPensionesEnProceso.objects.get(
+                pk=request.POST.get('id_record')).delete()
+        elif "add-tram-corr" == action:
+            TmpReportTramitesYCorrecciones.objects.create(
+                medio=TmpMedioTramCorr.objects.get(pk=request.POST.get('medio')),
+                tipo_de_tramite=TmpTipoTramCorr.objects.get(pk=request.POST.get('tipo_de_tramite')),
+                fecha_de_envio=request.POST.get('fecha_de_envio'),
+                fecha_de_conclusion=request.POST.get('fecha_de_conclusion'),
+                costo=request.POST.get('costo'),
+                fecha_de_liquidacion=request.POST.get('fecha_de_liquidacion'),
+                cliente=cte,
+                autor=usuario
+            )
+        elif "update-tram-corr" == action:
+            reg = TmpReportTramitesYCorrecciones.objects.get(
+                pk=request.POST.get('id_record'))
+            reg.medio = TmpMedioTramCorr.objects.get(pk=request.POST.get('medio'))
+            reg.tipo_de_tramite = TmpTipoTramCorr.objects.get(pk=request.POST.get('tipo_de_tramite'))
+            reg.fecha_de_envio = request.POST.get('fecha_de_envio')
+            reg.fecha_de_conclusion = request.POST.get('fecha_de_conclusion')
+            reg.costo = request.POST.get('costo')
+            reg.fecha_de_liquidacion = request.POST.get('fecha_de_liquidacion')
+            reg.save()
+        elif "delete-tram-corr" == action:
+            TmpReportTramitesYCorrecciones.objects.get(
+                pk=request.POST.get('id_record')).delete()
     return render(
         request,
         'app/cliente/tmp_reportes_control/admin.html', {
@@ -141,31 +196,56 @@ def admin(request, pk_cte):
                     cliente=cte)),
             'data_insc_mod40': list(
                 TmpReporteControlInscritosMod40.objects.filter(cliente=cte)),
+            'data_pens_pso': list(
+                TmpReportPensionesEnProceso.objects.filter(cliente=cte)),
+            'data_tram_corr': list(
+                TmpReportTramitesYCorrecciones.objects.filter(cliente=cte)),
             'cbo_opt': {
                 'TIPO_PROXIMO_EVTO': list(TmpProxEvt.objects.all()),
                 'MEDIO_INSC_MOD40': list(TmpMedioInscMod40.objects.all()),
                 'MEDIO_PATRON_SUST': list(TmpMedioPatronSustituto.objects.all()),
                 'ESTATUS_ENVIO': list(TmpEstatusEnvio.objects.all()),
+                'MEDIO_PENS_PSO': list(TmpMedioPensPso.objects.all()),
+                'MEDIO_TRAM_CORR': list(TmpMedioTramCorr.objects.all()),
+                'TIPO_TRAM_CORR': list(TmpTipoTramCorr.objects.all()),
             },
             })
+
+
+class POSTParam():
+    request = None
+    def __init__(self, req):
+        self.request = req
+    def AsInt(self, var, req=None) -> int:
+        if req:
+            self.request = req
+        return int("0" + self.request.POST.get(var, ''))
+    def AsDate(self, var, req=None) -> date:
+        value = None
+        if req:
+            self.request = req
+        if self.request.POST.get(var, None):
+            value = datetime.strptime(
+                self.request.POST.get(var),"%Y-%m-%d").date()
+        return value
+    def Date2Str(self, value) -> str:
+        if value is None:
+            return ""
+        return value.strftime("%Y-%m-%d")
+
 
 @valida_acceso(['cliente.clientes_cliente'])
 def vwReporteControlRecepcion(request):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     data = []
-    ftr_tipo_expediente = int("0" + request.POST.get('ftr_tipo_expediente', ''))
-    ftr_ejecutivo = int("0" + request.POST.get('ftr_ejecutivo', ''))
-    ftr_gestor = int("0" + request.POST.get('ftr_gestor', ''))
-    ftr_fecha_ultimo_contacto_inicio = None
-    if request.POST.get('ftr_fecha_ultimo_contacto_inicio', None):
-        ftr_fecha_ultimo_contacto_inicio = datetime.strptime(
-            request.POST.get('ftr_fecha_ultimo_contacto_inicio'),
-            "%Y-%m-%d").date()
-    ftr_fecha_ultimo_contacto_fin = None
-    if request.POST.get('ftr_fecha_ultimo_contacto_fin', None):
-        ftr_fecha_ultimo_contacto_fin = datetime.strptime(
-            request.POST.get('ftr_fecha_ultimo_contacto_fin'),
-            "%Y-%m-%d").date()
+    reader = POSTParam(request)
+    ftr_tipo_expediente = reader.AsInt('ftr_tipo_expediente')
+    ftr_ejecutivo = reader.AsInt('ftr_ejecutivo')
+    ftr_gestor = reader.AsInt('ftr_gestor')
+    ftr_fecha_ultimo_contacto_inicio = reader.AsDate(
+        'ftr_fecha_ultimo_contacto_inicio')
+    ftr_fecha_ultimo_contacto_fin = reader.AsDate(
+        'ftr_fecha_ultimo_contacto_fin')
     if "POST" == request.method:
         data = TmpReporteControlRecepcion.objects.all()
         if ftr_tipo_expediente:
@@ -191,11 +271,9 @@ def vwReporteControlRecepcion(request):
                 'ftr_ejecutivo': ftr_ejecutivo,
                 'ftr_gestor': ftr_gestor,
                 'ftr_fecha_ultimo_contacto_inicio':
-                    ftr_fecha_ultimo_contacto_inicio.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_ultimo_contacto_inicio is None else '',
+                    reader.Date2Str(ftr_fecha_ultimo_contacto_inicio),
                 'ftr_fecha_ultimo_contacto_fin':
-                    ftr_fecha_ultimo_contacto_fin.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_ultimo_contacto_fin is None else '',
+                    reader.Date2Str(ftr_fecha_ultimo_contacto_fin),
             },
             'combo_options': {
                 'tipo_expediente': list(TaxonomiaExpediente.objects.all()),
@@ -209,20 +287,13 @@ def vwReporteControlRecepcion(request):
 def vwReporteControlProximosPensionMod40(request):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     data = []
-    ftr_tipo_expediente = int("0" + request.POST.get('ftr_tipo_expediente', ''))
-    ftr_ejecutivo = int("0" + request.POST.get('ftr_ejecutivo', ''))
-    ftr_gestor = int("0" + request.POST.get('ftr_gestor', ''))
-    ftr_tipo = int("0" + request.POST.get('ftr_tipo', ''))
-    ftr_fecha_evt_inicio = None
-    if request.POST.get('ftr_fecha_evt_inicio', None):
-        ftr_fecha_evt_inicio = datetime.strptime(
-            request.POST.get('ftr_fecha_evt_inicio'),
-            "%Y-%m-%d").date()
-    ftr_fecha_evt_fin = None
-    if request.POST.get('ftr_fecha_evt_fin', None):
-        ftr_fecha_evt_fin = datetime.strptime(
-            request.POST.get('ftr_fecha_evt_fin'),
-            "%Y-%m-%d").date()
+    reader = POSTParam(request)
+    ftr_tipo_expediente = reader.AsInt('ftr_tipo_expediente', '')
+    ftr_ejecutivo = reader.AsInt('ftr_ejecutivo', '')
+    ftr_gestor = reader.AsInt('ftr_gestor', '')
+    ftr_tipo = reader.AsInt('ftr_tipo', '')
+    ftr_fecha_evt_inicio = reader.AsDate('ftr_fecha_evt_inicio')
+    ftr_fecha_evt_fin = reader.AsDate('ftr_fecha_evt_fin')
     if "POST" == request.method:
         data = TmpReporteControlProximoPensionMod40.objects.all()
         if ftr_tipo_expediente:
@@ -248,12 +319,8 @@ def vwReporteControlProximosPensionMod40(request):
                 'ftr_tipo_expediente': ftr_tipo_expediente,
                 'ftr_ejecutivo': ftr_ejecutivo,
                 'ftr_gestor': ftr_gestor,
-                'ftr_fecha_evt_inicio':
-                    ftr_fecha_evt_inicio.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_evt_inicio is None else '',
-                'ftr_fecha_evt_fin':
-                    ftr_fecha_evt_fin.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_evt_fin is None else '',
+                'ftr_fecha_evt_inicio': reader.Date2Str(ftr_fecha_evt_inicio),
+                'ftr_fecha_evt_fin': reader.Date2Str(ftr_fecha_evt_fin),
                 'ftr_tipo': ftr_tipo,
             },
             'combo_options': {
@@ -269,34 +336,19 @@ def vwReporteControlProximosPensionMod40(request):
 def vwReporteControlPatronSustituto(request):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     data = []
-    ftr_tipo_expediente = int("0" + request.POST.get('ftr_tipo_expediente', ''))
-    ftr_ejecutivo = int("0" + request.POST.get('ftr_ejecutivo', ''))
-    ftr_gestor = int("0" + request.POST.get('ftr_gestor', ''))
-    ftr_medio = int("0" + request.POST.get('ftr_medio', ''))
-    ftr_fecha_de_alta_inicio = request.POST.get(
-        'ftr_fecha_de_alta_inicio', None)
-    ftr_fecha_de_alta_inicio = datetime.strptime(
-            ftr_fecha_de_alta_inicio, '%Y-%m-%d').date() if ftr_fecha_de_alta_inicio else None
-    ftr_fecha_de_alta_fin = request.POST.get(
-        'ftr_fecha_de_alta_fin', None)
-    ftr_fecha_de_alta_fin = datetime.strptime(
-            ftr_fecha_de_alta_fin, '%Y-%m-%d').date() if ftr_fecha_de_alta_fin else None
-    ftr_fecha_estimada_de_baja_inicio = request.POST.get(
-        'ftr_fecha_estimada_de_baja_inicio', None)
-    ftr_fecha_estimada_de_baja_inicio = datetime.strptime(
-            ftr_fecha_estimada_de_baja_inicio, '%Y-%m-%d').date() if ftr_fecha_estimada_de_baja_inicio else None
-    ftr_fecha_estimada_de_baja_fin = request.POST.get(
-        'ftr_fecha_estimada_de_baja_fin', None)
-    ftr_fecha_estimada_de_baja_fin = datetime.strptime(
-            ftr_fecha_estimada_de_baja_fin, '%Y-%m-%d').date() if ftr_fecha_estimada_de_baja_fin else None
-    ftr_fecha_de_pago_inicio = request.POST.get(
-        'ftr_fecha_de_pago_inicio', None)
-    ftr_fecha_de_pago_inicio = datetime.strptime(
-            ftr_fecha_de_pago_inicio, '%Y-%m-%d').date() if ftr_fecha_de_pago_inicio else None
-    ftr_fecha_de_pago_fin = request.POST.get(
-        'ftr_fecha_de_pago_fin', None)
-    ftr_fecha_de_pago_fin = datetime.strptime(
-            ftr_fecha_de_pago_fin, '%Y-%m-%d').date() if ftr_fecha_de_pago_fin else None
+    reader = POSTParam(request)
+    ftr_tipo_expediente = reader.AsInt('ftr_tipo_expediente', '')
+    ftr_ejecutivo = reader.AsInt('ftr_ejecutivo', '')
+    ftr_gestor = reader.AsInt('ftr_gestor', '')
+    ftr_medio = reader.AsInt('ftr_medio', '')
+    ftr_fecha_de_alta_inicio =reader.AsDate('ftr_fecha_de_alta_inicio')
+    ftr_fecha_de_alta_fin =reader.AsDate('ftr_fecha_de_alta_fin')
+    ftr_fecha_estimada_de_baja_inicio =reader.AsDate(
+        'ftr_fecha_estimada_de_baja_inicio')
+    ftr_fecha_estimada_de_baja_fin =reader.AsDate(
+        'ftr_fecha_estimada_de_baja_fin')
+    ftr_fecha_de_pago_inicio =reader.AsDate('ftr_fecha_de_pago_inicio')
+    ftr_fecha_de_pago_fin =reader.AsDate('ftr_fecha_de_pago_fin')
     if "POST" == request.method:
         data = TmpReporteControlPatronSustituto.objects.all()
         if ftr_tipo_expediente:
@@ -317,22 +369,35 @@ def vwReporteControlPatronSustituto(request):
             data = data.filter(fecha_estimada_de_baja__lte=ftr_fecha_estimada_de_baja_fin)
         tmp_data = []
         for reg in data:
-            for det in reg.detalle.all():
-                if det.isMaxDate:
-                    addable = True
-                    if ftr_fecha_de_pago_inicio and ftr_fecha_de_pago_inicio > det.fecha_de_pago:
-                        addable = False
-                    if ftr_fecha_de_pago_fin and ftr_fecha_de_pago_fin < det.fecha_de_pago:
-                        addable = False
-                    if addable:
-                        tmp_data.append({
-                            'cliente': reg.cliente,
-                            'medio': reg.medio,
-                            'fecha_de_alta': reg.fecha_de_alta,
-                            'fecha_estimada_de_baja': reg.fecha_estimada_de_baja,
-                            'fecha_de_pago': det.fecha_de_pago,
-                            'cantidad': det.cantidad,
-                        })
+            if reg.detalle.all().count():
+                for det in reg.detalle.all():
+                    if det.isMaxDate:
+                        addable = True
+                        if ftr_fecha_de_pago_inicio and ftr_fecha_de_pago_inicio > det.fecha_de_pago:
+                            addable = False
+                        if ftr_fecha_de_pago_fin and ftr_fecha_de_pago_fin < det.fecha_de_pago:
+                            addable = False
+                        if addable:
+                            tmp_data.append({
+                                'cliente': reg.cliente,
+                                'medio': reg.medio,
+                                'fecha_de_alta': reg.fecha_de_alta,
+                                'fecha_estimada_de_baja': reg.fecha_estimada_de_baja,
+                                'fecha_de_pago': det.fecha_de_pago,
+                                'cantidad': det.cantidad,
+                            })
+            else:
+                if ftr_fecha_de_pago_inicio or ftr_fecha_de_pago_fin:
+                    pass
+                else:
+                    tmp_data.append({
+                        'cliente': reg.cliente,
+                        'medio': reg.medio,
+                        'fecha_de_alta': reg.fecha_de_alta,
+                        'fecha_estimada_de_baja': reg.fecha_estimada_de_baja,
+                        'fecha_de_pago': "",
+                        'cantidad': "",
+                    })
         data = tmp_data
     return render(
         request,
@@ -346,24 +411,12 @@ def vwReporteControlPatronSustituto(request):
                 'ftr_ejecutivo': ftr_ejecutivo,
                 'ftr_gestor': ftr_gestor,
                 'ftr_medio': ftr_medio,
-                'ftr_fecha_de_alta_inicio':
-                    ftr_fecha_de_alta_inicio.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_de_alta_inicio is None else '',
-                'ftr_fecha_de_alta_fin':
-                    ftr_fecha_de_alta_fin.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_de_alta_fin is None else '',
-                'ftr_fecha_estimada_de_baja_inicio':
-                    ftr_fecha_estimada_de_baja_inicio.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_estimada_de_baja_inicio is None else '',
-                'ftr_fecha_estimada_de_baja_fin':
-                    ftr_fecha_estimada_de_baja_fin.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_estimada_de_baja_fin is None else '',
-                'ftr_fecha_de_pago_inicio':
-                    ftr_fecha_de_pago_inicio.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_de_pago_inicio is None else '',
-                'ftr_fecha_de_pago_fin':
-                    ftr_fecha_de_pago_fin.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_de_pago_fin is None else '',
+                'ftr_fecha_de_alta_inicio': reader.Date2Str(ftr_fecha_de_alta_inicio),
+                'ftr_fecha_de_alta_fin': reader.Date2Str(ftr_fecha_de_alta_fin),
+                'ftr_fecha_estimada_de_baja_inicio': reader.Date2Str(ftr_fecha_estimada_de_baja_inicio),
+                'ftr_fecha_estimada_de_baja_fin': reader.Date2Str(ftr_fecha_estimada_de_baja_fin),
+                'ftr_fecha_de_pago_inicio': reader.Date2Str(ftr_fecha_de_pago_inicio),
+                'ftr_fecha_de_pago_fin': reader.Date2Str(ftr_fecha_de_pago_fin),
             },
             'combo_options': {
                 'tipo_expediente': list(TaxonomiaExpediente.objects.all()),
@@ -378,35 +431,20 @@ def vwReporteControlPatronSustituto(request):
 def vwReporteControlInscripcionModalidad40(request):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     data = []
-    ftr_tipo_expediente = int("0" + request.POST.get('ftr_tipo_expediente', ''))
-    ftr_ejecutivo = int("0" + request.POST.get('ftr_ejecutivo', ''))
-    ftr_gestor = int("0" + request.POST.get('ftr_gestor', ''))
-    ftr_medio = int("0" + request.POST.get('ftr_medio', ''))
-    ftr_estatus_de_envio = int("0" + request.POST.get('ftr_estatus_de_envio', ''))
-    ftr_fecha_de_alta_inicio = request.POST.get(
-        'ftr_fecha_de_alta_inicio', None)
-    ftr_fecha_de_alta_inicio = datetime.strptime(
-            ftr_fecha_de_alta_inicio, '%Y-%m-%d').date() if ftr_fecha_de_alta_inicio else None
-    ftr_fecha_de_alta_fin = request.POST.get(
-        'ftr_fecha_de_alta_fin', None)
-    ftr_fecha_de_alta_fin = datetime.strptime(
-            ftr_fecha_de_alta_fin, '%Y-%m-%d').date() if ftr_fecha_de_alta_fin else None
-    ftr_fecha_estimada_de_baja_inicio = request.POST.get(
-        'ftr_fecha_estimada_de_baja_inicio', None)
-    ftr_fecha_estimada_de_baja_inicio = datetime.strptime(
-            ftr_fecha_estimada_de_baja_inicio, '%Y-%m-%d').date() if ftr_fecha_estimada_de_baja_inicio else None
-    ftr_fecha_estimada_de_baja_fin = request.POST.get(
-        'ftr_fecha_estimada_de_baja_fin', None)
-    ftr_fecha_estimada_de_baja_fin = datetime.strptime(
-            ftr_fecha_estimada_de_baja_fin, '%Y-%m-%d').date() if ftr_fecha_estimada_de_baja_fin else None
-    ftr_fecha_de_pago_inicio = request.POST.get(
-        'ftr_fecha_de_pago_inicio', None)
-    ftr_fecha_de_pago_inicio = datetime.strptime(
-            ftr_fecha_de_pago_inicio, '%Y-%m-%d').date() if ftr_fecha_de_pago_inicio else None
-    ftr_fecha_de_pago_fin = request.POST.get(
-        'ftr_fecha_de_pago_fin', None)
-    ftr_fecha_de_pago_fin = datetime.strptime(
-            ftr_fecha_de_pago_fin, '%Y-%m-%d').date() if ftr_fecha_de_pago_fin else None
+    reader = POSTParam(request)
+    ftr_tipo_expediente = reader.AsInt('ftr_tipo_expediente')
+    ftr_ejecutivo = reader.AsInt('ftr_ejecutivo')
+    ftr_gestor = reader.AsInt('ftr_gestor')
+    ftr_medio = reader.AsInt('ftr_medio')
+    ftr_estatus_de_envio = reader.AsInt('ftr_estatus_de_envio')
+    ftr_fecha_de_alta_inicio = reader.AsDate('ftr_fecha_de_alta_inicio')
+    ftr_fecha_de_alta_fin = reader.AsDate('ftr_fecha_de_alta_fin')
+    ftr_fecha_estimada_de_baja_inicio = reader.AsDate(
+        'ftr_fecha_estimada_de_baja_inicio')
+    ftr_fecha_estimada_de_baja_fin = reader.AsDate(
+        'ftr_fecha_estimada_de_baja_fin')
+    ftr_fecha_de_pago_inicio = reader.AsDate('ftr_fecha_de_pago_inicio')
+    ftr_fecha_de_pago_fin = reader.AsDate('ftr_fecha_de_pago_fin')
     if "POST" == request.method:
         data = TmpReporteControlInscritosMod40.objects.all()
         if ftr_tipo_expediente:
@@ -427,24 +465,37 @@ def vwReporteControlInscripcionModalidad40(request):
             data = data.filter(fecha_estimada_de_baja__lte=ftr_fecha_estimada_de_baja_fin)
         tmp_data = []
         for reg in data:
-            for det in reg.detalle.all():
-                if det.isMaxDate:
-                    addable = True
-                    if ftr_fecha_de_pago_inicio and ftr_fecha_de_pago_inicio > det.fecha_de_pago:
-                        addable = False
-                    if ftr_fecha_de_pago_fin and ftr_fecha_de_pago_fin < det.fecha_de_pago:
-                        addable = False
-                    if ftr_estatus_de_envio and ftr_estatus_de_envio != det.estatus_de_envio.pk:
-                        addable = False
-                    if addable:
-                        tmp_data.append({
-                            'cliente': reg.cliente,
-                            'medio': reg.medio,
-                            'fecha_de_alta': reg.fecha_de_alta,
-                            'fecha_estimada_de_baja': reg.fecha_estimada_de_baja,
-                            'fecha_de_pago': det.fecha_de_pago,
-                            'estatus_de_envio': det.estatus_de_envio,
-                        })
+            if reg.detalle.all().count() > 0:
+                for det in reg.detalle.all():
+                    if det.isMaxDate:
+                        addable = True
+                        if ftr_fecha_de_pago_inicio and ftr_fecha_de_pago_inicio > det.fecha_de_pago:
+                            addable = False
+                        if ftr_fecha_de_pago_fin and ftr_fecha_de_pago_fin < det.fecha_de_pago:
+                            addable = False
+                        if ftr_estatus_de_envio and ftr_estatus_de_envio != det.estatus_de_envio.pk:
+                            addable = False
+                        if addable:
+                            tmp_data.append({
+                                'cliente': reg.cliente,
+                                'medio': reg.medio,
+                                'fecha_de_alta': reg.fecha_de_alta,
+                                'fecha_estimada_de_baja': reg.fecha_estimada_de_baja,
+                                'fecha_de_pago': det.fecha_de_pago,
+                                'estatus_de_envio': det.estatus_de_envio,
+                            })
+            else:
+                if ftr_fecha_de_pago_inicio or ftr_fecha_de_pago_fin or ftr_estatus_de_envio:
+                    pass
+                else:
+                    tmp_data.append({
+                        'cliente': reg.cliente,
+                        'medio': reg.medio,
+                        'fecha_de_alta': reg.fecha_de_alta,
+                        'fecha_estimada_de_baja': reg.fecha_estimada_de_baja,
+                        'fecha_de_pago': "",
+                        'estatus_de_envio': "",
+                    })
         data = tmp_data
     return render(
         request,
@@ -458,24 +509,12 @@ def vwReporteControlInscripcionModalidad40(request):
                 'ftr_ejecutivo': ftr_ejecutivo,
                 'ftr_gestor': ftr_gestor,
                 'ftr_medio': ftr_medio,
-                'ftr_fecha_de_alta_inicio':
-                    ftr_fecha_de_alta_inicio.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_de_alta_inicio is None else '',
-                'ftr_fecha_de_alta_fin':
-                    ftr_fecha_de_alta_fin.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_de_alta_fin is None else '',
-                'ftr_fecha_estimada_de_baja_inicio':
-                    ftr_fecha_estimada_de_baja_inicio.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_estimada_de_baja_inicio is None else '',
-                'ftr_fecha_estimada_de_baja_fin':
-                    ftr_fecha_estimada_de_baja_fin.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_estimada_de_baja_fin is None else '',
-                'ftr_fecha_de_pago_inicio':
-                    ftr_fecha_de_pago_inicio.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_de_pago_inicio is None else '',
-                'ftr_fecha_de_pago_fin':
-                    ftr_fecha_de_pago_fin.strftime(
-                        "%Y-%m-%d") if not ftr_fecha_de_pago_fin is None else '',
+                'ftr_fecha_de_alta_inicio': reader.Date2Str(ftr_fecha_de_alta_inicio),
+                'ftr_fecha_de_alta_fin': reader.Date2Str(ftr_fecha_de_alta_fin),
+                'ftr_fecha_estimada_de_baja_inicio': reader.Date2Str(ftr_fecha_estimada_de_baja_inicio),
+                'ftr_fecha_estimada_de_baja_fin': reader.Date2Str(ftr_fecha_estimada_de_baja_fin),
+                'ftr_fecha_de_pago_inicio': reader.Date2Str(ftr_fecha_de_pago_inicio),
+                'ftr_fecha_de_pago_fin': reader.Date2Str(ftr_fecha_de_pago_fin),
                 'ftr_estatus_de_envio': ftr_estatus_de_envio,
             },
             'combo_options': {
@@ -494,7 +533,8 @@ def vwGenerarLCInscMod40(request):
         data = TmpReporteControlInscritosMod40.objects.filter(
             fecha_de_alta__lte=date.today(),
             fecha_estimada_de_baja__gte=date.today(),
-            cliente__tipo__nombre__icontains="Mod 40 Inscr"
+            cliente__tipo__nombre__icontains="Mod 40 Inscr",
+            medio__medio__icontains='internet'
         )
         return render(
             request,
@@ -528,3 +568,174 @@ def vwGenerarLCInscMod40(request):
                 'req_ui': requires_jquery_ui(request),
                 'regs': data,
             })
+
+
+@valida_acceso(['cliente.clientes_cliente'])
+def vwReporteControlPensionesEnProceso(request):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    data = []
+    reader = POSTParam(request)
+    ftr_tipo_expediente = reader.AsInt('ftr_tipo_expediente')
+    ftr_ejecutivo = reader.AsInt('ftr_ejecutivo')
+    ftr_gestor = reader.AsInt('ftr_gestor')
+    ftr_medio = reader.AsInt('ftr_medio')
+    ftr_fecha_de_envio_inicio = reader.AsDate('ftr_fecha_de_envio_inicio')
+    ftr_fecha_de_envio_fin = reader.AsDate('ftr_fecha_de_envio_fin')
+    ftr_fecha_de_pago_inicial_inicio = reader.AsDate(
+        'ftr_fecha_de_pago_inicial_inicio')
+    ftr_fecha_de_pago_inicial_fin = reader.AsDate(
+        'ftr_fecha_de_pago_inicial_fin')
+    ftr_fecha_de_retiro_total_inicio = reader.AsDate(
+        'ftr_fecha_de_retiro_total_inicio')
+    ftr_fecha_de_retiro_total_fin = reader.AsDate(
+        'ftr_fecha_de_retiro_total_fin')
+    ftr_estatus = reader.AsInt('ftr_estatus')
+    if "POST" == request.method:
+        data = TmpReportPensionesEnProceso.objects.all()
+        if ftr_tipo_expediente:
+            data = data.filter(cliente__tipo__pk=ftr_tipo_expediente)
+        if ftr_ejecutivo:
+            data = data.filter(cliente__responsable__pk=ftr_ejecutivo)
+        if ftr_gestor:
+            data = data.filter(cliente__gestor__pk=ftr_gestor)
+        if ftr_medio:
+            data = data.filter(medio__pk=ftr_medio)
+        if ftr_fecha_de_envio_inicio:
+            data = data.filter(
+                fecha_de_envio__gte=ftr_fecha_de_envio_inicio)
+        if ftr_fecha_de_envio_fin:
+            data = data.filter(
+                fecha_de_envio__lte=ftr_fecha_de_envio_fin)
+        if ftr_fecha_de_pago_inicial_inicio:
+            data = data.filter(
+                fecha_de_pago_inicial__gte=ftr_fecha_de_pago_inicial_inicio)
+        if ftr_fecha_de_pago_inicial_fin:
+            data = data.filter(
+                fecha_de_pago_inicial__lte=ftr_fecha_de_pago_inicial_fin)
+        if ftr_fecha_de_retiro_total_inicio:
+            data = data.filter(
+                fecha_de_retiro_total__gte=ftr_fecha_de_retiro_total_inicio)
+        if ftr_fecha_de_retiro_total_fin:
+            data = data.filter(
+                fecha_de_retiro_total__lte=ftr_fecha_de_retiro_total_fin)
+        if ftr_estatus:
+            if 1 == ftr_estatus:
+                data = data.filter(concluido=True)
+            elif 2 == ftr_estatus:
+                data = data.filter(
+                    concluido=False, prorroga_o_incorformidad=True)
+    return render(
+        request,
+        'app/cliente/tmp_reportes_control/reporte_pens_pso.html', {
+            'menu_main': usuario.main_menu_struct(),
+            'titulo': 'Reporte de Pensiones en Proceso',
+            'req_ui': requires_jquery_ui(request),
+            'regs': data,
+            'filters': {
+                'ftr_tipo_expediente': ftr_tipo_expediente,
+                'ftr_ejecutivo': ftr_ejecutivo,
+                'ftr_gestor': ftr_gestor,
+                'ftr_medio': ftr_medio,
+                'ftr_fecha_de_envio_inicio': reader.Date2Str(
+                    ftr_fecha_de_envio_inicio),
+                'ftr_fecha_de_envio_fin': reader.Date2Str(
+                    ftr_fecha_de_envio_fin),
+                'ftr_fecha_de_pago_inicial_inicio': reader.Date2Str(
+                    ftr_fecha_de_pago_inicial_inicio),
+                'ftr_fecha_de_pago_inicial_fin': reader.Date2Str(
+                    ftr_fecha_de_pago_inicial_fin),
+                'ftr_fecha_de_retiro_total_inicio': reader.Date2Str(
+                    ftr_fecha_de_retiro_total_inicio),
+                'ftr_fecha_de_retiro_total_fin': reader.Date2Str(
+                    ftr_fecha_de_retiro_total_fin),
+                'ftr_estatus': ftr_estatus,
+            },
+            'combo_options': {
+                'tipo_expediente': list(TaxonomiaExpediente.objects.all()),
+                'responsables': UsrResponsables(),
+                'medio': list(TmpMedioPensPso.objects.all()),
+                'estatus': EstatusDeTramite,
+            },
+        })
+
+@valida_acceso(['cliente.clientes_cliente'])
+def vwReporteControlTramitesYCorrecciones(request):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    data = []
+    reader = POSTParam(request)
+    ftr_tipo_expediente = reader.AsInt('ftr_tipo_expediente')
+    ftr_ejecutivo = reader.AsInt('ftr_ejecutivo')
+    ftr_gestor = reader.AsInt('ftr_gestor')
+    ftr_medio = reader.AsInt('ftr_medio')
+    ftr_fecha_de_envio_inicio = reader.AsDate('ftr_fecha_de_envio_inicio')
+    ftr_fecha_de_envio_fin = reader.AsDate('ftr_fecha_de_envio_fin')
+    ftr_fecha_de_conclusion_inicio = reader.AsDate(
+        'ftr_fecha_de_conclusion_inicio')
+    ftr_fecha_de_conclusion_fin = reader.AsDate('ftr_fecha_de_conclusion_fin')
+    ftr_fecha_de_liquidacion_inicio = reader.AsDate(
+        'ftr_fecha_de_liquidacion_inicio')
+    ftr_fecha_de_liquidacion_fin = reader.AsDate('ftr_fecha_de_liquidacion_fin')
+    ftr_tipo_de_tramite = reader.AsInt('ftr_tipo_de_tramite')
+    if "POST" == request.method:
+        data = TmpReportTramitesYCorrecciones.objects.all()
+        if ftr_tipo_expediente:
+            data = data.filter(cliente__tipo__pk=ftr_tipo_expediente)
+        if ftr_ejecutivo:
+            data = data.filter(cliente__responsable__pk=ftr_ejecutivo)
+        if ftr_gestor:
+            data = data.filter(cliente__gestor__pk=ftr_gestor)
+        if ftr_medio:
+            data = data.filter(medio__pk=ftr_medio)
+        if ftr_tipo_de_tramite:
+            data = data.filter(tipo_de_tramite__pk=ftr_tipo_de_tramite)
+        if ftr_fecha_de_envio_inicio:
+            data = data.filter(
+                fecha_de_envio__gte=ftr_fecha_de_envio_inicio)
+        if ftr_fecha_de_envio_fin:
+            data = data.filter(
+                fecha_de_envio__lte=ftr_fecha_de_envio_fin)
+        if ftr_fecha_de_conclusion_inicio:
+            data = data.filter(
+                fecha_de_conclusion__gte=ftr_fecha_de_conclusion_inicio)
+        if ftr_fecha_de_conclusion_fin:
+            data = data.filter(
+                fecha_de_conclusion__lte=ftr_fecha_de_conclusion_fin)
+        if ftr_fecha_de_liquidacion_inicio:
+            data = data.filter(
+                fecha_de_liquidacion__gte=ftr_fecha_de_liquidacion_inicio)
+        if ftr_fecha_de_liquidacion_fin:
+            data = data.filter(
+                fecha_de_liquidacion__lte=ftr_fecha_de_liquidacion_fin)
+    return render(
+        request,
+        'app/cliente/tmp_reportes_control/reporte_tram_corr.html', {
+            'menu_main': usuario.main_menu_struct(),
+            'titulo': 'Reporte de Trámites y Correcciones',
+            'req_ui': requires_jquery_ui(request),
+            'regs': data,
+            'filters': {
+                'ftr_tipo_expediente': ftr_tipo_expediente,
+                'ftr_ejecutivo': ftr_ejecutivo,
+                'ftr_gestor': ftr_gestor,
+                'ftr_medio': ftr_medio,
+                'ftr_tipo_de_tramite': ftr_tipo_de_tramite,
+                'ftr_fecha_de_envio_inicio': reader.Date2Str(
+                    ftr_fecha_de_envio_inicio),
+                'ftr_fecha_de_envio_fin': reader.Date2Str(
+                    ftr_fecha_de_envio_fin),
+                'ftr_fecha_de_conclusion_inicio': reader.Date2Str(
+                    ftr_fecha_de_conclusion_inicio),
+                'ftr_fecha_de_conclusion_fin': reader.Date2Str(
+                    ftr_fecha_de_conclusion_fin),
+                'ftr_fecha_de_liquidacion_inicio': reader.Date2Str(
+                    ftr_fecha_de_liquidacion_inicio),
+                'ftr_fecha_de_liquidacion_fin': reader.Date2Str(
+                    ftr_fecha_de_liquidacion_fin),
+            },
+            'combo_options': {
+                'tipo_expediente': list(TaxonomiaExpediente.objects.all()),
+                'responsables': UsrResponsables(),
+                'medio': list(TmpMedioTramCorr.objects.all()),
+                'tipo_tram': list(TmpTipoTramCorr.objects.all()),
+            },
+        })

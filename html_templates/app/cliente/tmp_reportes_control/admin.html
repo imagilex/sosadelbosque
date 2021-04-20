@@ -1,6 +1,7 @@
 {% extends "global/html_struct.html" %}
 {% load crispy_forms_tags %}
 {% load util_filters %}
+{% load humanize %}
 
 {% block content %}
 
@@ -10,7 +11,7 @@
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_01" aria-expanded="false"
                             aria-controls="cuerpo_01">
-                        Recepción, Cartera en Espera y Otros
+                        Recepción, Cartera en Espera y Otro Estatus
                         <span class="badge badge-pill badge-secondary">
                             {{ data_ultimo_contacto|length }}
                         </span>
@@ -64,7 +65,7 @@
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_02" aria-expanded="false"
                             aria-controls="cuerpo_02">
-                        Próximo a Pensión y/o Modalidad 40
+                        Próximo a Pensión o Modalidad 40
                         <span class="badge badge-pill badge-secondary">
                             {{ data_prox_pension_mod40|length }}
                         </span>
@@ -197,7 +198,7 @@
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_04" aria-expanded="false"
                             aria-controls="cuerpo_04">
-                        Inscripción a Modalidad 40
+                        Inscrito a Modalidad 40
                         <span class="badge badge-pill badge-secondary">
                             {{ data_insc_mod40|length }}
                         </span>
@@ -269,28 +270,148 @@
                 </div>
             </div>
         </div>
-        <div class="card d-none">
+        <div class="card">
             <div class="card-header" id="encabezado_05">
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_05" aria-expanded="false"
-                            aria-controls="cuerpo_05">Pensión en Proceso
+                            aria-controls="cuerpo_05">
+                        Pensión en Proceso
+                        <span class="badge badge-pill badge-secondary">
+                            {{ data_pens_pso|length }}
+                        </span>
                     </button>
                 </h5>
             </div>
             <div id="cuerpo_05" class="collapse" aria-labelledby="encabezado_05" data-parent="#control-accordion">
-                <div class="card-body">Cuerpo 05</div>
+                <div class="card-body">
+                    <button onclick="open_frm_pens_pso_add()" type="button" class="btn btn-outline-secondary">
+                        <i class="far fa-plus-square"></i> Agregar Pensión en Proceso
+                    </button>
+                    {% for reg in data_pens_pso %}
+                        <hr />
+                        <div class="text-right"><div class="btn-group" role="group" aria-label="BH Pension en Proceso{{ reg.pk }}">
+                            <button title="Actualizar Pensión en Proceso" onclick="open_frm_pens_pso_update({{ reg.pk }}, {{ reg.medio.pk }}, `{{ reg.fecha_de_envio|date:'Y-m-d' }}`, `{{ reg.fecha_de_pago_inicial|date:'Y-m-d' }}`, `{{ reg.fecha_de_retiro_total|date:'Y-m-d' }}`, {% if reg.prorroga_o_incorformidad %}true{% else %}false{% endif %}, `{{ reg.fecha_de_envio_p|date:'Y-m-d' }}`, `{{ reg.fecha_de_correccion|date:'Y-m-d' }}`, {% if reg.concluido %}true{% else %}false{% endif %})" type="button" class="btn btn-outline-secondary">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button title="Eliminar Pensión en Proceso" onclick="open_frm_pens_pso_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div></div>
+                        <div class="row">
+                            <div class="form-group col-sm-3">
+                                <label>Medio:</label>
+                                <select disabled="disabled" class="form-control" required="required">
+                                    {% for opc in cbo_opt.MEDIO_PENS_PSO %}
+                                        <option value="{{ opc.pk }}" {% if opc.pk == reg.medio.pk %}selected="selected"{% endif %}>{{ opc }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>Fecha de Envío</label>
+                                <input value="{{ reg.fecha_de_envio|date:'Y-m-d' }}" disabled="disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>Fecha de Pago Inicial</label>
+                                <input value="{{ reg.fecha_de_pago_inicial|date:'Y-m-d' }}" disabled="disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>Fecha de Retiro Total</label>
+                                <input value="{{ reg.fecha_de_retiro_total|date:'Y-m-d' }}" disabled="disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-4">
+                                <label>
+                                    <input {% if reg.prorroga_o_incorformidad %}checked="checked"{% endif %} disabled="disabled" type="checkbox" value="yes" />
+                                    Prorroga o Inconformidad
+                                </label>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha de Envío (inconformidad)</label>
+                                <input value="{{ reg.fecha_de_envio_p|date:'Y-m-d' }}" disabled="disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha de Corrección</label>
+                                <input value="{{ reg.fecha_de_correccion|date:'Y-m-d' }}" disabled="disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label>
+                                    <input {% if reg.concluido %}checked="checked"{% endif %} disabled="disabled" type="checkbox" value="yes" />
+                                    Concluido
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-        <div class="card d-none">
+        <div class="card">
             <div class="card-header" id="encabezado_06">
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_06" aria-expanded="false"
-                            aria-controls="cuerpo_06">Trámites y Correcciones
+                            aria-controls="cuerpo_06">
+                        Trámites y Correcciones
+                        <span class="badge badge-pill badge-secondary">
+                            {{ data_tram_corr|length }}
+                        </span>
                     </button>
                 </h5>
             </div>
             <div id="cuerpo_06" class="collapse" aria-labelledby="encabezado_06" data-parent="#control-accordion">
-                <div class="card-body">Cuerpo 06</div>
+                <div class="card-body">
+                    <button onclick="open_frm_tram_corr_add()" type="button" class="btn btn-outline-secondary">
+                        <i class="far fa-plus-square"></i> Agregar Trámite o Corrección
+                    </button>
+                    {% for reg in data_tram_corr %}
+                        <hr />
+                        <div class="text-right"><div class="btn-group" role="group" aria-label="BH Tramites y Correcciones{{ reg.pk }}">
+                            <button title="Actualizar Trámite o Corrección" onclick="open_frm_tram_corr_update({{ reg.pk }}, {{ reg.tipo_de_tramite.pk }}, {{ reg.medio.pk }}, {{ reg.costo }}, `{{ reg.fecha_de_envio|date:'Y-m-d' }}`, `{{ reg.fecha_de_conclusion|date:'Y-m-d' }}`, `{{ reg.fecha_de_liquidacion|date:'Y-m-d' }}`)" type="button" class="btn btn-outline-secondary">
+                                <i class="far fa-edit"></i>
+                            </button>
+                            <button title="Eliminar Trámite o Corrección" onclick="open_frm_tram_corr_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div></div>
+                        <div class="row">
+                            <div class="form-group col-sm-4">
+                                <label>Tipo de Trámite:</label>
+                                <select disabled="disabled" class="form-control" required="required">
+                                    {% for opc in cbo_opt.TIPO_TRAM_CORR %}
+                                        <option value="{{ opc.pk }}" {% if opc.pk == reg.tipo_de_tramite.pk %}selected="selected"{% endif %}>{{ opc }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Medio:</label>
+                                <select disabled="disabled" class="form-control" required="required">
+                                    {% for opc in cbo_opt.MEDIO_TRAM_CORR %}
+                                        <option value="{{ opc.pk }}" {% if opc.pk == reg.medio.pk %}selected="selected"{% endif %}>{{ opc }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Costo</label>
+                                <input value="$ {{ reg.costo|floatformat:2|intcomma }}" disabled=disabled" class="form-control" type="text" required="required"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-4">
+                                <label>Fecha de Envío</label>
+                                <input value="{{ reg.fecha_de_envio|date:'Y-m-d' }}" disabled=disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha de Conclusión</label>
+                                <input value="{{ reg.fecha_de_conclusion|date:'Y-m-d' }}" disabled=disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Fecha de Liquidación</label>
+                                <input value="{{ reg.fecha_de_liquidacion|date:'Y-m-d' }}" disabled=disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
@@ -783,6 +904,291 @@
     <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
         {% csrf_token %}
         <input type="hidden" name="action" value="delete-insc-mod-40-detalle" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-12">
+                Confirma que desea eliminar el registro?
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Sí, eliminar</button>
+    </form>
+    </script>
+
+    <script type="text/javascript">
+    let open_frm_pens_pso_add = () => {
+        App.openPanel($("#tpl-pens-pso-add").html(), "Captura Datos de Pensión en Proceso" );
+    }
+    let open_frm_pens_pso_update = (id_record, medio, fecha_de_envio, fecha_de_pago_inicial, fecha_de_retiro_total, prorroga_o_incorformidad, fecha_de_envio_p, fecha_de_correccion, concluido) => {
+        let template = Handlebars.compile($("#tpl-pens-pso-upd").html());
+        let html = template({id_record, fecha_de_envio, fecha_de_pago_inicial, fecha_de_retiro_total, prorroga_o_incorformidad, fecha_de_envio_p, fecha_de_correccion, concluido});
+        App.openPanel( html, "Actualización de Pensión en Proceso");
+        $("#medio").val(medio);
+    }
+    let open_frm_pens_pso_delete = (id_record) => {
+        let template = Handlebars.compile($("#tpl-pens-pso-del").html());
+        let html = template({id_record});
+        App.openPanel( html, "Eliminar Registro de Pensión en Proceso");
+    }
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-pens-pso-add">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add-pens-pso" />
+        {% verbatim %}
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label for="medio">Medio:</label>
+                <select class="form-control" name="medio" id="medio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.MEDIO_PENS_PSO %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="fecha_de_envio">Fecha de Envío</label>
+                <input class="form-control" type="date" name="fecha_de_envio" id="fecha_de_envio" required="required"/>
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="fecha_de_pago_inicial">Fecha de Pago Inicial</label>
+                <input class="form-control" type="date" name="fecha_de_pago_inicial" id="fecha_de_pago_inicial" required="required"/>
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="fecha_de_retiro_total">Fecha de Retiro Total</label>
+                <input class="form-control" type="date" name="fecha_de_retiro_total" id="fecha_de_retiro_total" required="required"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label>
+                    <input type="checkbox" name="prorroga_o_incorformidad" id="prorroga_o_incorformidad" value="yes" />
+                    Prorroga o Inconformidad
+                </label>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_envio_p">Fecha de Envío (inconformidad)</label>
+                <input class="form-control" type="date" name="fecha_de_envio_p" id="fecha_de_envio_p" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_correccion">Fecha de Corrección</label>
+                <input class="form-control" type="date" name="fecha_de_correccion" id="fecha_de_correccion" required="required"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label>
+                    <input type="checkbox" name="concluido" id="concluido" value="yes" />
+                    Concluido
+                </label>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-pens-pso-upd">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update-pens-pso" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label for="medio">Medio:</label>
+                <select class="form-control" name="medio" id="medio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.MEDIO_PENS_PSO %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="fecha_de_envio">Fecha de Envío</label>
+                <input value="{{ fecha_de_envio }}" class="form-control" type="date" name="fecha_de_envio" id="fecha_de_envio" required="required"/>
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="fecha_de_pago_inicial">Fecha de Pago Inicial</label>
+                <input value="{{ fecha_de_pago_inicial }}" class="form-control" type="date" name="fecha_de_pago_inicial" id="fecha_de_pago_inicial" required="required"/>
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="fecha_de_retiro_total">Fecha de Retiro Total</label>
+                <input value="{{ fecha_de_retiro_total }}" class="form-control" type="date" name="fecha_de_retiro_total" id="fecha_de_retiro_total" required="required"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label>
+                    <input type="checkbox" name="prorroga_o_incorformidad" id="prorroga_o_incorformidad" value="yes" {{#if prorroga_o_incorformidad }}checked="checked"{{/if}} />
+                    Prorroga o Inconformidad
+                </label>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_envio_p">Fecha de Envío (inconformidad)</label>
+                <input value="{{ fecha_de_envio_p }}" class="form-control" type="date" name="fecha_de_envio_p" id="fecha_de_envio_p" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_correccion">Fecha de Corrección</label>
+                <input value="{{ fecha_de_correccion }}" class="form-control" type="date" name="fecha_de_correccion" id="fecha_de_correccion" required="required"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label>
+                    <input type="checkbox" name="concluido" id="concluido" value="yes" {{#if concluido }}checked="checked"{{/if}} />
+                    Concluido
+                </label>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-pens-pso-del">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete-pens-pso" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="col-sm-12">
+                Confirma que desea eliminar el registro?
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Sí, eliminar</button>
+    </form>
+    </script>
+
+    <script type="text/javascript">
+    let open_frm_tram_corr_add = () => {
+        App.openPanel($("#tpl-tram-corr-add").html(), "Captura Datos de Trámites y Correcciones" );
+    }
+    let open_frm_tram_corr_update = (id_record, tipo_de_tramite, medio, costo, fecha_de_envio, fecha_de_conclusion, fecha_de_liquidacion) => {
+        let template = Handlebars.compile($("#tpl-tram-corr-upd").html());
+        let html = template({id_record, costo, fecha_de_envio, fecha_de_conclusion, fecha_de_liquidacion});
+        App.openPanel( html, "Actualización de Trámites y Correcciones");
+        $("#medio").val(medio);
+        $("#tipo_de_tramite").val(tipo_de_tramite);
+    }
+    let open_frm_tram_corr_delete = (id_record) => {
+        let template = Handlebars.compile($("#tpl-tram-corr-del").html());
+        let html = template({id_record});
+        App.openPanel( html, "Eliminar Registro de Trámites y Correcciones");
+    }
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-tram-corr-add">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add-tram-corr" />
+        {% verbatim %}
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="tipo_de_tramite">Tipo de Trámite:</label>
+                <select class="form-control" name="tipo_de_tramite" id="tipo_de_tramite" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.TIPO_TRAM_CORR %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="medio">Medio:</label>
+                <select class="form-control" name="medio" id="medio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.MEDIO_TRAM_CORR %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="costo">Costo</label>
+                <input class="form-control" type="number" name="costo" id="costo" required="required"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_envio">Fecha de Envío</label>
+                <input class="form-control" type="date" name="fecha_de_envio" id="fecha_de_envio" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_conclusion">Fecha de Conclusión</label>
+                <input class="form-control" type="date" name="fecha_de_conclusion" id="fecha_de_conclusion" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_liquidacion">Fecha de Liquidación</label>
+                <input class="form-control" type="date" name="fecha_de_liquidacion" id="fecha_de_liquidacion" required="required"/>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-tram-corr-upd">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update-tram-corr" />
+        {% verbatim %}
+        <input type="hidden" name="id_record" value="{{ id_record }}" />
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="tipo_de_tramite">Tipo de Trámite:</label>
+                <select class="form-control" name="tipo_de_tramite" id="tipo_de_tramite" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.TIPO_TRAM_CORR %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="medio">Medio:</label>
+                <select class="form-control" name="medio" id="medio" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.MEDIO_TRAM_CORR %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="costo">Costo</label>
+                <input value="{{ costo }}" class="form-control" type="number" name="costo" id="costo" required="required"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_envio">Fecha de Envío</label>
+                <input value="{{ fecha_de_envio }}" class="form-control" type="date" name="fecha_de_envio" id="fecha_de_envio" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_conclusion">Fecha de Conclusión</label>
+                <input value="{{ fecha_de_conclusion }}" class="form-control" type="date" name="fecha_de_conclusion" id="fecha_de_conclusion" required="required"/>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="fecha_de_liquidacion">Fecha de Liquidación</label>
+                <input value="{{ fecha_de_liquidacion }}" class="form-control" type="date" name="fecha_de_liquidacion" id="fecha_de_liquidacion" required="required"/>
+            </div>
+        </div>
+        {% endverbatim %}
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </form>
+    </script>
+
+    <script type="text/x-handlebars-template" id="tpl-tram-corr-del">
+    <form method="post" autocomplete="off" enctype="multipart/form-data" id="main-form" action="">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete-tram-corr" />
         {% verbatim %}
         <input type="hidden" name="id_record" value="{{ id_record }}" />
         <div class="row">

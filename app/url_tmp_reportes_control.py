@@ -18,6 +18,12 @@ urlpatterns = [
     path('inscripcion-a-modalidad-40/',
          views.vwReporteControlInscripcionModalidad40,
          name="tpm_reporte_inscmod40"),
+    path('pensiones-en-proceso',
+         views.vwReporteControlPensionesEnProceso,
+         name="tmp_reporte_pens_pso"),
+    path('tramites-y-correcciones',
+         views.vwReporteControlTramitesYCorrecciones,
+         name="tmp_reporte_control_tram_corr"),
 
     path('lc-insc-mod40/',
          views.vwGenerarLCInscMod40,
