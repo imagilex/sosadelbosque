@@ -2,7 +2,9 @@ from django import forms
 
 from .models_reportes_control_tmp import (
     TmpProxEvt, TmpEstatusEnvio, TmpMedioInscMod40, TmpMedioPatronSustituto,
-    TmpMedioPensPso, TmpMedioTramCorr, TmpTipoTramCorr)
+    TmpMedioPensPso, TmpMedioTramCorr, TmpTipoTramCorr,
+    TmpEstatusPensPso, TmpEstatusTramCorr,
+)
 
 
 class frmTmpProxEvt(forms.ModelForm):
@@ -63,6 +65,23 @@ class frmTmpTipoTramCorr(forms.ModelForm):
 
     class Meta:
         model = TmpTipoTramCorr
+        fields = [
+            'medio',
+        ]
+
+class frmTmpEstatusPensPso(forms.ModelForm):
+
+    class Meta:
+        model = TmpEstatusPensPso
+        fields = [
+            'medio',
+        ]
+
+
+class frmTmpEstatusTramCorr(forms.ModelForm):
+
+    class Meta:
+        model = TmpEstatusTramCorr
         fields = [
             'medio',
         ]
