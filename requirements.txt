@@ -1,4 +1,4 @@
-Django==3.0.7
+Django==3.0.14
 django-crispy-forms==1.9.0
 fiximports==0.1.18
 importchecker==2.0
