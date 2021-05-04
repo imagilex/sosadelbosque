@@ -37,5 +37,8 @@ urlpatterns = [
     path('medio-pensiones-proceso/', include('app.url_tmp_medio_pensiones_proceso')),
     path('medio-tamites-correciones/', include('app.url_tmp_medio_tramites_correcciones')),
     path('tipo-tamites-correcciones/', include('app.url_tmp_tipo_tramites_correcciones')),
+
+    path('estatus-de-pension-en-proceso/', include('app.url_tmp_estatus_penspso')),
+    path('estatus-de-tramites-y-correcciones/', include('app.url_tmp_estatus_tramcorr')),
     ]
 

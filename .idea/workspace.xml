@@ -2,17 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/migrations/0065_auto_20210416_1945.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_pens_pso.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_tram_corr.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0066_auto_20210422_1536.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0067_tmpestatuspenspso_tmpestatustramcorr.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/url_tmp_estatus_penspso.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/url_tmp_estatus_tramcorr.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_penspso.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_tramcorr.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_estatus_penspso.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_estatus_tramcorr.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms_tmp_rep_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms_tmp_rep_control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models_reportes_control_tmp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_reportes_control_tmp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/url_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/url_tmp_reportes_control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_inscrmod40.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_inscrmod40.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_patronsustituto.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_patronsustituto.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_recepcion.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_recepcion.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +45,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -52,8 +55,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control" />
+      <recent name="$PROJECT_DIR$/app" />
     </key>
   </component>
   <component name="RunManager">
@@ -110,6 +113,10 @@
       <workItem from="1618677031191" duration="597000" />
       <workItem from="1618844528875" duration="587000" />
       <workItem from="1618870057324" duration="10595000" />
+      <workItem from="1618973310671" duration="7000" />
+      <workItem from="1619107240032" duration="3501000" />
+      <workItem from="1619553168753" duration="26000" />
+      <workItem from="1620137378729" duration="3814000" />
     </task>
     <servers />
   </component>

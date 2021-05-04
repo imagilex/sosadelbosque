@@ -238,17 +238,17 @@ class TmpReportPensionesEnProceso(models.Model):
         on_delete=models.PROTECT,
         related_name="+"
     )
-    fecha_de_envio = models.DateField(default=date.today)
-    fecha_de_pago_inicial = models.DateField(default=date.today)
-    fecha_de_retiro_total = models.DateField(default=date.today)
+    fecha_de_envio = models.DateField(null=True)
+    fecha_de_pago_inicial = models.DateField(null=True)
+    fecha_de_retiro_total = models.DateField(null=True)
     autor = models.ForeignKey(
         Usr,
         on_delete=models.CASCADE,
         related_name='+')
 
     prorroga_o_incorformidad = models.BooleanField(default=False)
-    fecha_de_envio_p = models.DateField(default=date.today)
-    fecha_de_correccion = models.DateField(default=date.today)
+    fecha_de_envio_p = models.DateField(null=True)
+    fecha_de_correccion = models.DateField(null=True)
 
     concluido = models.BooleanField(default=False)
 
@@ -277,10 +277,10 @@ class TmpReportTramitesYCorrecciones(models.Model):
         on_delete=models.PROTECT,
         related_name="+"
     )
-    fecha_de_envio = models.DateField(default=date.today)
-    fecha_de_conclusion = models.DateField(default=date.today)
+    fecha_de_envio = models.DateField(null=True)
+    fecha_de_conclusion = models.DateField(null=True)
     costo = models.DecimalField(max_digits=9, decimal_places=2, default=0.0)
-    fecha_de_liquidacion = models.DateField(default=date.today)
+    fecha_de_liquidacion = models.DateField(null=True)
     autor = models.ForeignKey(
         Usr,
         on_delete=models.CASCADE,
@@ -349,3 +349,30 @@ EstatusDeTramite = [
     ItemEstatusDeTramite(1, "Concluido"),
     ItemEstatusDeTramite(2, "En Prorroga o Incorformidad"),
 ]
+
+class TmpEstatusPensPso(models.Model):
+    medio = models.CharField(max_length=50, verbose_name="Estatus")
+
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()
+
+
+class TmpEstatusTramCorr(models.Model):
+    medio = models.CharField(max_length=50, verbose_name="Estatus")
+
+    class Meta:
+        ordering = ["medio"]
+
+    def __str__(self):
+        res = "{}".format(self.medio)
+        return res
+
+    def __unicode__(self):
+        return self.__str__()

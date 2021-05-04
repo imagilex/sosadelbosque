@@ -17,11 +17,43 @@ from .models import (
     )
 from .models import Usr, Cliente, TaxonomiaExpediente, UsrResponsables
 
+
+class POSTParam():
+    request = None
+    def __init__(self, req):
+        self.request = req
+    def AsInt(self, var, req=None) -> int:
+        if req:
+            self.request = req
+        return int("0" + self.request.POST.get(var, ''))
+    def AsFloat(self, var, req=None) -> int:
+        if req:
+            self.request = req
+        return float("0" + self.request.POST.get(var, ''))
+    def AsDate(self, var, req=None) -> date:
+        value = None
+        if req:
+            self.request = req
+        if self.request.POST.get(var, None):
+            value = datetime.strptime(
+                self.request.POST.get(var),"%Y-%m-%d").date()
+        return value
+    def Date2Str(self, value) -> str:
+        if value is None:
+            return ""
+        return value.strftime("%Y-%m-%d")
+    def setOptionalField(self,field, key, req):
+        value = req.POST.get(key, None)
+        if value:
+            field = value
+        return field
+
 @valida_acceso(['cliente.clientes_cliente'])
 def admin(request, pk_cte):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     cte = Cliente.objects.get(pk=pk_cte)
     if "POST" == request.method:
+        reader = POSTParam(request)
         action = request.POST.get('action')
         if "add-ultimo-contacto" == action:
             TmpReporteControlRecepcion.objects.create(
@@ -130,11 +162,11 @@ def admin(request, pk_cte):
         elif "add-pens-pso" == action:
             TmpReportPensionesEnProceso.objects.create(
                 medio=TmpMedioPensPso.objects.get(pk=request.POST.get('medio')),
-                fecha_de_envio=request.POST.get('fecha_de_envio'),
-                fecha_de_pago_inicial=request.POST.get('fecha_de_pago_inicial'),
-                fecha_de_retiro_total=request.POST.get('fecha_de_retiro_total'),
-                fecha_de_envio_p=request.POST.get('fecha_de_envio_p'),
-                fecha_de_correccion=request.POST.get('fecha_de_correccion'),
+                fecha_de_envio=reader.AsDate('fecha_de_envio'),
+                fecha_de_pago_inicial=reader.AsDate('fecha_de_pago_inicial'),
+                fecha_de_retiro_total=reader.AsDate('fecha_de_retiro_total'),
+                fecha_de_envio_p=reader.AsDate('fecha_de_envio_p'),
+                fecha_de_correccion=reader.AsDate('fecha_de_correccion'),
                 prorroga_o_incorformidad= request.POST.get('prorroga_o_incorformidad')=="yes",
                 concluido= request.POST.get('concluido')=="yes",
                 cliente=cte,
@@ -144,11 +176,11 @@ def admin(request, pk_cte):
             reg = TmpReportPensionesEnProceso.objects.get(
                 pk=request.POST.get('id_record'))
             reg.medio = TmpMedioPensPso.objects.get(pk=request.POST.get('medio'))
-            reg.fecha_de_envio = request.POST.get('fecha_de_envio')
-            reg.fecha_de_pago_inicial = request.POST.get('fecha_de_pago_inicial')
-            reg.fecha_de_retiro_total = request.POST.get('fecha_de_retiro_total')
-            reg.fecha_de_envio_p = request.POST.get('fecha_de_envio_p')
-            reg.fecha_de_correccion = request.POST.get('fecha_de_correccion')
+            reg.fecha_de_envio = reader.AsDate('fecha_de_envio')
+            reg.fecha_de_pago_inicial = reader.AsDate('fecha_de_pago_inicial')
+            reg.fecha_de_retiro_total = reader.AsDate('fecha_de_retiro_total')
+            reg.fecha_de_envio_p = reader.AsDate('fecha_de_envio_p')
+            reg.fecha_de_correccion = reader.AsDate('fecha_de_correccion')
             reg.prorroga_o_incorformidad = request.POST.get('prorroga_o_incorformidad') == "yes"
             reg.concluido = request.POST.get('concluido') == "yes"
             reg.save()
@@ -159,10 +191,10 @@ def admin(request, pk_cte):
             TmpReportTramitesYCorrecciones.objects.create(
                 medio=TmpMedioTramCorr.objects.get(pk=request.POST.get('medio')),
                 tipo_de_tramite=TmpTipoTramCorr.objects.get(pk=request.POST.get('tipo_de_tramite')),
-                fecha_de_envio=request.POST.get('fecha_de_envio'),
-                fecha_de_conclusion=request.POST.get('fecha_de_conclusion'),
-                costo=request.POST.get('costo'),
-                fecha_de_liquidacion=request.POST.get('fecha_de_liquidacion'),
+                fecha_de_envio=reader.AsDate('fecha_de_envio'),
+                fecha_de_conclusion=reader.AsDate('fecha_de_conclusion'),
+                costo=reader.AsFloat('costo'),
+                fecha_de_liquidacion=reader.AsDate('fecha_de_liquidacion'),
                 cliente=cte,
                 autor=usuario
             )
@@ -171,10 +203,10 @@ def admin(request, pk_cte):
                 pk=request.POST.get('id_record'))
             reg.medio = TmpMedioTramCorr.objects.get(pk=request.POST.get('medio'))
             reg.tipo_de_tramite = TmpTipoTramCorr.objects.get(pk=request.POST.get('tipo_de_tramite'))
-            reg.fecha_de_envio = request.POST.get('fecha_de_envio')
-            reg.fecha_de_conclusion = request.POST.get('fecha_de_conclusion')
-            reg.costo = request.POST.get('costo')
-            reg.fecha_de_liquidacion = request.POST.get('fecha_de_liquidacion')
+            reg.fecha_de_envio = reader.AsDate('fecha_de_envio')
+            reg.fecha_de_conclusion = reader.AsDate('fecha_de_conclusion')
+            reg.costo = reader.AsFloat('costo')
+            reg.fecha_de_liquidacion = reader.AsDate('fecha_de_liquidacion')
             reg.save()
         elif "delete-tram-corr" == action:
             TmpReportTramitesYCorrecciones.objects.get(
@@ -212,26 +244,6 @@ def admin(request, pk_cte):
             })
 
 
-class POSTParam():
-    request = None
-    def __init__(self, req):
-        self.request = req
-    def AsInt(self, var, req=None) -> int:
-        if req:
-            self.request = req
-        return int("0" + self.request.POST.get(var, ''))
-    def AsDate(self, var, req=None) -> date:
-        value = None
-        if req:
-            self.request = req
-        if self.request.POST.get(var, None):
-            value = datetime.strptime(
-                self.request.POST.get(var),"%Y-%m-%d").date()
-        return value
-    def Date2Str(self, value) -> str:
-        if value is None:
-            return ""
-        return value.strftime("%Y-%m-%d")
 
 
 @valida_acceso(['cliente.clientes_cliente'])
