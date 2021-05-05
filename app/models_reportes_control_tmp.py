@@ -252,6 +252,12 @@ class TmpReportPensionesEnProceso(models.Model):
 
     concluido = models.BooleanField(default=False)
 
+    estatus = models.ForeignKey(
+        "TmpEstatusPensPso",
+        on_delete=models.PROTECT,
+        related_name="+")
+    comentarios = models.TextField(blank=True)
+
     class Meta:
         ordering = ["fecha_de_envio"]
 
@@ -285,6 +291,11 @@ class TmpReportTramitesYCorrecciones(models.Model):
         Usr,
         on_delete=models.CASCADE,
         related_name='+')
+    estatus = models.ForeignKey(
+        "TmpEstatusTramCorr",
+        on_delete=models.PROTECT,
+        related_name="+")
+    comentarios = models.TextField(blank=True)
 
     class Meta:
         ordering = ["fecha_de_envio"]
