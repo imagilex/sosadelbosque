@@ -290,7 +290,7 @@
                     {% for reg in data_pens_pso %}
                         <hr />
                         <div class="text-right"><div class="btn-group" role="group" aria-label="BH Pension en Proceso{{ reg.pk }}">
-                            <button title="Actualizar Pensión en Proceso" onclick="open_frm_pens_pso_update({{ reg.pk }}, {{ reg.medio.pk }}, `{{ reg.fecha_de_envio|date:'Y-m-d' }}`, `{{ reg.fecha_de_pago_inicial|date:'Y-m-d' }}`, `{{ reg.fecha_de_retiro_total|date:'Y-m-d' }}`, {% if reg.prorroga_o_incorformidad %}true{% else %}false{% endif %}, `{{ reg.fecha_de_envio_p|date:'Y-m-d' }}`, `{{ reg.fecha_de_correccion|date:'Y-m-d' }}`, {% if reg.concluido %}true{% else %}false{% endif %})" type="button" class="btn btn-outline-secondary">
+                            <button title="Actualizar Pensión en Proceso" onclick="open_frm_pens_pso_update({{ reg.pk }}, {{ reg.medio.pk }}, `{{ reg.fecha_de_envio|date:'Y-m-d' }}`, `{{ reg.fecha_de_pago_inicial|date:'Y-m-d' }}`, `{{ reg.fecha_de_retiro_total|date:'Y-m-d' }}`, {% if reg.prorroga_o_incorformidad %}true{% else %}false{% endif %}, `{{ reg.fecha_de_envio_p|date:'Y-m-d' }}`, `{{ reg.fecha_de_correccion|date:'Y-m-d' }}`, {% if reg.concluido %}true{% else %}false{% endif %}, {{ reg.estatus.pk }}, `{{ reg.comentarios }}`)" type="button" class="btn btn-outline-secondary">
                                 <i class="far fa-edit"></i>
                             </button>
                             <button title="Eliminar Pensión en Proceso" onclick="open_frm_pens_pso_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
@@ -336,11 +336,21 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-sm-12">
+                            <div class="form-group col-sm-4">
                                 <label>
                                     <input {% if reg.concluido %}checked="checked"{% endif %} disabled="disabled" type="checkbox" value="yes" />
                                     Concluido
                                 </label>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="estatus">Estatus:</label>
+                                <input value="{{ reg.estatus }}" disabled="disabled" class="form-control" required="required"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label>Comentarios</label>
+                                <textarea class="form-control" disabled="disabled">{{ reg.comentarios }}</textarea>
                             </div>
                         </div>
                     {% endfor %}
@@ -367,7 +377,7 @@
                     {% for reg in data_tram_corr %}
                         <hr />
                         <div class="text-right"><div class="btn-group" role="group" aria-label="BH Tramites y Correcciones{{ reg.pk }}">
-                            <button title="Actualizar Trámite o Corrección" onclick="open_frm_tram_corr_update({{ reg.pk }}, {{ reg.tipo_de_tramite.pk }}, {{ reg.medio.pk }}, {{ reg.costo }}, `{{ reg.fecha_de_envio|date:'Y-m-d' }}`, `{{ reg.fecha_de_conclusion|date:'Y-m-d' }}`, `{{ reg.fecha_de_liquidacion|date:'Y-m-d' }}`)" type="button" class="btn btn-outline-secondary">
+                            <button title="Actualizar Trámite o Corrección" onclick="open_frm_tram_corr_update({{ reg.pk }}, {{ reg.tipo_de_tramite.pk }}, {{ reg.medio.pk }}, {{ reg.costo }}, `{{ reg.fecha_de_envio|date:'Y-m-d' }}`, `{{ reg.fecha_de_conclusion|date:'Y-m-d' }}`, `{{ reg.fecha_de_liquidacion|date:'Y-m-d' }}`, {{ reg.estatus.pk }}, `{{ reg.comentarios }}`)" type="button" class="btn btn-outline-secondary">
                                 <i class="far fa-edit"></i>
                             </button>
                             <button title="Eliminar Trámite o Corrección" onclick="open_frm_tram_corr_delete({{ reg.pk }})" type="button" class="btn btn-outline-secondary">
@@ -408,6 +418,16 @@
                             <div class="form-group col-sm-4">
                                 <label>Fecha de Liquidación</label>
                                 <input value="{{ reg.fecha_de_liquidacion|date:'Y-m-d' }}" disabled=disabled" class="form-control" type="date" required="required"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-4">
+                                <label for="estatus">Estatus:</label>
+                                <input value="{{ reg.estatus }}" disabled="disabled" class="form-control" required="required"/>
+                            </div>
+                            <div class="form-group col-sm-8">
+                                <label>Comentarios</label>
+                                <textarea class="form-control">{{ reg.comentarios }}</textarea>
                             </div>
                         </div>
                     {% endfor %}
@@ -920,11 +940,13 @@
     let open_frm_pens_pso_add = () => {
         App.openPanel($("#tpl-pens-pso-add").html(), "Captura Datos de Pensión en Proceso" );
     }
-    let open_frm_pens_pso_update = (id_record, medio, fecha_de_envio, fecha_de_pago_inicial, fecha_de_retiro_total, prorroga_o_incorformidad, fecha_de_envio_p, fecha_de_correccion, concluido) => {
+    let open_frm_pens_pso_update = (id_record, medio, fecha_de_envio, fecha_de_pago_inicial, fecha_de_retiro_total, prorroga_o_incorformidad, fecha_de_envio_p, fecha_de_correccion, concluido, estatus, comentarios) => {
         let template = Handlebars.compile($("#tpl-pens-pso-upd").html());
         let html = template({id_record, fecha_de_envio, fecha_de_pago_inicial, fecha_de_retiro_total, prorroga_o_incorformidad, fecha_de_envio_p, fecha_de_correccion, concluido});
         App.openPanel( html, "Actualización de Pensión en Proceso");
         $("#medio").val(medio);
+        $("#estatus").val(estatus);
+        $("#comentarios").val(comentarios)
     }
     let open_frm_pens_pso_delete = (id_record) => {
         let template = Handlebars.compile($("#tpl-pens-pso-del").html());
@@ -979,11 +1001,27 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-sm-12">
+            <div class="form-group col-sm-4">
                 <label>
                     <input type="checkbox" name="concluido" id="concluido" value="yes" />
                     Concluido
                 </label>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="estatus">Estatus:</label>
+                <select class="form-control" name="estatus" id="estatus" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.ESTATUS_PENS_PSO %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label for="comentarios">Comentarios</label>
+                <textarea class="form-control" id="comentarios" name="comentarios"></textarea>
             </div>
         </div>
         {% endverbatim %}
@@ -1038,11 +1076,27 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-sm-12">
+            <div class="form-group col-sm-4">
                 <label>
                     <input type="checkbox" name="concluido" id="concluido" value="yes" {{#if concluido }}checked="checked"{{/if}} />
                     Concluido
                 </label>
+            </div>
+            <div class="form-group col-sm-4">
+                <label for="estatus">Estatus:</label>
+                <select class="form-control" name="estatus" id="estatus" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.ESTATUS_PENS_PSO %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label for="comentarios">Comentarios</label>
+                <textarea class="form-control" id="comentarios" name="comentarios"></textarea>
             </div>
         </div>
         {% endverbatim %}
@@ -1070,12 +1124,14 @@
     let open_frm_tram_corr_add = () => {
         App.openPanel($("#tpl-tram-corr-add").html(), "Captura Datos de Trámites y Correcciones" );
     }
-    let open_frm_tram_corr_update = (id_record, tipo_de_tramite, medio, costo, fecha_de_envio, fecha_de_conclusion, fecha_de_liquidacion) => {
+    let open_frm_tram_corr_update = (id_record, tipo_de_tramite, medio, costo, fecha_de_envio, fecha_de_conclusion, fecha_de_liquidacion, estatus, comentarios) => {
         let template = Handlebars.compile($("#tpl-tram-corr-upd").html());
         let html = template({id_record, costo, fecha_de_envio, fecha_de_conclusion, fecha_de_liquidacion});
         App.openPanel( html, "Actualización de Trámites y Correcciones");
         $("#medio").val(medio);
         $("#tipo_de_tramite").val(tipo_de_tramite);
+        $("#estatus").val(estatus);
+        $("#comentarios").val(comentarios)
     }
     let open_frm_tram_corr_delete = (id_record) => {
         let template = Handlebars.compile($("#tpl-tram-corr-del").html());
@@ -1129,6 +1185,22 @@
                 <input class="form-control" type="date" name="fecha_de_liquidacion" id="fecha_de_liquidacion" />
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="estatus">Estatus:</label>
+                <select class="form-control" name="estatus" id="estatus" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.ESTATUS_TRAM_CORR %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-8">
+                <label for="comentarios">Comentarios</label>
+                <textarea class="form-control" id="comentarios" name="comentarios"></textarea>
+            </div>
+        </div>
         {% endverbatim %}
         <button type="submit" class="btn btn-outline-primary">Guardar</button>
     </form>
@@ -1178,6 +1250,22 @@
             <div class="form-group col-sm-4">
                 <label for="fecha_de_liquidacion">Fecha de Liquidación</label>
                 <input value="{{ fecha_de_liquidacion }}" class="form-control" type="date" name="fecha_de_liquidacion" id="fecha_de_liquidacion" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                <label for="estatus">Estatus:</label>
+                <select class="form-control" name="estatus" id="estatus" required="required">
+                    {% endverbatim %}
+                    {% for opc in cbo_opt.ESTATUS_TRAM_CORR %}
+                        <option value="{{ opc.pk }}">{{ opc }}</option>
+                    {% endfor %}
+                    {% verbatim %}
+                </select>
+            </div>
+            <div class="form-group col-sm-8">
+                <label for="comentarios">Comentarios</label>
+                <textarea class="form-control" id="comentarios" name="comentarios"></textarea>
             </div>
         </div>
         {% endverbatim %}

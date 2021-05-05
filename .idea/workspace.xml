@@ -2,19 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/migrations/0066_auto_20210422_1536.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/migrations/0067_tmpestatuspenspso_tmpestatustramcorr.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/url_tmp_estatus_penspso.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/url_tmp_estatus_tramcorr.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_penspso.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_tramcorr.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_estatus_penspso.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/index_estatus_tramcorr.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0068_auto_20210504_1903.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/forms_tmp_rep_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms_tmp_rep_control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models_reportes_control_tmp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_reportes_control_tmp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/url_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/url_tmp_reportes_control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_penspso.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_penspso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_tramcorr.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_estatus_tramcorr.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/admin.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +109,7 @@
       <workItem from="1618973310671" duration="7000" />
       <workItem from="1619107240032" duration="3501000" />
       <workItem from="1619553168753" duration="26000" />
-      <workItem from="1620137378729" duration="3814000" />
+      <workItem from="1620137378729" duration="7973000" />
     </task>
     <servers />
   </component>

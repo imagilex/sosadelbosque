@@ -7,14 +7,14 @@ from routines.mkitsafe import valida_acceso
 from routines.utils import requires_jquery_ui
 from initsys.models import Usr
 
-from .models_reportes_control_tmp import TmpEstatusPensPso
-from .forms_tmp_rep_control import frmTmpEstatusPensPso
+from .models_reportes_control_tmp import TmpEstatusTramCorr
+from .forms_tmp_rep_control import frmTmpEstatusTramCorr
 
 
 @valida_acceso()
 def index(request):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
-    data = list(TmpEstatusPensPso.objects.all())
+    data = list(TmpEstatusTramCorr.objects.all())
     toolbar = []
     toolbar.append({
         'type': 'link',
@@ -38,7 +38,7 @@ def index(request):
 @valida_acceso()
 def new(request):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
-    frm = frmTmpEstatusPensPso(request.POST or None)
+    frm = frmTmpEstatusTramCorr(request.POST or None)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
         obj.created_by = usuario
@@ -58,10 +58,10 @@ def new(request):
 @valida_acceso()
 def see(request, pk):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
-    if not TmpEstatusPensPso.objects.filter(pk=pk).exists():
+    if not TmpEstatusTramCorr.objects.filter(pk=pk).exists():
         return HttpResponseRedirect(reverse('item_no_encontrado'))
-    obj = TmpEstatusPensPso.objects.get(pk=pk)
-    frm = frmTmpEstatusPensPso(instance=obj)
+    obj = TmpEstatusTramCorr.objects.get(pk=pk)
+    frm = frmTmpEstatusTramCorr(instance=obj)
     toolbar = []
     if usuario.has_perm_or_has_perm_child(
             'medioactividad.medios_de_actividad_app | medio actividad'
@@ -102,10 +102,10 @@ def see(request, pk):
 @valida_acceso()
 def update(request, pk):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
-    if not TmpEstatusPensPso.objects.filter(pk=pk).exists():
+    if not TmpEstatusTramCorr.objects.filter(pk=pk).exists():
         return HttpResponseRedirect(reverse('item_no_encontrado'))
-    obj = TmpEstatusPensPso.objects.get(pk=pk)
-    frm = frmTmpEstatusPensPso(instance=obj, data=request.POST or None)
+    obj = TmpEstatusTramCorr.objects.get(pk=pk)
+    frm = frmTmpEstatusTramCorr(instance=obj, data=request.POST or None)
     if "POST" == request.method and frm.is_valid():
         obj = frm.save(commit=False)
         obj.updated_by = usuario
@@ -123,9 +123,9 @@ def update(request, pk):
 @valida_acceso()
 def delete(request, pk):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
-    if not TmpEstatusPensPso.objects.filter(pk=pk).exists():
+    if not TmpEstatusTramCorr.objects.filter(pk=pk).exists():
         return HttpResponseRedirect(reverse('item_no_encontrado'))
-    obj = TmpEstatusPensPso.objects.get(pk=pk)
+    obj = TmpEstatusTramCorr.objects.get(pk=pk)
     try:
         obj.delete()
         return HttpResponseRedirect(reverse('tmpestatustramcorr_index'))

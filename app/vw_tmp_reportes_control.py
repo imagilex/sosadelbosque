@@ -13,7 +13,7 @@ from .models import (
     TmpProxEvt, TmpEstatusEnvio, TmpMedioInscMod40, TmpMedioPatronSustituto,
     TmpMedioPensPso, TmpMedioTramCorr, TmpTipoTramCorr,
     TmpReportPensionesEnProceso, TmpReportTramitesYCorrecciones,
-    EstatusDeTramite
+    EstatusDeTramite, TmpEstatusPensPso, TmpEstatusTramCorr
     )
 from .models import Usr, Cliente, TaxonomiaExpediente, UsrResponsables
 
@@ -162,6 +162,7 @@ def admin(request, pk_cte):
         elif "add-pens-pso" == action:
             TmpReportPensionesEnProceso.objects.create(
                 medio=TmpMedioPensPso.objects.get(pk=request.POST.get('medio')),
+                estatus=TmpEstatusPensPso.objects.get(pk=request.POST.get('estatus')),
                 fecha_de_envio=reader.AsDate('fecha_de_envio'),
                 fecha_de_pago_inicial=reader.AsDate('fecha_de_pago_inicial'),
                 fecha_de_retiro_total=reader.AsDate('fecha_de_retiro_total'),
@@ -169,6 +170,7 @@ def admin(request, pk_cte):
                 fecha_de_correccion=reader.AsDate('fecha_de_correccion'),
                 prorroga_o_incorformidad= request.POST.get('prorroga_o_incorformidad')=="yes",
                 concluido= request.POST.get('concluido')=="yes",
+                comentarios= request.POST.get('comentarios'),
                 cliente=cte,
                 autor=usuario
             )
@@ -176,6 +178,7 @@ def admin(request, pk_cte):
             reg = TmpReportPensionesEnProceso.objects.get(
                 pk=request.POST.get('id_record'))
             reg.medio = TmpMedioPensPso.objects.get(pk=request.POST.get('medio'))
+            reg.estatus = TmpEstatusPensPso.objects.get(pk=request.POST.get('estatus'))
             reg.fecha_de_envio = reader.AsDate('fecha_de_envio')
             reg.fecha_de_pago_inicial = reader.AsDate('fecha_de_pago_inicial')
             reg.fecha_de_retiro_total = reader.AsDate('fecha_de_retiro_total')
@@ -183,6 +186,7 @@ def admin(request, pk_cte):
             reg.fecha_de_correccion = reader.AsDate('fecha_de_correccion')
             reg.prorroga_o_incorformidad = request.POST.get('prorroga_o_incorformidad') == "yes"
             reg.concluido = request.POST.get('concluido') == "yes"
+            reg.comentarios = request.POST.get('comentarios')
             reg.save()
         elif "delete-pens-pso" == action:
             TmpReportPensionesEnProceso.objects.get(
@@ -190,11 +194,13 @@ def admin(request, pk_cte):
         elif "add-tram-corr" == action:
             TmpReportTramitesYCorrecciones.objects.create(
                 medio=TmpMedioTramCorr.objects.get(pk=request.POST.get('medio')),
+                estatus=TmpEstatusTramCorr.objects.get(pk=request.POST.get('estatus')),
                 tipo_de_tramite=TmpTipoTramCorr.objects.get(pk=request.POST.get('tipo_de_tramite')),
                 fecha_de_envio=reader.AsDate('fecha_de_envio'),
                 fecha_de_conclusion=reader.AsDate('fecha_de_conclusion'),
                 costo=reader.AsFloat('costo'),
                 fecha_de_liquidacion=reader.AsDate('fecha_de_liquidacion'),
+                comentarios=request.POST.get('comentarios'),
                 cliente=cte,
                 autor=usuario
             )
@@ -202,11 +208,13 @@ def admin(request, pk_cte):
             reg = TmpReportTramitesYCorrecciones.objects.get(
                 pk=request.POST.get('id_record'))
             reg.medio = TmpMedioTramCorr.objects.get(pk=request.POST.get('medio'))
+            reg.estatus = TmpEstatusTramCorr.objects.get(pk=request.POST.get('estatus'))
             reg.tipo_de_tramite = TmpTipoTramCorr.objects.get(pk=request.POST.get('tipo_de_tramite'))
             reg.fecha_de_envio = reader.AsDate('fecha_de_envio')
             reg.fecha_de_conclusion = reader.AsDate('fecha_de_conclusion')
             reg.costo = reader.AsFloat('costo')
             reg.fecha_de_liquidacion = reader.AsDate('fecha_de_liquidacion')
+            reg.comentarios = request.POST.get('comentarios')
             reg.save()
         elif "delete-tram-corr" == action:
             TmpReportTramitesYCorrecciones.objects.get(
@@ -240,6 +248,8 @@ def admin(request, pk_cte):
                 'MEDIO_PENS_PSO': list(TmpMedioPensPso.objects.all()),
                 'MEDIO_TRAM_CORR': list(TmpMedioTramCorr.objects.all()),
                 'TIPO_TRAM_CORR': list(TmpTipoTramCorr.objects.all()),
+                'ESTATUS_PENS_PSO': list(TmpEstatusPensPso.objects.all()),
+                'ESTATUS_TRAM_CORR': list(TmpEstatusTramCorr.objects.all()),
             },
             })
 
