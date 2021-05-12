@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_inscrmod40.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_inscrmod40.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_patronsustituto.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_patronsustituto.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_pens_pso.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_pens_pso.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_tram_corr.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control/reporte_tram_corr.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +106,8 @@
       <workItem from="1619553168753" duration="26000" />
       <workItem from="1620137378729" duration="8140000" />
       <workItem from="1620314619635" duration="606000" />
-      <workItem from="1620781822325" duration="3426000" />
+      <workItem from="1620781822325" duration="3531000" />
+      <workItem from="1620787045319" duration="23000" />
     </task>
     <servers />
   </component>
