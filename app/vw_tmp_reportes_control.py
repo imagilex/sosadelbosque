@@ -641,11 +641,7 @@ def vwReporteControlPensionesEnProceso(request):
             data = data.filter(
                 fecha_de_retiro_total__lte=ftr_fecha_de_retiro_total_fin)
         if ftr_estatus:
-            if 1 == ftr_estatus:
-                data = data.filter(concluido=True)
-            elif 2 == ftr_estatus:
-                data = data.filter(
-                    concluido=False, prorroga_o_incorformidad=True)
+            data = data.filter(estatus__pk=ftr_estatus)
     return render(
         request,
         'app/cliente/tmp_reportes_control/reporte_pens_pso.html', {
@@ -676,7 +672,7 @@ def vwReporteControlPensionesEnProceso(request):
                 'tipo_expediente': list(TaxonomiaExpediente.objects.all()),
                 'responsables': UsrResponsables(),
                 'medio': list(TmpMedioPensPso.objects.all()),
-                'estatus': EstatusDeTramite,
+                'estatus': list(TmpEstatusPensPso.objects.all()),
             },
         })
 
@@ -698,6 +694,7 @@ def vwReporteControlTramitesYCorrecciones(request):
         'ftr_fecha_de_liquidacion_inicio')
     ftr_fecha_de_liquidacion_fin = reader.AsDate('ftr_fecha_de_liquidacion_fin')
     ftr_tipo_de_tramite = reader.AsInt('ftr_tipo_de_tramite')
+    ftr_estatus = reader.AsInt('ftr_estatus')
     if "POST" == request.method:
         data = TmpReportTramitesYCorrecciones.objects.all()
         if ftr_tipo_expediente:
@@ -728,6 +725,8 @@ def vwReporteControlTramitesYCorrecciones(request):
         if ftr_fecha_de_liquidacion_fin:
             data = data.filter(
                 fecha_de_liquidacion__lte=ftr_fecha_de_liquidacion_fin)
+        if ftr_estatus:
+            data = data.filter(estatus__pk=ftr_estatus)
     return render(
         request,
         'app/cliente/tmp_reportes_control/reporte_tram_corr.html', {
@@ -759,5 +758,6 @@ def vwReporteControlTramitesYCorrecciones(request):
                 'responsables': UsrResponsables(),
                 'medio': list(TmpMedioTramCorr.objects.all()),
                 'tipo_tram': list(TmpTipoTramCorr.objects.all()),
+                'estatus': list(TmpEstatusTramCorr.objects.all()),
             },
         })

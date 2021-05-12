@@ -65,20 +65,29 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-4 form-group">
+                <div class="col-sm-3 form-group">
                     <label for="ftr_fecha_de_liquidacion_inicio">Fecha de Liquidación (incio)</label>
                     <input type="date" class="form-control" id="ftr_fecha_de_liquidacion_inicio" name="ftr_fecha_de_liquidacion_inicio" value="{{ filters.ftr_fecha_de_liquidacion_inicio}}"/>
                 </div>
-                <div class="col-sm-4 form-group">
+                <div class="col-sm-3 form-group">
                     <label for="ftr_fecha_de_liquidacion_fin">Fecha de Liquidación (fin)</label>
                     <input type="date" class="form-control" id="ftr_fecha_de_liquidacion_fin" name="ftr_fecha_de_liquidacion_fin" value="{{ filters.ftr_fecha_de_liquidacion_fin}}"/>
                 </div>
-                <div class="col-sm-4 form-group">
+                <div class="col-sm-3 form-group">
                     <label for="ftr_tipo_de_tramite">Tipo de Trámite</label>
                     <select name="ftr_tipo_de_tramite" id="ftr_tipo_de_tramite" class="form-control">
                         <option value=""></option>
                         {% for opt in combo_options.tipo_tram %}
                             <option value="{{ opt.pk }}" {% if opt.pk == filters.ftr_tipo_de_tramite %}selected="select"{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="ftr_estatus">Estatus</label>
+                    <select name="ftr_estatus" id="ftr_estatus" class="form-control">
+                        <option value=""></option>
+                        {% for opt in combo_options.estatus %}
+                            <option value="{{ opt.pk }}" {% if opt.pk == filters.ftr_estatus %}selected="select"{% endif %}>{{ opt }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -99,80 +108,54 @@
                 <th onclick="App.sortDataGridReport(1, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Tipo de Expediente
+                    Medio
                 </th>
                 <th onclick="App.sortDataGridReport(2, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Ejecutivo
-                </th>
-                <th onclick="App.sortDataGridReport(3, 'str')" style="cursor: pointer;">
-                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
-                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Gestor
-                </th>
-                <th onclick="App.sortDataGridReport(4, 'str')" style="cursor: pointer;">
-                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
-                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Medio
-                </th>
-                <th onclick="App.sortDataGridReport(5, 'str')" style="cursor: pointer;">
-                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
-                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
                     Tipo de Trámite
                 </th>
-                <th onclick="App.sortDataGridReport(6, 'number')" style="cursor: pointer;">
+                <th onclick="App.sortDataGridReport(3, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha de Envío
+                    Fechas
                 </th>
-                <th onclick="App.sortDataGridReport(7, 'number')" style="cursor: pointer;">
-                    <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
-                    <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha de Conclusión
-                </th>
-                <th onclick="App.sortDataGridReport(8, 'number')" style="cursor: pointer;">
+                <th onclick="App.sortDataGridReport(4, 'number')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
                     Costo
                 </th>
-                <th onclick="App.sortDataGridReport(9, 'number')" style="cursor: pointer;">
+                <th onclick="App.sortDataGridReport(5, 'str')" style="cursor: pointer;">
                     <i class="fas fa-sort-down float-right d-none sort-sign-asc"></i>
                     <i class="fas fa-sort-up float-right d-none sort-sign-desc"></i>
-                    Fecha de Liquidación
+                    Estatus
+                </th>
+                <th>
+                    Comentarios
                 </th>
             </tr>
         </thead>
         <tfoot>
             <tr>
                 <th>Cliente</th>
-                <th>Tipo de Expediente</th>
-                <th>Ejecutivo</th>
-                <th>Gestor</th>
                 <th>Medio</th>
                 <th>Tipo de Trámite</th>
-                <th>Fecha de Envío</th>
-                <th>Fecha de Conclusión</th>
+                <th>Fechas</th>
                 <th>Costo</th>
-                <th>Fecha de Liquidación</th>
+                <th>Estatus</th>
+                <th>Comentarios</th>
             </tr>
         </tfoot>
-        <tbody id="data-tbl">
+        <tbody id="data-tbl" class="small">
             {% for reg in regs %}
             <tr>
                 <td data-rawsortvalue="{{ reg.cliente|lower }}">
-                    <a href="{% url 'cliente_see' pk=reg.cliente.pk %}">
+                    <a href="{% url 'tmp_reporte_control_admin' pk_cte=reg.cliente.pk %}">
                         {{ reg.cliente }}
-                    </a>
-                </td>
-                <td data-rawsortvalue="{{ reg.cliente.tipo|lower }}">
-                    {{ reg.cliente.tipo }}
-                </td>
-                <td data-rawsortvalue="{{ reg.cliente.responsable|lower }}">
-                    {% if reg.cliente.responsable %}{{ reg.cliente.responsable }}{% endif %}
-                </td>
-                <td data-rawsortvalue="{{ reg.cliente.gestor|lower }}">
-                    {% if reg.cliente.gestor %}{{ reg.cliente.gestor }}{% endif %}
+                    </a><br />
+                    <strong>Tipo Exp:</strong> {{ reg.cliente.tipo }}<br />
+                    {% if reg.cliente.responsable %}<strong>Ejecutivo:</strong> {{ reg.cliente.responsable }}<br />{% endif %}
+                    {% if reg.cliente.gestor %}<strong>Gestor:</strong> {{ reg.cliente.gestor }}{% endif %}
                 </td>
                 <td data-rawsortvalue="{{ reg.medio|lower }}">
                     {{ reg.medio }}
@@ -180,17 +163,19 @@
                 <td data-rawsortvalue="{{ reg.tipo_de_tramite|lower }}">
                     {{ reg.tipo_de_tramite }}
                 </td>
-                <td data-rawsortvalue="{{ reg.fecha_de_envio|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_de_envio|date:'d/m/Y' }}
-                </td>
-                <td data-rawsortvalue="{{ reg.fecha_de_conclusion|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_de_conclusion|date:'d/m/Y' }}
+                <td data-rawsortvalue="{{ reg.fecha_de_envio|date:'Ymd' }}">
+                    <strong>Envío:</strong> {{ reg.fecha_de_envio|date:'d/m/Y' }}<br />
+                    <strong>Conclusión:</strong> {{ reg.fecha_de_conclusion|date:'d/m/Y' }}<br />
+                    <strong>Liquidación:</strong> {{ reg.fecha_de_liquidacion|date:'d/m/Y' }}
                 </td>
                 <td data-rawsortvalue="{{ reg.costo }}" class="text-right">
                     {{ reg.costo|floatformat:2|intcomma }}
                 </td>
-                <td data-rawsortvalue="{{ reg.fecha_de_liquidacion|date:'Ymd' }}" class="text-right">
-                    {{ reg.fecha_de_liquidacion|date:'d/m/Y' }}
+                <td data-rawsortvalue="{{ reg.estatus|lower }}">
+                    {{ reg.estatus }}
+                </td>
+                <td>
+                    {{ reg.comentarios }}
                 </td>
             </tr>
             {% endfor %}
