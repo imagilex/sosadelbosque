@@ -139,7 +139,7 @@
             {% for reg in regs %}
             <tr>
                 <td data-rawsortvalue="{{ reg.cliente|lower }}">
-                    <a href="{% url 'cliente_see' pk=reg.cliente.pk %}">
+                    <a href="{% url 'tmp_reporte_control_admin' pk_cte=reg.cliente.pk %}">
                         {{ reg.cliente }}
                     </a>
                 </td>
