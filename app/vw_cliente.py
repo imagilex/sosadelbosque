@@ -170,13 +170,21 @@ def see(request, pk):
     frmCteDir = FrmDireccion(instance=obj.domicilicio)
     frmCteObs = frmClienteObservaciones(instance=obj)
     if obj.responsable:
-        frmCteObsE = frmClienteObservacionesExtra(
-            instance=obj,
-            data=request.POST or None,
-            initial={
-                'responsable': obj.responsable.pk,
-                'gestor': obj.gestor.pk,
-            })
+        if obj.gestor:
+            frmCteObsE = frmClienteObservacionesExtra(
+                instance=obj,
+                data=request.POST or None,
+                initial={
+                    'responsable': obj.responsable.pk,
+                    'gestor': obj.gestor.pk,
+                })
+        else:
+            frmCteObsE = frmClienteObservacionesExtra(
+                instance=obj,
+                data=request.POST or None,
+                initial={
+                    'responsable': obj.responsable.pk,
+                })
     else:
         frmCteObsE = frmClienteObservacionesExtra(
             instance=obj, data=request.POST or None)
