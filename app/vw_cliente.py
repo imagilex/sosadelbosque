@@ -173,7 +173,10 @@ def see(request, pk):
         frmCteObsE = frmClienteObservacionesExtra(
             instance=obj,
             data=request.POST or None,
-            initial={'responsable': obj.responsable.pk})
+            initial={
+                'responsable': obj.responsable.pk,
+                'gestor': obj.gestor.pk,
+            })
     else:
         frmCteObsE = frmClienteObservacionesExtra(
             instance=obj, data=request.POST or None)
