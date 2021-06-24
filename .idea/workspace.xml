@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/vw_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_cliente.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +15,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="2" />
@@ -110,7 +119,9 @@
       <workItem from="1620857582585" duration="323000" />
       <workItem from="1622589435657" duration="65000" />
       <workItem from="1622593315619" duration="1033000" />
-      <workItem from="1622607047175" duration="63000" />
+      <workItem from="1622607047175" duration="369000" />
+      <workItem from="1624297244753" duration="71000" />
+      <workItem from="1624548850020" duration="387000" />
     </task>
     <servers />
   </component>
