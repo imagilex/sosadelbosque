@@ -52,6 +52,12 @@ class POSTParam():
 def admin(request, pk_cte):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     cte = Cliente.objects.get(pk=pk_cte)
+    toolbar = [{
+        'type': 'link_pk',
+        'view': 'cliente_see',
+        'pk': pk_cte,
+        'label': 'Ver Cliente',
+    }]
     if "POST" == request.method:
         reader = POSTParam(request)
         action = request.POST.get('action')
@@ -225,6 +231,7 @@ def admin(request, pk_cte):
             'menu_main': usuario.main_menu_struct(),
             'titulo': 'Información de Control',
             'titulo_descripcion': cte,
+            'toolbar': toolbar,
             'req_ui': requires_jquery_ui(request),
             'data_ultimo_contacto': list(
                 TmpReporteControlRecepcion.objects.filter(cliente=cte)),
