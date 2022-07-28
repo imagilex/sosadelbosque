@@ -3,7 +3,7 @@
 {% load util_filters %}
 {% block content %}
 
-<form method="post" action="">
+<form id="mainform" method="post" action="">
     {% csrf_token %}
     <div class="form-row">
         <div class="form-group col-sm-4">
@@ -104,6 +104,10 @@
     <a class="btn btn-info" href="https://grupo.sosadelbosque.mx/#contacto" target="_blank" a>https://grupo.sosadelbosque.mx</a>
 </div>
 
+<script type="text/javascript">
+window.scroll(0, window.outerHeight * 2);
+</script>
+
 {% endif %}
 
 <script type="text/javascript">
@@ -152,4 +156,10 @@ function formatCurrencyAllFields() {
 window.setTimeout(formatCurrencyAllFields, 500);
 </script>
 
+{% if autosend %}
+    <script type="text/javascript">
+    $("#mainform").attr('action', '{% url "utilerias_simulador"  %}');
+    $("#mainform").submit();
+    </script>
+{% endif %}
 {% endblock %}

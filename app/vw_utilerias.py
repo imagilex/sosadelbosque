@@ -1,7 +1,17 @@
+import curses.ascii
+
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+
+import imaplib
+import email
+from email.header import decode_header
+import xmltodict
+from time import sleep
 
 from routines.utils import requires_jquery_ui
 from .models_historialaboral import *
@@ -11,6 +21,11 @@ def str2pesos(cantidad):
     return float(cantidad.replace('$', '').replace(',', ''))
 
 
+def clean(txt):
+    return "".join(c if c.isalnum() else "_" for c in txt)
+
+
+# @csrf_exempt
 @xframe_options_exempt
 def simulador(request):
     data = {
@@ -98,5 +113,68 @@ def simulador(request):
             'data': data,
             'results': results,
             'calculated': calculated,
+        }
+    )
+
+def check_mail(request):
+    imap = imaplib.IMAP4_SSL(settings.EMAIL_HOST)
+    imap.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+    status, num = imap.select('INBOX',False)
+    num = int(num[0])
+    for idx in range(num, 0, -1):
+        res, msg = imap.fetch(str(idx), "(RFC822)")
+        for resp in msg:
+            if isinstance(resp, tuple):
+                msg = email.message_from_bytes(resp[1])
+                subject, encoding = decode_header(msg["Subject"])[0]
+                if isinstance(subject, bytes):
+                    subject = subject.decode(encoding)
+                if subject != "Simulador Pensión":
+                    continue
+                From, encoding = decode_header(msg["From"])[0]
+                if isinstance(From, bytes):
+                    From = From.decode(encoding)
+                if msg.is_multipart():
+                    for part in msg.walk():
+                        ctype = part.get_content_type()
+                        cdisp = str(part.get("Content-Disposition"))
+                        try:
+                            body = part.get_payload(decode=True).decode()
+                        except:
+                            pass
+                        if ctype == "text/plain" and "attachment" not in cdisp:
+                            break
+                else:
+                    ctype = msg.get_content_type()
+                    body = msg.get_payload(decode=True).decode()
+        data = xmltodict.parse(body)['html']['body']['table'][0]['tbody']['tr']['td']
+        data = data['table']['tbody']['tr']['td']['table']['tbody']['tr']['td']
+        data = data['table']['tbody']['tr']
+        simData = list()
+        for row in data:
+            if isinstance(row['td'], list) and len(row['td'])==2:
+                simData.append([row['td'][0]['#text'], row['td'][1]['#text'],])
+        imap.copy(str(idx), 'INBOX.cotizaciones')
+        imap.store(str(idx), '+FLAGS', '\\Deleted')
+        imap.expunge()
+        break
+    imap.close()
+    imap.logout()
+    return render(
+        request,
+        'app/utilerias/simulador.html', {
+            'menu_main': {'perms': None},
+            'titulo': "Simulador de Pension IMSS Ley 73",
+            'data': {
+                'edad_qty': simData[0][1],
+                'semanas_amt': simData[1][1],
+                'hijos_qty': simData[2][1],
+                'salario_1': simData[3][1],
+                'salario_2': simData[4][1],
+                'salario_3': simData[5][1],
+                'salario_4': simData[6][1],
+                'salario_5': simData[7][1],
+            },
+            'autosend': True,
         }
     )

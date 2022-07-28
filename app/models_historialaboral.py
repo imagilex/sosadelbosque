@@ -46,8 +46,11 @@ class HistoriaLaboral(models.Model):
     numero_de_hijos = models.PositiveSmallIntegerField(
         default=0, verbose_name="Número de Hijos")
     semanas_descontar = models.PositiveSmallIntegerField(
-        default=0, verbose_name="Número de Semanas a Descontar"
-    )
+        default=0, verbose_name="Número de Semanas a Descontar")
+    semanas_reincorporadas = models.PositiveSmallIntegerField(
+        default=0, verbose_name="Número de Semanas Reincorporadas")
+    semanas_favor_cd = models.PositiveSmallIntegerField(
+        default=0, verbose_name="Número de Semanas a Favor CD")
     created_by = models.ForeignKey(
         Usr, on_delete=models.SET_NULL,
         null=True, blank=True, related_name="+")
@@ -67,7 +70,7 @@ class HistoriaLaboral(models.Model):
             res = 0
         for reg in self.registros_supuesto.all():
             res += reg.dias_cotizados
-        return res - (7 * self.semanas_descontar)
+        return res + (7 * (self.semanas_favor_cd + self.semanas_reincorporadas - self.semanas_descontar))
 
     @property
     def semanas_cotizadas(self):
@@ -77,7 +80,7 @@ class HistoriaLaboral(models.Model):
             res = 0
         for reg in self.registros_supuesto.all():
             res += reg.semanas_cotizadas
-        return res - self.semanas_descontar
+        return res - self.semanas_descontar + self.semanas_favor_cd + self.semanas_reincorporadas
 
     @property
     def inicio(self):

@@ -499,6 +499,8 @@ def historia_laboral(request, pk):
             historia.tiene_esposa = "on" == request.POST.get('tiene_esposa')
             historia.numero_de_hijos = request.POST.get('numero_de_hijos')
             historia.semanas_descontar = request.POST.get('semanas_descontar')
+            historia.semanas_reincorporadas = request.POST.get('semanas_reincorporadas')
+            historia.semanas_favor_cd = request.POST.get('semanas_favor_cd')
             historia.updated_by = usuario
             historia.save()
         elif "captura-supuesto" == request.POST.get('action'):

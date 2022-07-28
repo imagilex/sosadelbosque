@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+import pandas as pd
 
 from routines.utils import BootstrapColors
 from initsys.models import Usr, Direccion
@@ -7,18 +8,23 @@ from .models_opcs import *
 
 
 def UsuarioCliente():
-    return list(item['idusuario'] for item in Cliente.objects.all().values(
-        'idusuario'))
+    return list(
+        item['idusuario']
+        for item in Cliente.objects.all().values('idusuario'))
 
 
 def UsuarioNoCliente():
-    return list(item['idusuario'] for item in Usr.objects.exclude(
-        idusuario__in=UsuarioCliente()).values('idusuario'))
+    dfUsr = pd.DataFrame(
+        list(Usr.objects.all().values('idusuario')), columns=['idusuario'])
+    return dfUsr[~dfUsr.idusuario.isin(UsuarioCliente())]['idusuario'].to_list()
 
 
 def UsrResponsables():
-    return [(item.pk, f"{item}")
-        for item in Usr.objects.filter(idusuario__in=UsuarioNoCliente())]
+    resps = list()
+    for pk in UsuarioNoCliente():
+        item = Usr.objects.filter(pk=pk)[0]
+        resps.append((item.pk, f"{item}"), )
+    return resps
 
 
 class TaxonomiaExpediente(models.Model):
