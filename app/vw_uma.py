@@ -43,8 +43,6 @@ def new(request):
     frm = frmUMA(request.POST or None)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
-        obj.created_by = usuario
-        obj.updated_by = usuario
         obj.save()
         return HttpResponseRedirect(reverse('uma_see', kwargs={
             'pk': obj.pk}))
@@ -100,7 +98,6 @@ def update(request, pk):
     frm = frmUMA(instance=obj, data=request.POST or None)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
-        obj.updated_by = usuario
         obj.save()
         return HttpResponseRedirect(reverse('uma_see', kwargs={
             'pk': obj.pk}))

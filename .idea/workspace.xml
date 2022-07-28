@@ -5,21 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/migrations/0070_auto_20220727_2259.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_actividades.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_actividades.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_cliente.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_documentos.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_documentos.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_cliente.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_estatusactividad.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_estatusactividad.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_externo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_externo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_medioactividad.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_medioactividad.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_taxonomia.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_taxonomia.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_tipoactividad.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tipoactividad.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_tipodocumento.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tipodocumento.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_tmp_reportes_control_medio_insc_mod_40.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_tmp_reportes_control_medio_insc_mod_40.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routines/initapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/routines/initapp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_tasks/vw_tarea.py" beforeDir="false" afterPath="$PROJECT_DIR$/simple_tasks/vw_tarea.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models_historialaboral.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_historialaboral.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/vw_cuantiabasica.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_cuantiabasica.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/vw_factoredad.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_factoredad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/vw_uma.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_uma.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +163,7 @@
       <workItem from="1658852044909" duration="15000" />
       <workItem from="1658852113079" duration="11967000" />
       <workItem from="1658938120394" duration="2433000" />
-      <workItem from="1658970904599" duration="3928000" />
+      <workItem from="1658970904599" duration="4694000" />
     </task>
     <servers />
   </component>
