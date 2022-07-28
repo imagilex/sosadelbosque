@@ -106,12 +106,13 @@ venv.bak/
 #project files
 sosadelbosque/main_settings.py
 files/media/
-managed/managed.imgx
 managed/
-*.imgx
-*.imgx
 managed/managed.imgx
 *.imgx
 .vscode/launch.json
 .idea/workspace.xml
 .idea/
+.idea
+
+tmp/*
+passenger_wsgi.py
