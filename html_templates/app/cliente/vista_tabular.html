@@ -56,6 +56,18 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>Semanas a Reincorporar</th>
+                        <td class="text-right">
+                            {{ historia.semanas_reincorporadas }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Semanas a favor CD</th>
+                        <td class="text-right">
+                            {{ historia.semanas_favor_cd }}
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Suma de Salario</th>
                         <td class="text-right">
                             $ {{ historia.agg_salario.suma_salario|money2display }}
