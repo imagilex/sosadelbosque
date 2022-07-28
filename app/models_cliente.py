@@ -41,14 +41,6 @@ class TaxonomiaExpediente(models.Model):
         on_delete=models.SET_NULL,
         null=True, blank=True,
         related_name="hijos")
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["nombre"]

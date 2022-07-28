@@ -372,7 +372,6 @@ def reporte_maestro(request):
         'ftr_estado_actual': hipernormalize(request.POST.get(
             'ftr_estado_actual', '')),
     }
-    print(ftr)
     if "POST" == request.method:
         if ftr['ftr_fecha_limite_inicio'] == '':
             ftr['ftr_fecha_limite_inicio'] = date(

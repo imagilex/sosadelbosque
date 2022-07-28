@@ -1390,7 +1390,6 @@ def reporte_maestro_alertas(request):
             data = data.filter(created_at__gte=ftr['ftr_fecha_creacion_inicio'] + ' 00:00:00')
         if ftr['ftr_fecha_creacion_fin']:
             data = data.filter(created_at__lte=ftr['ftr_fecha_creacion_fin'] + ' 23:59:59')
-        print(len(data))
         if ftr['ftr_fecha_mostrar_inicio']:
             data = data.filter(fecha_alerta__gte=ftr['ftr_fecha_mostrar_inicio'])
         if ftr['ftr_fecha_mostrar_fin']:

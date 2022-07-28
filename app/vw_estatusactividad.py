@@ -50,8 +50,6 @@ def new(request):
     frm = frmEstatusActividad(request.POST or None)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
-        obj.created_by = usuario
-        obj.updated_by = usuario
         obj.save()
         return HttpResponseRedirect(reverse('estatusactividad_see', kwargs={
             'pk': obj.pk
@@ -115,7 +113,6 @@ def update(request, pk):
     frm = frmEstatusActividad(instance=obj, data=request.POST or None)
     if "POST" == request.method and frm.is_valid():
         obj = frm.save(commit=False)
-        obj.updated_by = usuario
         obj.save()
         return HttpResponseRedirect(reverse(
             'estatusactividad_see', kwargs={'pk': obj.pk}))
