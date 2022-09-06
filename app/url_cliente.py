@@ -51,5 +51,7 @@ urlpatterns = [
      path('reporte/alertas/', views.reporte_maestro_alertas,
           name="{}_reporte_maestro_alertas".format(object_name)),
 
+     path('acuerdos/', include('app.url_acuerdos')),
+
      path('control/', include('app.url_tmp_reportes_control')),
 ]

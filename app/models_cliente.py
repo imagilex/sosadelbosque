@@ -138,3 +138,6 @@ class Acuerdo(models.Model):
         Cliente, on_delete=models.CASCADE, related_name="cliente")
     titulo = models.CharField(max_length=250)
     acuerdo = models.TextField()
+    aceptado = models.BooleanField(default=False)
+    ip = models.GenericIPAddressField(null=True)
+    fechaHora = models.DateTimeField(null=True)

@@ -19,7 +19,7 @@ from .models import (
     HistoriaLaboralRegistro, HistoriaLaboralRegistroDetalle, UMA,
     DoctoGral, OpcionPension, Factoredad, Cuantiabasica,
     HistoriaLaboralRegistroDetalleSupuesto, HistoriaLaboralRegistroSupuesto,
-    UsrResponsables)
+    UsrResponsables, Acuerdo)
 from .forms import (
     frmCliente, frmClienteContacto, frmClienteUsuario, frmDocument,
     frmClienteObservaciones, frmClienteObservacionesExtra)
@@ -1424,3 +1424,46 @@ def reporte_maestro_alertas(request):
         'filters': ftr,
         'regs': data,
     })
+
+
+@valida_acceso(['cliente.clientes_cliente'])
+def acuerdo_index(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    cte = Cliente.objects.filter(pk=pk)[0]
+    toolbar = []
+    toolbar.append({
+        'type': 'link_pk',
+        'view': 'acuerdo_new',
+        'pk': pk,
+        'label': '<i class="far fa-file"></i> Nuevo'})
+    return render(
+        request,
+        'app/cliente/acuerdo_index.html', {
+            'menu_main': usuario.main_menu_struct(),
+            'titulo': 'Acuerdos',
+            'titulo_descripcion': cte,
+            'cte': cte,
+            'toolbar': toolbar,
+            'req_ui': requires_jquery_ui(request),
+        })
+@valida_acceso(['cliente.clientes_cliente'])
+def acuerdo_new(request, pk):
+    pass
+
+
+@valida_acceso(['cliente.clientes_cliente'])
+def acuerdo_see(request, pk):
+    pass
+
+
+@valida_acceso(['cliente.clientes_cliente'])
+def acuerdo_update(request, pk):
+    pass
+
+@valida_acceso(['cliente.clientes_cliente'])
+def acuerdo_delete(request, pk):
+    pass
+
+@valida_acceso()
+def acuerdo_index_usr(request):
+    pass
