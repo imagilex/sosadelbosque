@@ -41,14 +41,6 @@ class TaxonomiaExpediente(models.Model):
         on_delete=models.SET_NULL,
         null=True, blank=True,
         related_name="hijos")
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["nombre"]
@@ -140,3 +132,12 @@ class Cliente(Usr):
     def __unicode__(self):
         return self.__str__()
 
+class Acuerdo(models.Model):
+    idacuerdo = models.AutoField(primary_key=True)
+    cliente = models.ForeignKey(
+        Cliente, on_delete=models.CASCADE, related_name="cliente")
+    titulo = models.CharField(max_length=250)
+    acuerdo = models.TextField()
+    aceptado = models.BooleanField(default=False)
+    ip = models.GenericIPAddressField(null=True)
+    fechaHora = models.DateTimeField(null=True)

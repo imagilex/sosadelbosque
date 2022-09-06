@@ -46,8 +46,6 @@ def new(request):
     frm = frmTipoDocumento(request.POST or None)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
-        obj.created_by = usuario
-        obj.updated_by = usuario
         obj.save()
         return HttpResponseRedirect(reverse('tipodocumento_see', kwargs={
             'pk': obj.pk
@@ -107,7 +105,6 @@ def update(request, pk):
     frm = frmTipoDocumento(instance=obj, data=request.POST or None)
     if "POST" == request.method and frm.is_valid():
         obj = frm.save(commit=False)
-        obj.updated_by = usuario
         obj.save()
         return HttpResponseRedirect(reverse(
             'tipodocumento_see', kwargs={'pk': obj.pk}))

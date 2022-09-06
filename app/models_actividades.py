@@ -12,14 +12,6 @@ class EstatusActividad(models.Model):
         max_length=50, blank=True, choices=BootstrapColors,
         default=BootstrapColors[0][0])
     mostrar_en_panel = models.BooleanField(default=False, blank=True)
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["nombre"]
@@ -35,14 +27,6 @@ class EstatusActividad(models.Model):
 class TipoActividad(models.Model):
     idtipoactividad = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["nombre"]
@@ -58,14 +42,6 @@ class TipoActividad(models.Model):
 class MedioActividad(models.Model):
     idmedioctividad = models.AutoField(primary_key=True)
     medio = models.CharField(max_length=50)
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["medio"]
@@ -83,14 +59,6 @@ class Externo(models.Model):
     nombre = models.CharField(max_length=100)
     apellido_paterno = models.CharField(max_length=100, blank=True)
     apellido_materno = models.CharField(max_length=100, blank=True)
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["nombre", 'apellido_paterno', 'apellido_materno']

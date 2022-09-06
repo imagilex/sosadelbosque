@@ -46,7 +46,6 @@ def init_app_db():
     tax = TaxonomiaExpediente.objects.get_or_create(nombre='Altas IMSS')[0]
     TaxonomiaExpediente.objects.get_or_create(nombre='Cartera 2013')
     TaxonomiaExpediente.objects.get_or_create(nombre='Trámites Pensión')
-    print(tax)
     # Usuario
     pwd_cte = "sb-cte"
     usr_cte = Cliente.objects.get_or_create(
@@ -56,8 +55,6 @@ def init_app_db():
         fecha_nacimiento=date.today(), CURP='', RFC='', NSS='', empresa='',
         fecha_afore_actual=date.today())[0]
     usr_cte.set_password(pwd_cte)
-    print("Usuario Creado:\n\t   Usuario: {}\n\tContrasena: {}\n".format(
-        usr_cte.username, pwd_cte))
     usr_cte.groups.set([gpo_cte])
     usr_cte.save()
 

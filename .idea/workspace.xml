@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/migrations/0069_auto_20220727_1345.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_cliente.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_historialaboral.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_historialaboral.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/url_utilerias.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/url_utilerias.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_cliente.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_utilerias.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_utilerias.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/historial.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/historial.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/vista_tabular.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/vista_tabular.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/utilerias/simulador.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/utilerias/simulador.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/see.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/see.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +19,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -45,6 +36,29 @@
   </component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="2" />
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="removeUsrCat" />
+                    <option name="lastUsedInstant" value="1658979227" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1658979226" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -147,7 +161,10 @@
       <workItem from="1658852044909" duration="15000" />
       <workItem from="1658852113079" duration="11967000" />
       <workItem from="1658938120394" duration="2433000" />
-      <workItem from="1658970904599" duration="323000" />
+      <workItem from="1658970904599" duration="5297000" />
+      <workItem from="1661965083845" duration="613000" />
+      <workItem from="1662484710659" duration="2221000" />
+      <workItem from="1662500387742" duration="4831000" />
     </task>
     <servers />
   </component>

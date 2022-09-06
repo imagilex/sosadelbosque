@@ -616,14 +616,6 @@ class UMA(models.Model):
     iduma = models.AutoField(primary_key=True)
     año = models.PositiveSmallIntegerField(default=getyear, unique=True)
     valor = models.DecimalField(max_digits=5, decimal_places=2)
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-año']
@@ -643,14 +635,6 @@ class Cuantiabasica(models.Model):
         max_digits=5, decimal_places=3)
     porcentaje_de_incremento_anual = models.DecimalField(
         max_digits=5, decimal_places=3)
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['salario_inicio', 'salario_fin']
@@ -666,14 +650,6 @@ class Factoredad(models.Model):
     idfactoredad = models.AutoField(primary_key=True)
     edad = models.PositiveSmallIntegerField()
     factor_de_edad = models.DecimalField(max_digits=6, decimal_places=3)
-    created_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(
-        Usr, on_delete=models.SET_NULL,
-        null=True, blank=True, related_name="+")
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['edad']

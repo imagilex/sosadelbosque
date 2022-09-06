@@ -84,6 +84,12 @@
                 <i class="fas fa-wrench"></i>
                 Datos de Control
             </a>
+            <p></p>
+            <!--<a href="{% url 'acuerdo_index' pkcte=cte.pk %}" class="btn btn-outline-primary btn-block">
+               <i class="fas fa-handshake"></i>
+               Acuerdos
+            </a>
+            <p></p>-->
             {% if cperms.ver_actividad and cte.actividades_asociadas.all %}
             <h5>Actividades</h5>
             <div class="list-group">

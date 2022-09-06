@@ -13,7 +13,6 @@ from .forms_tmp_rep_control import frmTmpMedioInscMod40
 
 @valida_acceso()
 def index(request):
-    print("Wrong :-(")
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     data = list(TmpMedioInscMod40.objects.all())
     toolbar = []

@@ -45,8 +45,6 @@ def new(request):
     frm = frmCuantiaBasica(request.POST or None)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
-        obj.created_by = usuario
-        obj.updated_by = usuario
         obj.save()
         return HttpResponseRedirect(reverse('cuantiabasica_see', kwargs={
             'pk': obj.pk}))
@@ -105,7 +103,6 @@ def update(request, pk):
     frm = frmCuantiaBasica(instance=obj, data=request.POST or None)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
-        obj.updated_by = usuario
         obj.save()
         return HttpResponseRedirect(reverse('cuantiabasica_see', kwargs={
             'pk': obj.pk}))
