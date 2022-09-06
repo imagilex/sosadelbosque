@@ -132,3 +132,9 @@ class Cliente(Usr):
     def __unicode__(self):
         return self.__str__()
 
+class Acuerdo(models.Model):
+    idacuerdo = models.AutoField(primary_key=True)
+    cliente = models.ForeignKey(
+        Cliente, on_delete=models.CASCADE, related_name="cliente")
+    titulo = models.CharField(max_length=250)
+    acuerdo = models.TextField()
