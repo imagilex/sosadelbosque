@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/migrations/0072_acuerdo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/url_acuerdos.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/acuerdo_index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_cliente.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/url_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/url_cliente.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_cliente.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/see.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/see.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/utilerias/simulador.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/utilerias/simulador.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +164,7 @@
       <workItem from="1658970904599" duration="5297000" />
       <workItem from="1661965083845" duration="613000" />
       <workItem from="1662484710659" duration="2221000" />
-      <workItem from="1662500387742" duration="4404000" />
+      <workItem from="1662500387742" duration="4831000" />
     </task>
     <servers />
   </component>
