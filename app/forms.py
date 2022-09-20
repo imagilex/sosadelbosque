@@ -4,7 +4,7 @@ from .models import (TaxonomiaExpediente, Cliente, DoctoGral,
                      TipoActividad, TipoDocumento, EstatusActividad,
                      Actividad, ActividadHistoria, Externo, UMA,
                      Cuantiabasica, Factoredad, UsrResponsables,
-                     MedioActividad)
+                     MedioActividad, Acuerdo)
 
 from initsys.models import Usr
 
@@ -296,4 +296,25 @@ class frmFactorEdad(forms.ModelForm):
         fields = [
             'edad',
             'factor_de_edad',
+        ]
+
+
+class frmAcuerdo(forms.ModelForm):
+    class Meta:
+        model = Acuerdo
+        fields = [
+            'titulo',
+            'acuerdo',
+            'aceptado',
+            'ip',
+            'fechaHora',
+        ]
+
+
+class frmAcuerdoNew(forms.ModelForm):
+    class Meta:
+        model = Acuerdo
+        fields = [
+            'titulo',
+            'acuerdo',
         ]

@@ -1,0 +1,37 @@
+{% extends "global/html_struct.html" %}
+{% load i18n %}
+{% block content %}
+
+<div id="accordion">
+{% for acuerdo in cte.acuerdos.all %}
+    <div class="card">
+        <div class="card-header" id="heading-{{ acuerdo.pk }}">
+            <h5 class="mb-0">
+                <div class="float-right">
+                    {% if acuerdo.aceptado %}
+                        <span class="badge badge-pill badge-success">
+                            <i class="far fa-check-circle"></i>
+                            Firmado en {{ acuerdo.fechaHora }}
+                        </span>
+                    {% else %}
+                        <span class="badge badge-pill badge-danger">
+                            <i class="far fa-times-circle"></i>
+                            Sin Firmar
+                        </span>
+                    {% endif %}
+                </div>
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-{{ acuerdo.pk }}" aria-expanded="true" aria-controls="collapse-{{ acuerdo.pk }}">
+                    {{ acuerdo.titulo }}
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-{{ acuerdo.pk }}" class="collapse" aria-labelledby="heading-{{ acuerdo.pk }}" data-parent="#accordion">
+            <div class="card-body">
+                {{ acuerdo.acuerdoStr|safe }}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+{%  endblock %}

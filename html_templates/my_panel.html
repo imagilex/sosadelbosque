@@ -22,6 +22,7 @@
 
 <h3>{{usuario}}</h3>
 
+{% if not me_as_cte %}
 <h4>Tareas Pendientes</h4>
 <table class="table table-striped table-sm table-responsive-md">
     <thead>
@@ -62,6 +63,7 @@
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
 {% if taxonomias %}
 <h4>Clientes</h4>
@@ -188,6 +190,27 @@
         {% endif %}
     {% endfor %}
 {% endfor %}
+
+<a href="{% url 'acuerdo_index_usr' %}" class="btn btn-outline-primary float-right" style="margin-top: 5px; margin-bottom: 5px;">
+    <i class="fas fa-file-signature"></i> Mis Acuerdos
+</a>
+<h5>Acuerdos pendientes de Aceptar / Firmar</h5>
+
+<div class="clearfix"></div>
+{% for acuerdo in me_as_cte.acuerdos.all %}
+    {% if not acuerdo.aceptado %}
+    <div class="card" style="margin-bottom: 5px;">
+        <div class="card-header">{{ acuerdo.titulo }}</div>
+        <div class="card-body">
+            <div class="card-text">{{ acuerdo.acuerdoStr|safe }}</div>
+            <a href="{% url 'acuerdo_firmar_usr' pk=acuerdo.pk %}" class="btn btn-outline-primary">
+                <i class="fas fa-file-signature"></i> Firmar
+            </a>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+
 
 {% endif %}
 

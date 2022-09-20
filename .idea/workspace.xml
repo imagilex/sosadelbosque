@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/acuerdo_index_usr.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_cliente.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/url_acuerdos.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/url_acuerdos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/vw_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_cliente.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/acuerdo_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/acuerdo_index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/see.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/see.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html_templates/my_panel.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/my_panel.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +26,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -164,7 +172,11 @@
       <workItem from="1658970904599" duration="5297000" />
       <workItem from="1661965083845" duration="613000" />
       <workItem from="1662484710659" duration="2221000" />
-      <workItem from="1662500387742" duration="5142000" />
+      <workItem from="1662500387742" duration="5903000" />
+      <workItem from="1663085617896" duration="595000" />
+      <workItem from="1663173309808" duration="598000" />
+      <workItem from="1663420375786" duration="613000" />
+      <workItem from="1663616375932" duration="9998000" />
     </task>
     <servers />
   </component>
@@ -184,5 +196,15 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/forms.py</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
