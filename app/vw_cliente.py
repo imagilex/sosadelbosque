@@ -22,7 +22,8 @@ from .models import (
     UsrResponsables, Acuerdo)
 from .forms import (
     frmCliente, frmClienteContacto, frmClienteUsuario, frmDocument,
-    frmClienteObservaciones, frmClienteObservacionesExtra)
+    frmClienteObservaciones, frmClienteObservacionesExtra, frmAcuerdo,
+    frmAcuerdoNew)
 from initsys.forms import FrmDireccion
 from initsys.models import Usr, Nota, Alerta, usr_upload_to
 from routines.utils import (
@@ -1430,7 +1431,13 @@ def reporte_maestro_alertas(request):
 def acuerdo_index(request, pk):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     cte = Cliente.objects.filter(pk=pk)[0]
+    data = list(Acuerdo.objects.filter(cliente__pk=pk))
     toolbar = []
+    toolbar.append({
+        'type': 'link_pk',
+        'view': 'cliente_see',
+        'pk': pk,
+        'label': '<i class="far fa-eye"></i> Ver Cliente'})
     toolbar.append({
         'type': 'link_pk',
         'view': 'acuerdo_new',
@@ -1445,25 +1452,116 @@ def acuerdo_index(request, pk):
             'cte': cte,
             'toolbar': toolbar,
             'req_ui': requires_jquery_ui(request),
+            'toolbar': toolbar,
+            'data': data
         })
 @valida_acceso(['cliente.clientes_cliente'])
 def acuerdo_new(request, pk):
-    pass
-
-
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    cte = Cliente.objects.filter(pk=pk)[0]
+    frm = frmAcuerdoNew(request.POST or None)
+    if 'POST' == request.method and frm.is_valid():
+        obj = frm.save(commit=False)
+        obj.cliente = cte
+        obj.save()
+        return HttpResponseRedirect(reverse(
+            'acuerdo_see', kwargs={'pk': obj.pk}
+        ))
+    return render(request, 'global/form.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Nuevo Acuerdo',
+        'titulo_descripcion': str(cte),
+        'frm': frm,
+        'req_ui': requires_jquery_ui(request),
+    })
 @valida_acceso(['cliente.clientes_cliente'])
 def acuerdo_see(request, pk):
-    pass
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not Acuerdo.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = Acuerdo.objects.get(pk=pk)
+    frm = frmAcuerdo(instance=obj)
+    toolbar = []
+    toolbar.append({
+        'type': 'link_pk',
+        'view': 'acuerdo_index',
+        'label': '<i class="fas fa-list-ul"></i> Ver todos',
+        'pk': obj.cliente.pk,})
+    toolbar.append({
+        'type': 'link_pk',
+        'view': 'acuerdo_update',
+        'label': '<i class="far fa-edit"></i> Actualizar',
+        'pk': pk})
+    toolbar.append({
+        'type': 'link_pk_del',
+        'view': 'acuerdo_delete',
+        'label': '<i class="far fa-trash-alt"></i> Eliminar',
+        'pk': pk})
+    return render(request, 'global/form.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Acuerdos',
+        'titulo_descripcion': f"{obj.cliente} / {obj.titulo}",
+        'frm': frm,
+        'read_only': True,
+        'toolbar': toolbar,
+    })
 
 
 @valida_acceso(['cliente.clientes_cliente'])
 def acuerdo_update(request, pk):
-    pass
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not Acuerdo.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = Acuerdo.objects.get(pk=pk)
+    frm = frmAcuerdoNew(instance=obj, data=request.POST or None)
+    if 'POST' == request.method and frm.is_valid():
+        obj = frm.save(commit=False)
+        obj.save()
+        return HttpResponseRedirect(reverse(
+            'acuerdo_see', kwargs={'pk': obj.pk}
+        ))
+    return render(request, 'global/form.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Acuerdo',
+        'titulo_descripcion': f"{obj.cliente} / {obj.titulo}",
+        'frm': frm,
+        'req_ui': requires_jquery_ui(request),
+    })
 
 @valida_acceso(['cliente.clientes_cliente'])
 def acuerdo_delete(request, pk):
-    pass
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not Acuerdo.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = Acuerdo.objects.get(pk=pk)
+    ctepk = obj.cliente.pk
+    try:
+        obj.delete()
+        return HttpResponseRedirect(reverse('acuerdo_index', kwargs={'pk': ctepk}))
+    except ProtectedError:
+        return HttpResponseRedirect(reverse('item_con_relaciones'))
 
 @valida_acceso()
 def acuerdo_index_usr(request):
-    pass
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    cte = Cliente.objects.filter(usr_ptr_id=usuario.pk)[0]
+    return render(request, 'app/cliente/acuerdo_index_usr.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Mis Acuerdos',
+        'cte': cte
+    })
+
+@valida_acceso()
+def acuerdo_firmar(request, pk):
+    if not Acuerdo.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = Acuerdo.objects.get(pk=pk)
+    obj.aceptado = True
+    obj.fechaHora = datetime.now()
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        obj.ip = x_forwarded_for.split(',')[0]
+    else:
+        obj.ip = request.META.get('REMOTE_ADDR')
+    obj.save()
+    return HttpResponseRedirect(reverse('panel'))
