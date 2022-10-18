@@ -1,0 +1,74 @@
+{% extends "global/html_struct.html" %}
+{% load i18n %}
+{% load util_filters %}
+{% block content %}
+
+<div class="card-columns">
+    {% for incm40 in data %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                <div class="float-right">
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'incmod40_update' pk=incm40.pk %}" class="btn btn-outline-secondary">
+                            <i class="far fa-edit"></i>
+                        </a>
+                        <a href="{% url 'incmod40_delete' pk=incm40.pk %}" class="btn btn-outline-secondary">
+                           <i class="far fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                {{ incm40.inicio }} - {{ incm40.fin }}
+                <div class="clearfix"></div>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <th>Año de Inicio:</th>
+                            <td>{{ incm40.inicio }}</td>
+                        </tr>
+                        <tr>
+                            <th>Año de Termino:</th>
+                            <td>{{ incm40.fin }}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto Mensual:</th>
+                            <td>$ {{ incm40.monto|money2display }}</td>
+                        </tr>
+                        <tr>
+                            <th>Salario Diario Integrado:</th>
+                            <td>$ {{ incm40.sdi|money2display }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo:</th>
+                            <td>
+                                {% if incm40.tipo == "inicio" %}Pago al inicio{% else %}Pago al término{% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Año</th>
+                            <th>Monto</th>
+                            <th>M. Diario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pago in incm40.pagos %}
+                            <tr>
+                                <td>{{ pago.anio }}</td>
+                                <td>$ {{ pago.cantidad|money2display }}</td>
+                                <td>$ {{ pago.diario|money2display }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

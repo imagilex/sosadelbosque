@@ -27,6 +27,8 @@ from .models_cliente import *
 from .models_historialaboral import *
 from .models_reportes_control_tmp import *
 
+from .models_inc_mod40 import *
+
 
 class AssocCteTarea(models.Model):
     idassocCteTarea = models.AutoField(primary_key=True)

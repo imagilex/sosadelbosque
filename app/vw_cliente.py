@@ -19,11 +19,11 @@ from .models import (
     HistoriaLaboralRegistro, HistoriaLaboralRegistroDetalle, UMA,
     DoctoGral, OpcionPension, Factoredad, Cuantiabasica,
     HistoriaLaboralRegistroDetalleSupuesto, HistoriaLaboralRegistroSupuesto,
-    UsrResponsables, Acuerdo)
+    UsrResponsables, Acuerdo, IncrementoModalidad40)
 from .forms import (
     frmCliente, frmClienteContacto, frmClienteUsuario, frmDocument,
     frmClienteObservaciones, frmClienteObservacionesExtra, frmAcuerdo,
-    frmAcuerdoNew)
+    frmAcuerdoNew, frmIncrementoModalidad40)
 from initsys.forms import FrmDireccion
 from initsys.models import Usr, Nota, Alerta, usr_upload_to
 from routines.utils import (
@@ -1565,3 +1565,88 @@ def acuerdo_firmar(request, pk):
         obj.ip = request.META.get('REMOTE_ADDR')
     obj.save()
     return HttpResponseRedirect(reverse('panel'))
+
+@valida_acceso(['cliente.clientes_cliente'])
+def incmod40_index(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    cte = Cliente.objects.filter(pk=pk)[0]
+    data = list(IncrementoModalidad40.objects.filter(cliente__pk=pk))
+    toolbar = []
+    toolbar.append({
+        'type': 'link_pk',
+        'view': 'cliente_see',
+        'pk': pk,
+        'label': '<i class="far fa-eye"></i> Ver Cliente'})
+    toolbar.append({
+        'type': 'link_pk',
+        'view': 'incmod40_new',
+        'pk': pk,
+        'label': '<i class="far fa-file"></i> Nuevo'})
+    return render(
+        request,
+        'app/cliente/incmod40_index.html', {
+            'menu_main': usuario.main_menu_struct(),
+            'titulo': 'Incrementos de Modalidad 40',
+            'titulo_descripcion': cte,
+            'cte': cte,
+            'toolbar': toolbar,
+            'req_ui': requires_jquery_ui(request),
+            'toolbar': toolbar,
+            'data': data
+        })
+@valida_acceso(['cliente.clientes_cliente'])
+def incmod40_new(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    cte = Cliente.objects.filter(pk=pk)[0]
+    frm = frmIncrementoModalidad40(request.POST or None)
+    if 'POST' == request.method and frm.is_valid():
+        obj = frm.save(commit=False)
+        obj.cliente = cte
+        obj.save()
+        return HttpResponseRedirect(reverse(
+            'incmod40_index', kwargs={'pk': cte.pk}
+        ))
+    return render(request, 'global/form.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Nuevo Incremento en Modalidad 40',
+        'titulo_descripcion': str(cte),
+        'frm': frm,
+        'req_ui': requires_jquery_ui(request),
+    })
+
+
+
+@valida_acceso(['cliente.clientes_cliente'])
+def incmod40_update(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not IncrementoModalidad40.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = IncrementoModalidad40.objects.get(pk=pk)
+    frm = frmIncrementoModalidad40(instance=obj, data=request.POST or None)
+    if 'POST' == request.method and frm.is_valid():
+        obj = frm.save(commit=False)
+        obj.save()
+        return HttpResponseRedirect(reverse(
+            'incmod40_index', kwargs={'pk': obj.cliente.pk}
+        ))
+    return render(request, 'global/form.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Incremento de Modalidad 40',
+        'titulo_descripcion': f"{obj.cliente}",
+        'frm': frm,
+        'req_ui': requires_jquery_ui(request),
+    })
+
+@valida_acceso(['cliente.clientes_cliente'])
+def incmod40_delete(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not IncrementoModalidad40.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = IncrementoModalidad40.objects.get(pk=pk)
+    ctepk = obj.cliente.pk
+    try:
+        obj.delete()
+        return HttpResponseRedirect(reverse('incmod40_index', kwargs={'pk': ctepk}))
+    except ProtectedError:
+        return HttpResponseRedirect(reverse('item_con_relaciones'))
+
