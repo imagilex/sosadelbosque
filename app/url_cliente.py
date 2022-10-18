@@ -52,6 +52,7 @@ urlpatterns = [
           name="{}_reporte_maestro_alertas".format(object_name)),
 
      path('acuerdos/', include('app.url_acuerdos')),
+     path('incr-mod-40/', include('app.url_incmod40')),
 
      path('control/', include('app.url_tmp_reportes_control')),
 ]

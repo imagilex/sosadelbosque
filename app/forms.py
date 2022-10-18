@@ -4,7 +4,7 @@ from .models import (TaxonomiaExpediente, Cliente, DoctoGral,
                      TipoActividad, TipoDocumento, EstatusActividad,
                      Actividad, ActividadHistoria, Externo, UMA,
                      Cuantiabasica, Factoredad, UsrResponsables,
-                     MedioActividad, Acuerdo)
+                     MedioActividad, Acuerdo, IncrementoModalidad40)
 
 from initsys.models import Usr
 
@@ -317,4 +317,15 @@ class frmAcuerdoNew(forms.ModelForm):
         fields = [
             'titulo',
             'acuerdo',
+        ]
+
+
+class frmIncrementoModalidad40(forms.ModelForm):
+    class Meta:
+        model = IncrementoModalidad40
+        fields = [
+            'inicio',
+            'fin',
+            'tipo',
+            'monto'
         ]
