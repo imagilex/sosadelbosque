@@ -23,7 +23,9 @@ from .models import (
 from .forms import (
     frmCliente, frmClienteContacto, frmClienteUsuario, frmDocument,
     frmClienteObservaciones, frmClienteObservacionesExtra, frmAcuerdo,
-    frmAcuerdoNew, frmIncrementoModalidad40)
+    frmAcuerdoNew,
+    frmIncrementoModalidad40Inicial, frmIncrementoModalidad40Final,
+    frmIncrementoModalidad40)
 from initsys.forms import FrmDireccion
 from initsys.models import Usr, Nota, Alerta, usr_upload_to
 from routines.utils import (
@@ -1599,6 +1601,7 @@ def incmod40_new(request, pk):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     cte = Cliente.objects.filter(pk=pk)[0]
     frm = frmIncrementoModalidad40(request.POST or None)
+    print(frm.errors)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
         obj.cliente = cte
@@ -1606,11 +1609,12 @@ def incmod40_new(request, pk):
         return HttpResponseRedirect(reverse(
             'incmod40_index', kwargs={'pk': cte.pk}
         ))
-    return render(request, 'global/form.html', {
+    return render(request, 'app/cliente/incmod40frm.html', {
         'menu_main': usuario.main_menu_struct(),
         'titulo': 'Nuevo Incremento en Modalidad 40',
         'titulo_descripcion': str(cte),
-        'frm': frm,
+        'frm1': frmIncrementoModalidad40Inicial(initial={'tipo':'inicio'}),
+        'frm2': frmIncrementoModalidad40Final(initial={'tipo':'fin'}),
         'req_ui': requires_jquery_ui(request),
     })
 
