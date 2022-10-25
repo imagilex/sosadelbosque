@@ -1,0 +1,33 @@
+{% extends "global/html_struct.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-4 offset-md-2">
+        <div class="card border-secondary">
+            <div class="card-header">Pago al inicio</div>
+            <div class="card-body text-secondary">
+                <form method="post" autocomplete="off" enctype="multipart/form-data"  action="">
+                    {% csrf_token %}
+                    {{ frm1 | crispy }}
+                    <button type="submit" class="btn btn-outline-primary" id="btn-save" >Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card border-secondary">
+            <div class="card-header">Pago al término</div>
+            <div class="card-body text-secondary">
+                <form method="post" autocomplete="off" enctype="multipart/form-data"  action="">
+                    {% csrf_token %}
+                    {{ frm2 | crispy }}
+                    <button type="submit" class="btn btn-outline-primary" id="btn-save" >Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

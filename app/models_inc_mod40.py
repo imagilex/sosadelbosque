@@ -20,7 +20,7 @@ class IncrementoModalidad40(models.Model):
     tipo = models.CharField(
         choices=(("inicio", "Pago al inicio"), ("fin", "Pago al término")),
         default=inicio, max_length=10)
-    monto = models.DecimalField(max_digits=7, decimal_places=2, default=0.0, verbose_name="Monto Mensual")
+    cantidad = models.DecimalField(max_digits=7, decimal_places=2, default=0.0)
 
     def factor_cobro(self, anio):
         if anio <= 2022:
@@ -44,10 +44,7 @@ class IncrementoModalidad40(models.Model):
     @property
     def sdi(self):
         if self.tipo == "inicio":
-            sm = float(self.monto) / self.factor_cobro(self.inicio)
-            sdi = sm / 30.4
-            monto = sdi * self.factor_cobro(self.inicio) * 30.4
-            return monto / (self.factor_cobro(self.inicio) * 30.4) * 100
+            return float(self.cantidad)
         else:
             sm = float(self.monto) / self.factor_cobro(self.fin)
             sdi = sm / 30.4
@@ -55,13 +52,18 @@ class IncrementoModalidad40(models.Model):
             return monto / (self.factor_cobro(self.inicio) * 30.4) * 100
 
     @property
+    def monto(self):
+        if self.tipo == "inicio":
+            return self.sdi * self.factor_cobro(self.fin) * 30.4 / 100.0
+        else:
+            return self.cantidad
+
+    @property
     def pagos(self):
         regs = list()
         for anio in range(self.inicio, self.fin + 1):
             if self.tipo == "inicio":
-                sm = float(self.monto) / self.factor_cobro(self.inicio)
-                sdi = sm / 30.4
-                monto = sdi * self.factor_cobro(anio) * 30.4
+                monto = self.sdi * self.factor_cobro(anio) * 30.4 / 100.0
                 regs.append({
                     'anio':anio,
                     'cantidad': monto,

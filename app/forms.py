@@ -320,6 +320,28 @@ class frmAcuerdoNew(forms.ModelForm):
         ]
 
 
+class frmIncrementoModalidad40Final(forms.ModelForm):
+    tipo = forms.CharField(widget=forms.HiddenInput())
+    class Meta:
+        model = IncrementoModalidad40
+        fields = [
+            'inicio',
+            'fin',
+            'cantidad'
+        ]
+        labels = {'cantidad': 'Monto Mensual'}
+
+class frmIncrementoModalidad40Inicial(forms.ModelForm):
+    tipo = forms.CharField(widget=forms.HiddenInput())
+    class Meta:
+        model = IncrementoModalidad40
+        fields = [
+            'inicio',
+            'fin',
+            'cantidad'
+        ]
+        labels = {'cantidad': 'Salario Diario Integrado'}
+
 class frmIncrementoModalidad40(forms.ModelForm):
     class Meta:
         model = IncrementoModalidad40
@@ -327,5 +349,5 @@ class frmIncrementoModalidad40(forms.ModelForm):
             'inicio',
             'fin',
             'tipo',
-            'monto'
+            'cantidad'
         ]
