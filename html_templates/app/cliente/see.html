@@ -95,6 +95,11 @@
                Incr. Mod. 40
             </a>
             <p></p>
+            <a href="{% url 'pago_index' pk=cte.pk %}" class="btn btn-outline-primary btn-block">
+               <i class="fas fa-credit-card"></i>
+               Pagos
+            </a>
+            <p></p>
             {% if cperms.ver_actividad and cte.actividades_asociadas.all %}
             <h5>Actividades</h5>
             <div class="list-group">

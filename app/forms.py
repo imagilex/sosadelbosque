@@ -4,7 +4,7 @@ from .models import (TaxonomiaExpediente, Cliente, DoctoGral,
                      TipoActividad, TipoDocumento, EstatusActividad,
                      Actividad, ActividadHistoria, Externo, UMA,
                      Cuantiabasica, Factoredad, UsrResponsables,
-                     MedioActividad, Acuerdo, IncrementoModalidad40)
+                     MedioActividad, Acuerdo, IncrementoModalidad40, Pago)
 
 from initsys.models import Usr
 
@@ -351,3 +351,28 @@ class frmIncrementoModalidad40(forms.ModelForm):
             'tipo',
             'cantidad'
         ]
+
+
+class frmPagoAdd(forms.ModelForm):
+
+    class Meta:
+        model = Pago
+        fields = [
+            'concepto',
+            'cantidad',
+            'codigo',
+        ]
+
+class frmPagoUpd(forms.ModelForm):
+
+    class Meta:
+        model = Pago
+        fields = [
+            'concepto',
+            'cantidad',
+            'estatus',
+            'fecha_de_pago',
+            'codigo',
+        ]
+        widgets = {'fecha_de_pago': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
+

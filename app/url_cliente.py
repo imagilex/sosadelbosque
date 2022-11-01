@@ -53,6 +53,7 @@ urlpatterns = [
 
      path('acuerdos/', include('app.url_acuerdos')),
      path('incr-mod-40/', include('app.url_incmod40')),
+     path('pagos/', include('app.url_pago')),
 
      path('control/', include('app.url_tmp_reportes_control')),
 ]

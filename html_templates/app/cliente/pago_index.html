@@ -1,0 +1,51 @@
+{% extends "global/html_struct.html" %}
+{% load i18n %}
+{% load util_filters %}
+{% block content %}
+
+<div class="card-columns">
+    {% for pago in data %}
+        <div class="card" style="width: 15rem;">
+            <div class="card-header">
+                <div class="float-right">
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'pago_pagado' pk=pago.pk %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-dollar-sign"></i>
+                        </a>
+                        <a href="{% url 'pago_update' pk=pago.pk %}" class="btn btn-outline-secondary">
+                            <i class="far fa-edit"></i>
+                        </a>
+                        <a href="{% url 'pago_delete' pk=pago.pk %}" class="btn btn-outline-secondary">
+                           <i class="far fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                {% if pago.estatus != 'pagado' %}
+                    <p class="h5 text-danger">Pendiente de Pago</p>
+                {% else %}
+                    <p class="h5 text-success">Pagado</p>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                 <table class="table table-sm">
+                    <tbody>
+                        <tr><td colspan="2">{{ pago.concepto }}</td></tr>
+                        <tr><td colspan="2" class="text-center">$ {{ pago.cantidad|money2display }}</td></tr>
+                        <tr>
+                            <td>Fecha de Pago: </td>
+                            {% if pago.fecha_de_pago %}
+                                <td>{{ pago.fecha_de_pago|date:"d/M/Y" }}</td>
+                            {% else %}
+                                <td> ----- </td>
+                            {% endif %}
+                        </tr>
+                        <tr><td colspan="2">{{ pago|safe }}</td></tr>
+                    </tbody>
+                 </table>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
