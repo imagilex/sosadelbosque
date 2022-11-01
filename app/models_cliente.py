@@ -164,11 +164,8 @@ class Pago(models.Model):
     cantidad = models.DecimalField(max_digits=7, decimal_places=2)
     fecha_de_pago = models.DateTimeField(null=True)
     estatus = models.CharField(max_length=20, choices=STATUS_PAGO)
-    codigo = models.TextField()
 
     class Meta:
         ordering = ["-estatus", "fecha_de_pago", 'idpago']
 
-    def __str__(self):
-        return self.codigo
 

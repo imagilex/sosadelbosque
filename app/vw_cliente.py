@@ -1748,3 +1748,16 @@ def pago_update_status(request, pk):
     return HttpResponseRedirect(reverse(
         'pago_index', kwargs={'pk': obj.cliente.pk}
     ))
+
+@valida_acceso()
+def pago_update_status_cte(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not Pago.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = Pago.objects.get(pk=pk)
+    obj.estatus = 'pagado'
+    obj.fecha_de_pago = datetime.now()
+    obj.save()
+    return HttpResponseRedirect(reverse(
+        'panel'
+    ))
