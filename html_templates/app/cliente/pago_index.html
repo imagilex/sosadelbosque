@@ -35,12 +35,11 @@
                         <tr>
                             <td>Fecha de Pago: </td>
                             {% if pago.fecha_de_pago %}
-                                <td>{{ pago.fecha_de_pago|date:"d/M/Y" }}</td>
+                                <td>{{ pago.fecha_de_pago|date:"d/m/Y H:i:s" }}</td>
                             {% else %}
                                 <td> ----- </td>
                             {% endif %}
                         </tr>
-                        <tr><td colspan="2">{{ pago|safe }}</td></tr>
                     </tbody>
                  </table>
             </div>

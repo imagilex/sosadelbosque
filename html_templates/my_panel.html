@@ -216,6 +216,9 @@
 
 {% if me_as_cte.pagos.all %}
     <h5>Pagos</h5>
+    <script
+            src="https://www.paypal.com/sdk/js?client-id=Ad80r--wxE8oS_0X9OMf3SNOkDp71TCnByFYcLwEcs5Jnaa2GR8yyvf6yQNY0qbM4-8o1zkYOy7nlxlT&enable-funding=venmo&currency=MXN"
+            data-sdk-integration-source="button-factory"></script>
     <div class="card-columns">
         {% for pago in me_as_cte.pagos.all %}
             <div class="card" style="width: 15rem;">
@@ -234,13 +237,59 @@
                             <tr>
                                 <td>Fecha de Pago: </td>
                                 {% if pago.fecha_de_pago %}
-                                    <td>{{ pago.fecha_de_pago|date:"d/M/Y" }}</td>
+                                    <td>{{ pago.fecha_de_pago|date:"d/m/Y H:i:s" }}</td>
                                 {% else %}
                                     <td> ----- </td>
                                 {% endif %}
                             </tr>
                             {% if pago.estatus != 'pagado' %}
-                            <tr><td colspan="2">{{ pago|safe }}</td></tr>
+                            <tr><td colspan="2">
+                                <div id="smart-button-container-btn-{{ pago.pk }}">
+                                    <div style="text-align: center;">
+                                        <div id="paypal-button-container-btn-{{ pago.pk }}"></div>
+                                    </div>
+                                </div>
+                                <script>
+                                    function initPayPalButton_btn{{ pago.pk }}() {
+                                        paypal.Buttons({
+                                            style: {
+                                                shape: 'pill',
+                                                color: 'gold',
+                                                layout: 'vertical',
+                                                label: 'pay',
+                                            },
+
+                                            createOrder: function(data, actions) {
+                                                return actions.order.create({
+                                                    purchase_units: [{
+                                                        "description":"Pago por Servicios",
+                                                        "amount":{
+                                                            "currency_code":"MXN",
+                                                            "value":{{ pago.cantidad|money2display }}
+                                                        }}]});},
+
+                                            onApprove: function(data, actions) {
+                                                return actions.order.capture().then(function(orderData) {
+                                                    // Full available details
+                                                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                                                    // Show a success message within this page, e.g.
+                                                    const element = document.getElementById('paypal-button-container-btn-{{ pago.pk }}');
+                                                    element.innerHTML = '';
+                                                    element.innerHTML = '<h3>Gracias por su pago.</h3>';
+                                                    location.href = '{% url 'pago_pagado_cte' pk=pago.pk %}';
+                                                });
+                                            },
+
+                                            onError: function(err) {
+                                                console.log(err);
+                                                alert("Ha ocurrido un error al procesar el pago, por favor comuniquese con su asesor Sosa del Bosque Asociados")
+                                            }
+
+                                        }).render('#paypal-button-container-btn-{{ pago.pk }}');
+                                    }
+                                    initPayPalButton_btn{{ pago.pk }}();
+                                </script>
+                            </td></tr>
                             {% endif %}
                         </tbody>
                      </table>

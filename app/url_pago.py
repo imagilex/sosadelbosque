@@ -10,4 +10,5 @@ urlpatterns = [
     path('actualizar/<pk>/', views.pago_update, name=f"{object_name}_update"),
     path('eliminar/<pk>/', views.pago_delete, name=f"{object_name}_delete"),
     path('pagado/<pk>/', views.pago_update_status, name=f"{object_name}_pagado"),
+    path('pago-cte/<pk>/', views.pago_update_status_cte, name=f"{object_name}_pagado_cte"),
     ]
