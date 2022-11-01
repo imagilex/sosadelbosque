@@ -214,6 +214,43 @@
 {% endfor %}
 
 
+{% if me_as_cte.pagos.all %}
+    <h5>Pagos</h5>
+    <div class="card-columns">
+        {% for pago in me_as_cte.pagos.all %}
+            <div class="card" style="width: 15rem;">
+                <div class="card-header">
+                    {% if pago.estatus != 'pagado' %}
+                        <p class="h5 text-danger">Pendiente de Pago</p>
+                    {% else %}
+                        <p class="h5 text-success">Pagado</p>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                     <table class="table table-sm">
+                        <tbody>
+                            <tr><td colspan="2">{{ pago.concepto }}</td></tr>
+                            <tr><td colspan="2" class="text-center">$ {{ pago.cantidad|money2display }}</td></tr>
+                            <tr>
+                                <td>Fecha de Pago: </td>
+                                {% if pago.fecha_de_pago %}
+                                    <td>{{ pago.fecha_de_pago|date:"d/M/Y" }}</td>
+                                {% else %}
+                                    <td> ----- </td>
+                                {% endif %}
+                            </tr>
+                            {% if pago.estatus != 'pagado' %}
+                            <tr><td colspan="2">{{ pago|safe }}</td></tr>
+                            {% endif %}
+                        </tbody>
+                     </table>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
 <h5>Incrementos en Modalidad 40</h5>
 <div class="card-columns">
     {% for incm40 in me_as_cte.incrementos_m40.all %}

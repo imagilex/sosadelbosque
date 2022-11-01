@@ -19,13 +19,13 @@ from .models import (
     HistoriaLaboralRegistro, HistoriaLaboralRegistroDetalle, UMA,
     DoctoGral, OpcionPension, Factoredad, Cuantiabasica,
     HistoriaLaboralRegistroDetalleSupuesto, HistoriaLaboralRegistroSupuesto,
-    UsrResponsables, Acuerdo, IncrementoModalidad40)
+    UsrResponsables, Acuerdo, IncrementoModalidad40, Pago)
 from .forms import (
     frmCliente, frmClienteContacto, frmClienteUsuario, frmDocument,
     frmClienteObservaciones, frmClienteObservacionesExtra, frmAcuerdo,
     frmAcuerdoNew,
     frmIncrementoModalidad40Inicial, frmIncrementoModalidad40Final,
-    frmIncrementoModalidad40)
+    frmIncrementoModalidad40, frmPagoAdd, frmPagoUpd)
 from initsys.forms import FrmDireccion
 from initsys.models import Usr, Nota, Alerta, usr_upload_to
 from routines.utils import (
@@ -1601,7 +1601,6 @@ def incmod40_new(request, pk):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     cte = Cliente.objects.filter(pk=pk)[0]
     frm = frmIncrementoModalidad40(request.POST or None)
-    print(frm.errors)
     if 'POST' == request.method and frm.is_valid():
         obj = frm.save(commit=False)
         obj.cliente = cte
@@ -1617,7 +1616,6 @@ def incmod40_new(request, pk):
         'frm2': frmIncrementoModalidad40Final(initial={'tipo':'fin'}),
         'req_ui': requires_jquery_ui(request),
     })
-
 
 
 @valida_acceso(['cliente.clientes_cliente'])
@@ -1654,3 +1652,99 @@ def incmod40_delete(request, pk):
     except ProtectedError:
         return HttpResponseRedirect(reverse('item_con_relaciones'))
 
+@valida_acceso(['cliente.clientes_cliente'])
+def pago_index(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    cte = Cliente.objects.filter(pk=pk)[0]
+    data = list(Pago.objects.filter(cliente__pk=pk))
+    toolbar = []
+    toolbar.append({
+        'type': 'link_pk',
+        'view': 'cliente_see',
+        'pk': pk,
+        'label': '<i class="far fa-eye"></i> Ver Cliente'})
+    toolbar.append({
+        'type': 'link_pk',
+        'view': 'pago_new',
+        'pk': pk,
+        'label': '<i class="far fa-file"></i> Nuevo'})
+    return render(
+        request,
+        'app/cliente/pago_index.html', {
+            'menu_main': usuario.main_menu_struct(),
+            'titulo': 'Pagos',
+            'titulo_descripcion': cte,
+            'cte': cte,
+            'toolbar': toolbar,
+            'req_ui': requires_jquery_ui(request),
+            'toolbar': toolbar,
+            'data': data
+        })
+
+@valida_acceso(['cliente.clientes_cliente'])
+def pago_new(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    cte = Cliente.objects.filter(pk=pk)[0]
+    frm = frmPagoAdd(request.POST or None)
+    if 'POST' == request.method and frm.is_valid():
+        obj = frm.save(commit=False)
+        obj.cliente = cte
+        obj.estatus = 'pendiente'
+        obj.save()
+        return HttpResponseRedirect(reverse(
+            'pago_index', kwargs={'pk': cte.pk}
+        ))
+    return render(request, 'global/form.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Nuevo Pago',
+        'titulo_descripcion': str(cte),
+        'frm': frm,
+        'req_ui': requires_jquery_ui(request),
+    })
+
+@valida_acceso(['cliente.clientes_cliente'])
+def pago_update(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not Pago.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = Pago.objects.get(pk=pk)
+    frm = frmPagoUpd(instance=obj, data=request.POST or None)
+    if 'POST' == request.method and frm.is_valid():
+        obj = frm.save(commit=False)
+        obj.save()
+        return HttpResponseRedirect(reverse(
+            'pago_index', kwargs={'pk': obj.cliente.pk}
+        ))
+    return render(request, 'global/form.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Pago',
+        'titulo_descripcion': f"{obj.cliente}",
+        'frm': frm,
+        'req_ui': requires_jquery_ui(request),
+    })
+
+@valida_acceso(['cliente.clientes_cliente'])
+def pago_delete(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not Pago.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = Pago.objects.get(pk=pk)
+    ctepk = obj.cliente.pk
+    try:
+        obj.delete()
+        return HttpResponseRedirect(reverse('pago_index', kwargs={'pk': ctepk}))
+    except ProtectedError:
+        return HttpResponseRedirect(reverse('item_con_relaciones'))
+
+@valida_acceso(['cliente.clientes_cliente'])
+def pago_update_status(request, pk):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    if not Pago.objects.filter(pk=pk).exists():
+        return HttpResponseRedirect(reverse('item_no_encontrado'))
+    obj = Pago.objects.get(pk=pk)
+    obj.estatus = 'pagado'
+    obj.fecha_de_pago = date.today()
+    obj.save()
+    return HttpResponseRedirect(reverse(
+        'pago_index', kwargs={'pk': obj.cliente.pk}
+    ))

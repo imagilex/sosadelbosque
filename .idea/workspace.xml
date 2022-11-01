@@ -5,13 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/migrations/0076_auto_20221025_1129.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/incmod40frm.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0077_pago.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0078_auto_20221101_1108.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0079_auto_20221101_1412.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0080_auto_20221101_1415.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/url_pago.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/pago_index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_inc_mod40.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_inc_mod40.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_cliente.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/url_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/url_cliente.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/vw_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_cliente.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/incmod40_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/incmod40_index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html_templates/app/cliente/see.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/cliente/see.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html_templates/my_panel.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/my_panel.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,21 +88,21 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/rramirez/imgx/sosadelbosque/html_templates/app/cliente&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/rramirez/imgx/sosadelbosque/app",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/html_templates/app/cliente" />
       <recent name="$PROJECT_DIR$/app" />
+      <recent name="$PROJECT_DIR$/html_templates/app/cliente" />
       <recent name="$PROJECT_DIR$/html_templates/app/cliente/tmp_reportes_control" />
     </key>
   </component>
@@ -186,7 +192,8 @@
       <workItem from="1666117474977" duration="9285000" />
       <workItem from="1666134836156" duration="1344000" />
       <workItem from="1666191271785" duration="2007000" />
-      <workItem from="1666624961988" duration="4864000" />
+      <workItem from="1666624961988" duration="5462000" />
+      <workItem from="1667318748786" duration="9438000" />
     </task>
     <servers />
   </component>
