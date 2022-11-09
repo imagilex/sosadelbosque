@@ -155,6 +155,7 @@ class Acuerdo(models.Model):
 STATUS_PAGO = (
     ('pendiente', 'Pendiente de Pago'),
     ('pagado', 'Pagado'),
+    ('verificado', 'Pagado y Verificado')
 )
 class Pago(models.Model):
     idpago = models.AutoField(primary_key=True)
@@ -162,8 +163,9 @@ class Pago(models.Model):
         Cliente, on_delete=models.CASCADE, related_name="pagos")
     concepto = models.CharField(max_length=250)
     cantidad = models.DecimalField(max_digits=7, decimal_places=2)
-    fecha_de_pago = models.DateTimeField(null=True)
-    estatus = models.CharField(max_length=20, choices=STATUS_PAGO)
+    fecha_de_pago = models.DateTimeField(null=True, blank=True)
+    estatus = models.CharField(max_length=20, choices=STATUS_PAGO, default='pendiente')
+    cuenta = models.CharField(max_length=50, blank=True)
 
     class Meta:
         ordering = ["-estatus", "fecha_de_pago", 'idpago']

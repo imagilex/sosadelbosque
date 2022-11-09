@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/migrations/0081_auto_20221101_1627.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0082_auto_20221108_1354.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/migrations/0083_auto_20221108_1704.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/html_templates/app/cliente/reporte_pagos.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_cliente.py" afterDir="false" />
@@ -189,7 +191,9 @@
       <workItem from="1666191271785" duration="2007000" />
       <workItem from="1666624961988" duration="5462000" />
       <workItem from="1667318748786" duration="9438000" />
-      <workItem from="1667340321140" duration="4479000" />
+      <workItem from="1667340321140" duration="5031000" />
+      <workItem from="1667491581727" duration="95000" />
+      <workItem from="1667923294031" duration="8689000" />
     </task>
     <servers />
   </component>
@@ -216,6 +220,11 @@
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/forms.py</url>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="django-line">
+          <url>file://$PROJECT_DIR$/html_templates/app/cliente/reporte_maestro.html</url>
+          <line>29</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

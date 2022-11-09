@@ -360,6 +360,7 @@ class frmPagoAdd(forms.ModelForm):
         fields = [
             'concepto',
             'cantidad',
+            'cuenta',
         ]
 
 class frmPagoUpd(forms.ModelForm):
@@ -371,6 +372,7 @@ class frmPagoUpd(forms.ModelForm):
             'cantidad',
             'estatus',
             'fecha_de_pago',
+            'cuenta',
         ]
         widgets = {'fecha_de_pago': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
 
