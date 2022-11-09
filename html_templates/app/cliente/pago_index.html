@@ -9,9 +9,9 @@
             <div class="card-header">
                 <div class="float-right">
                     <div class="btn-group" role="group">
-                        <a href="{% url 'pago_pagado' pk=pago.pk %}" class="btn btn-outline-secondary">
+                        <!--<a href="{% url 'pago_pagado' pk=pago.pk %}" class="btn btn-outline-secondary"
                             <i class="fas fa-dollar-sign"></i>
-                        </a>
+                        </a>-->
                         <a href="{% url 'pago_update' pk=pago.pk %}" class="btn btn-outline-secondary">
                             <i class="far fa-edit"></i>
                         </a>
@@ -21,10 +21,12 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                {% if pago.estatus != 'pagado' %}
+                {% if pago.estatus == 'pendiente' %}
                     <p class="h5 text-danger">Pendiente de Pago</p>
-                {% else %}
-                    <p class="h5 text-success">Pagado</p>
+                {% elif pago.estatus == 'pagado' %}
+                    <p class="h5 text-warning">Pagado (sin verificar)</p>
+                {% elif pago.estatus == 'verificado' %}
+                    <p class="h5 text-success">Pagado y Verificado</p>
                 {% endif %}
             </div>
             <div class="card-body">
@@ -39,6 +41,10 @@
                             {% else %}
                                 <td> ----- </td>
                             {% endif %}
+                        </tr>
+                        <tr>
+                            <td>Cuenta:</td>
+                            <td>{{ pago.cuenta }}</td>
                         </tr>
                     </tbody>
                  </table>

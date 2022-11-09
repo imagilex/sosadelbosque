@@ -19,7 +19,7 @@ from .models import (
     HistoriaLaboralRegistro, HistoriaLaboralRegistroDetalle, UMA,
     DoctoGral, OpcionPension, Factoredad, Cuantiabasica,
     HistoriaLaboralRegistroDetalleSupuesto, HistoriaLaboralRegistroSupuesto,
-    UsrResponsables, Acuerdo, IncrementoModalidad40, Pago)
+    UsrResponsables, Acuerdo, IncrementoModalidad40, Pago, STATUS_PAGO)
 from .forms import (
     frmCliente, frmClienteContacto, frmClienteUsuario, frmDocument,
     frmClienteObservaciones, frmClienteObservacionesExtra, frmAcuerdo,
@@ -1757,7 +1757,46 @@ def pago_update_status_cte(request, pk):
     obj = Pago.objects.get(pk=pk)
     obj.estatus = 'pagado'
     obj.fecha_de_pago = datetime.now()
+    obj.cuenta = 'PayPal'
     obj.save()
     return HttpResponseRedirect(reverse(
         'panel'
     ))
+
+@valida_acceso([
+    'permission.maestro_de_clientes_permiso',
+    'permission.maestro_de_clientes_permission'])
+def reporte_pagos(request):
+    usuario = Usr.objects.filter(id=request.user.pk)[0]
+    data = []
+    ftr_status = request.POST.get('ftr_status', '')
+    ftr_fecha_inicio = request.POST.get('ftr_fecha_inicio', '')
+    ftr_fecha_final = request.POST.get('ftr_fecha_final', '')
+    ftr_cuenta = request.POST.get('ftr_cuenta', '')
+    if "POST" == request.method or True:
+        data = Pago.objects.all()
+        if ftr_status:
+            data = data.filter(estatus=ftr_status)
+        if ftr_cuenta:
+            data = data.filter(cuenta__contains=ftr_cuenta)
+        if ftr_fecha_inicio:
+            data = data.filter(fecha_de_pago__gte=ftr_fecha_inicio)
+        if ftr_fecha_final:
+            data = data.filter(fecha_de_pago__gte=ftr_fecha_final)
+        data = list(data)
+    return render(request, 'app/cliente/reporte_pagos.html', {
+        'menu_main': usuario.main_menu_struct(),
+        'titulo': 'Pagos',
+        'titulo_descripcion': "Reporte Maestro de Pagos",
+        'req_ui': requires_jquery_ui(request),
+        'combo_options': {
+            'estatus_pago': list(STATUS_PAGO),
+        },
+        'filters': {
+            'ftr_status': ftr_status,
+            'ftr_fecha_inicio': ftr_fecha_inicio,
+            'ftr_fecha_final': ftr_fecha_final,
+            'ftr_cuenta': ftr_cuenta,
+        },
+        'regs': data,
+    })

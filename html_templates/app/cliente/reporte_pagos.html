@@ -1,0 +1,99 @@
+{% extends "global/html_struct.html" %}
+{% load i18n %}
+{% load util_filters %}
+
+{% block content %}
+
+    <div class="card card-body">
+        <form method="post" autocomplete="off" enctype="multipart/form-data" id="filter-form" action="">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="ftr_status">Estatus</label>
+                        <select class="form-control" id="ftr_status" name="ftr_status">
+                            <option value=""></option>
+                            {% for opt in combo_options.estatus_pago %}
+                                <option value="{{ opt.0 }}" {% if opt.0 == filters.ftr_status %}selected="select"{% endif %}>
+                                    {{ opt.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="ftr_cuenta">Cuenta</label>
+                        <input type="text" class="form-control" id="ftr_cuenta" name="ftr_cuenta" value="{{ filters.ftr_cuenta }}" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="ftr_fecha_inicio">Fecha Inicial</label>
+                        <input type="date" class="form-control" id="ftr_fecha_inicio" name="ftr_fecha_inicio" value="{{ filters.ftr_fecha_inicio }}" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="ftr_fecha_final">Fecha Final</label>
+                        <input type="date" class="form-control" id="ftr_fecha_final" name="ftr_fecha_final" value="{{ filters.ftr_fecha_final }}" />
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-primary" id="btn-save" >Procesar</button>
+        </form>
+    </div>
+
+{% if regs %}
+<table class="table table-striped table-sm table-responsive-md">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Concepto</th>
+            <th>Cantidad</th>
+            <th>Fecha de Pago</th>
+            <th>Estatus</th>
+            <th>Cuenta</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Cliente</th>
+            <th>Concepto</th>
+            <th>Cantidad</th>
+            <th>Fecha de Pago</th>
+            <th>Estatus</th>
+            <th>Cuenta</th>
+        </tr>
+    </tfoot>
+    <tbody id="data-tbl">
+        {% for reg in regs %}
+        <tr>
+            <td>
+                <a href="{% url 'cliente_see' pk=reg.cliente.pk %}">
+                    {{ reg.cliente }}
+                </a>
+            </td>
+            <td><a href="{% url 'pago_index' pk=reg.cliente.pk %}">
+                    {{ reg.concepto }}
+                </a>
+            </td>
+            <td>$ {{ reg.cantidad|money2display }}</td>
+            <td>{{ reg.fecha_de_pago|date:"d/m/Y H:i:s" }}</td>
+            <td>
+                {% if reg.estatus == 'pendiente' %}
+                    Pendiente de Pago
+                {% elif reg.estatus == 'pagado' %}
+                    Pagado (sin verificar)
+                {% elif reg.estatus == 'verificado' %}
+                    Pagado y Verificado
+                {% endif %}
+            </td>
+            <td>{{ reg.cuenta }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

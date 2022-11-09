@@ -223,10 +223,12 @@
         {% for pago in me_as_cte.pagos.all %}
             <div class="card" style="width: 15rem;">
                 <div class="card-header">
-                    {% if pago.estatus != 'pagado' %}
+                    {% if pago.estatus == 'pendiente' %}
                         <p class="h5 text-danger">Pendiente de Pago</p>
-                    {% else %}
-                        <p class="h5 text-success">Pagado</p>
+                    {% elif pago.estatus == 'pagado' %}
+                        <p class="h5 text-warning">Pagado (sin verificar)</p>
+                    {% elif pago.estatus == 'verificado' %}
+                        <p class="h5 text-success">Pagado y Verificado</p>
                     {% endif %}
                 </div>
                 <div class="card-body">
@@ -242,7 +244,7 @@
                                     <td> ----- </td>
                                 {% endif %}
                             </tr>
-                            {% if pago.estatus != 'pagado' %}
+                            {% if pago.estatus == 'pendiente' %}
                             <tr><td colspan="2">
                                 <div id="smart-button-container-btn-{{ pago.pk }}">
                                     <div style="text-align: center;">
