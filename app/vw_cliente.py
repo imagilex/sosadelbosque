@@ -1773,7 +1773,7 @@ def reporte_pagos(request):
     ftr_fecha_inicio = request.POST.get('ftr_fecha_inicio', '')
     ftr_fecha_final = request.POST.get('ftr_fecha_final', '')
     ftr_cuenta = request.POST.get('ftr_cuenta', '')
-    if "POST" == request.method or True:
+    if "POST" == request.method:
         data = Pago.objects.all()
         if ftr_status:
             data = data.filter(estatus=ftr_status)
@@ -1782,7 +1782,7 @@ def reporte_pagos(request):
         if ftr_fecha_inicio:
             data = data.filter(fecha_de_pago__gte=ftr_fecha_inicio)
         if ftr_fecha_final:
-            data = data.filter(fecha_de_pago__gte=ftr_fecha_final)
+            data = data.filter(fecha_de_pago__lte=ftr_fecha_final)
         data = list(data)
     return render(request, 'app/cliente/reporte_pagos.html', {
         'menu_main': usuario.main_menu_struct(),
