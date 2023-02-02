@@ -6,6 +6,8 @@ from django.contrib.staticfiles import finders
 from django.conf import settings
 from django.db import connection
 
+from django.views.decorators.csrf import csrf_exempt
+
 from random import shuffle
 from datetime import date
 import os
@@ -24,10 +26,10 @@ from app.models import TaxonomiaExpediente, EstatusActividad
 # Create your views here.
 
 
+@csrf_exempt
 def index(request):
     frm = AccUsr(request.POST or None)
-    # if(frm.is_valid() and 'POST' == request.method):
-    if ('POST' == request.method):
+    if(frm.is_valid() and 'POST' == request.method):
         user = frm.login(request)
         if user is not None and user.is_active:
             auth.login(request, user)
