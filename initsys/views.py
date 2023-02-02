@@ -26,7 +26,8 @@ from app.models import TaxonomiaExpediente, EstatusActividad
 
 def index(request):
     frm = AccUsr(request.POST or None)
-    if(frm.is_valid() and 'POST' == request.method):
+    # if(frm.is_valid() and 'POST' == request.method):
+    if ('POST' == request.method):
         user = frm.login(request)
         if user is not None and user.is_active:
             auth.login(request, user)
