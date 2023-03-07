@@ -33,11 +33,7 @@ def simulador(request):
         'semanas_amt': int(request.POST.get("semanas_amt", 500)),
         'concubino_flg': request.POST.get("concubino_flg", "no") == "yes",
         'hijos_qty': int(request.POST.get("hijos_qty", 0)),
-        'salario_1': str2pesos(request.POST.get('salario_1', "0")),
-        'salario_2': str2pesos(request.POST.get('salario_2', "0")),
-        'salario_3': str2pesos(request.POST.get('salario_3', "0")),
-        'salario_4': str2pesos(request.POST.get('salario_4', "0")),
-        'salario_5': str2pesos(request.POST.get('salario_5', "0")),
+        'spd': str2pesos(request.POST.get('spd', "0")),
     }
     data['edad_qty'] = 65 if data['edad_qty'] > 65 else data['edad_qty']
     data['concubino_flg'] = True
@@ -45,11 +41,9 @@ def simulador(request):
     results = {}
     if request.method == "POST":
         uma = UMA.objects.get(pk = getmaxUMA())
-        salario_promedio_mensual = (
-            data['salario_1'] + data['salario_2'] + data['salario_3'] \
-                + data['salario_4'] + data['salario_5']) / 5
         uma_valor = uma.valor
-        salario_promedio_diario = salario_promedio_mensual * 12 / 365
+        salario_promedio_diario = data['spd']
+        salario_promedio_mensual = salario_promedio_diario * 365 / 12
         aux_cbi = salario_promedio_diario / float(uma_valor)
         cbis = Cuantiabasica.objects.all()
         porcentaje_cuantia_basica = float(cbis[0].porcentaje_de_cuantia_basica)
@@ -154,6 +148,7 @@ def check_mail(request):
         for row in data:
             if isinstance(row['td'], list) and len(row['td'])==2:
                 simData.append([row['td'][0]['#text'], row['td'][1]['#text'],])
+        print(data)
         imap.copy(str(idx), 'INBOX.cotizaciones')
         imap.store(str(idx), '+FLAGS', '\\Deleted')
         imap.expunge()
@@ -169,11 +164,7 @@ def check_mail(request):
                 'edad_qty': simData[0][1],
                 'semanas_amt': simData[1][1],
                 'hijos_qty': simData[2][1],
-                'salario_1': simData[3][1],
-                'salario_2': simData[4][1],
-                'salario_3': simData[5][1],
-                'salario_4': simData[6][1],
-                'salario_5': simData[7][1],
+                'spd': simData[3][1],
             },
             'autosend': True,
         }
