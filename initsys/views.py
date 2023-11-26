@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import auth
 from django.contrib.staticfiles import finders
 from django.conf import settings
@@ -150,6 +150,44 @@ def sql(request):
                 error = "{}".format(e)
     return render(request, 'sql.html', {
         'menu_main': usuario.main_menu_struct(),
+        'titulo': 'SQL',
+        'sql': sql,
+        'getrows': getrows,
+        'rows': rows,
+        'header': header,
+        'error': error,
+    })
+
+
+@csrf_exempt
+def sql2json(request):
+    'https://docs.djangoproject.com/en/2.1/topics/db/sql/'
+    usuario = Usr.objects.filter(id=request.user.pk)[0] if request.user.is_authenticated else None
+    sql = ""
+    getrows = True
+    rows = False
+    header = False
+    error = False
+    if "POST" == request.method:
+        sql = request.POST.get('sql')
+        getrows = request.POST.get('getrows') == 'yes'
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(sql)
+                if getrows:
+                    results = list()
+                    rows = cursor.fetchall()
+                    header = [c[0] for c in cursor.description]
+                    for row in rows:
+                        fila = dict()
+                        for idx, h in enumerate(header):
+                            fila[h] = row[idx]
+                        results.append(fila)
+                    return JsonResponse(results, safe=False)
+            except Exception as e:
+                error = "{}".format(e)
+    return render(request, 'sql.html', {
+        'menu_main': usuario.main_menu_struct() if usuario else None,
         'titulo': 'SQL',
         'sql': sql,
         'getrows': getrows,
