@@ -164,6 +164,7 @@ CUENTAS_PAGO = (
     ('daniel azteca', 'Daniel Azteca'),
     ('daniel banamex', 'Daniel Banamex'),
     ('sosa del bosque', 'Sosa del Bosque'),
+    ('rebeca', 'Rebeca'),
 )
 class Pago(models.Model):
     idpago = models.AutoField(primary_key=True)

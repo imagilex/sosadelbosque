@@ -48,6 +48,10 @@ urlpatterns = [
         'sql/',
         views.sql,
         name='sql'),
+    path(
+        'sql2json/',
+        views.sql2json,
+        name='sql'),
 
     # Permiso
     path(

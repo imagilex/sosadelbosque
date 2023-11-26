@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="933cae18-c3b8-4eef-848a-81245a5a7055" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/vw_utilerias.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/vw_utilerias.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/html_templates/app/utilerias/simulador.html" beforeDir="false" afterPath="$PROJECT_DIR$/html_templates/app/utilerias/simulador.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,6 +191,8 @@
       <workItem from="1669166292923" duration="1887000" />
       <workItem from="1675363826383" duration="3537000" />
       <workItem from="1678205369647" duration="4140000" />
+      <workItem from="1678232927007" duration="1418000" />
+      <workItem from="1691010685425" duration="44000" />
     </task>
     <servers />
   </component>
