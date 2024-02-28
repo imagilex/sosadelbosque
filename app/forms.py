@@ -55,6 +55,10 @@ class frmCliente(forms.ModelForm):
             'obs_duplicidad',
             'responsable',
             'gestor',
+            'datos_estadisticos',
+            'detalle_servicio',
+            'actualizado_por',
+            'fecha_de_actualizacion',
         ]
         labels = {
             'first_name': 'Nombre',
@@ -95,10 +99,13 @@ class frmClienteUsuario(forms.ModelForm):
             'fecha_afore_actual',
             'clinica',
             'subdelegacion',
+            'actualizado_por',
+            'fecha_de_actualizacion',
         ]
         widgets = {
             'fecha_nacimiento': forms.TextInput(attrs={'type': 'date'}),
             'fecha_afore_actual': forms.TextInput(attrs={'type': 'date'}),
+            'fecha_de_actualizacion': forms.TextInput(attrs={'type': 'date'}),
         }
         labels = {
             'first_name': 'Nombre',
@@ -133,7 +140,11 @@ class frmClienteObservaciones(forms.ModelForm):
 
     class Meta:
         model = Cliente
-        fields = ['observaciones']
+        fields = [
+            'datos_estadisticos',
+            'observaciones',
+            'detalle_servicio',
+            ]
 
 
 class frmClienteObservacionesExtra(forms.ModelForm):
@@ -375,4 +386,3 @@ class frmPagoUpd(forms.ModelForm):
             'cuenta',
         ]
         widgets = {'fecha_de_pago': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
-

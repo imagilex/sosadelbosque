@@ -107,6 +107,12 @@ class Cliente(Usr):
         verbose_name="Gestor",
         #limit_choices_to={'idusuario__in':UsuarioNoCliente}
         )
+    datos_estadisticos = models.TextField(
+        blank=True, verbose_name="Datos Estadísticos")
+    detalle_servicio = models.TextField(
+        blank=True, verbose_name="Detalle de Servicio")
+    actualizado_por = models.CharField(max_length=100, blank=True)
+    fecha_de_actualizacion = models.DateField(blank=True, default=date.today)
 
     @property
     def edad(self):
