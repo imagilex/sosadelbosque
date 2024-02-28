@@ -341,7 +341,7 @@ def vwReporteControlProximosPensionMod40(request):
         request,
         'app/cliente/tmp_reportes_control/reporte_proxpensionmod40.html', {
             'menu_main': usuario.main_menu_struct(),
-            'titulo': 'Reporte de Próximos a Pension y/o Modalidad 40',
+            'titulo': 'Reporte de Próximos a Pension, Mod. 10 o Mod. 40',
             'req_ui': requires_jquery_ui(request),
             'regs': data,
             'filters': {
@@ -530,7 +530,7 @@ def vwReporteControlInscripcionModalidad40(request):
         request,
         'app/cliente/tmp_reportes_control/reporte_inscrmod40.html', {
             'menu_main': usuario.main_menu_struct(),
-            'titulo': 'Reporte de Inscritos a Modalidad 40',
+            'titulo': 'Reporte de Inscritos a Mod. 10 o Mod. 40',
             'req_ui': requires_jquery_ui(request),
             'regs': data,
             'filters': {

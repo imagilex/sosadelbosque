@@ -27,7 +27,7 @@ def index(request):
     }
     return render(request, 'app/cliente/tmp_reportes_control/index_medio_insc_mod_40.html', {
         'menu_main': usuario.main_menu_struct(),
-        'titulo': 'Medios de Inscripción a Modalidad 40',
+        'titulo': 'Medios de Inscripción a Mod. 10 o Mod. 40',
         'data': data,
         'toolbar': toolbar,
         'req_ui': requires_jquery_ui(request),
@@ -49,7 +49,7 @@ def new(request):
         }))
     return render(request, 'global/form.html', {
         'menu_main': usuario.main_menu_struct(),
-        'titulo': 'Medio de Inscripción a Modalidad 40',
+        'titulo': 'Medio de Inscripción a Mod. 10 o Mod. 40',
         'titulo_descripcion': 'Nuevo',
         'frm': frm,
     })
@@ -91,7 +91,7 @@ def see(request, pk):
             'pk': pk})
     return render(request, 'global/form.html', {
         'menu_main': usuario.main_menu_struct(),
-        'titulo': 'Medio de Inscripción a Modalidad 40',
+        'titulo': 'Medio de Inscripción a Mod. 10 o Mod. 40',
         'titulo_descripcion': obj,
         'frm': frm,
         'read_only': True,
@@ -114,7 +114,7 @@ def update(request, pk):
             'tmpmedioinscmod40_see', kwargs={'pk': obj.pk}))
     return render(request, 'global/form.html', {
         'menu_main': usuario.main_menu_struct(),
-        'titulo': 'Medio de Inscripción a Modalidad 40',
+        'titulo': 'Medio de Inscripción a Mod. 10 o Mod. 40',
         'titulo_descripcion': obj,
         'frm': frm,
     })
