@@ -59,11 +59,6 @@ class Cliente(Usr):
     CURP = models.CharField(max_length=18, blank=True)
     RFC = models.CharField(max_length=13, blank=True)
     NSS = models.CharField(max_length=15, blank=True)
-    estado_civil = models.CharField(
-        max_length=15,
-        choices=ESTADOS_CIVILES,
-        default=ESTADO_CIVIL_CASADO)
-    conyuge = models.CharField(max_length=150, blank=True)
     clinica = models.CharField(
         max_length=150, blank=True, verbose_name="Clínica")
     subdelegacion = models.CharField(
