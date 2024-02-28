@@ -105,7 +105,8 @@ def index(request):
                         or search_value in hipernormalize(
                             f"{reg.first_name} {reg.last_name} {reg.apellido_materno}")
                         or search_value in hipernormalize(
-                            f"{reg.last_name} {reg.apellido_materno} {reg.first_name}"))
+                            f"{reg.last_name} {reg.apellido_materno} {reg.first_name}")
+                        or search_value in str(reg.pk))
                     ]
     return render(
         request,
