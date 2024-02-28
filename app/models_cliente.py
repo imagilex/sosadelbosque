@@ -180,7 +180,7 @@ class Pago(models.Model):
         max_length=50, blank=True, choices=CUENTAS_PAGO, default='efectivo')
 
     class Meta:
-        ordering = ["-estatus", "fecha_de_pago", 'idpago']
+        ordering = ["-fecha_de_pago", "-estatus", 'idpago']
 
 
     @property

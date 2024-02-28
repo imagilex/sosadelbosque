@@ -1657,7 +1657,30 @@ def incmod40_delete(request, pk):
 def pago_index(request, pk):
     usuario = Usr.objects.filter(id=request.user.pk)[0]
     cte = Cliente.objects.filter(pk=pk)[0]
-    data = list(Pago.objects.filter(cliente__pk=pk))
+    regs = Pago.objects.filter(cliente__pk=pk)
+    data = list(regs)
+    ctas = Pago.objects.order_by("cuenta").values("cuenta").distinct()
+    ctas = [c['cuenta'] for c in ctas]
+    status = Pago.objects.order_by("estatus").values("estatus").distinct()
+    status = [s['estatus'] for s in status]
+    total_t = 0
+    totals = dict()
+    totals_aggr = dict()
+    for cta in ctas:
+        if not cta in totals.keys():
+            totals[cta] = dict()
+        if not cta in totals_aggr.keys():
+            totals_aggr[cta] = 0
+        for st in status:
+            if not st in totals_aggr.keys():
+                totals_aggr[st] = 0
+            cant = 0
+            for reg in regs.filter(cuenta=cta, estatus=st):
+                cant += reg.cantidad
+            total_t += cant
+            totals[cta][st] = cant
+            totals_aggr[cta] += cant
+            totals_aggr[st] += cant
     toolbar = []
     toolbar.append({
         'type': 'link_pk',
@@ -1679,7 +1702,12 @@ def pago_index(request, pk):
             'toolbar': toolbar,
             'req_ui': requires_jquery_ui(request),
             'toolbar': toolbar,
-            'data': data
+            'data': data,
+            'ctas': ctas,
+            'status': status,
+            'total_t': total_t,
+            'totals': totals,
+            'totals_aggr': totals_aggr,
         })
 
 @valida_acceso(['cliente.clientes_cliente'])
