@@ -77,3 +77,9 @@ def division(num, div):
         return int("0{}".format(num)) / div
     except ValueError:
         return 0
+
+################
+
+@register.filter
+def getFromDict(dictionary, key):
+    return dictionary[key]

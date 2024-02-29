@@ -59,11 +59,6 @@ class Cliente(Usr):
     CURP = models.CharField(max_length=18, blank=True)
     RFC = models.CharField(max_length=13, blank=True)
     NSS = models.CharField(max_length=15, blank=True)
-    estado_civil = models.CharField(
-        max_length=15,
-        choices=ESTADOS_CIVILES,
-        default=ESTADO_CIVIL_CASADO)
-    conyuge = models.CharField(max_length=150, blank=True)
     clinica = models.CharField(
         max_length=150, blank=True, verbose_name="Clínica")
     subdelegacion = models.CharField(
@@ -107,6 +102,12 @@ class Cliente(Usr):
         verbose_name="Gestor",
         #limit_choices_to={'idusuario__in':UsuarioNoCliente}
         )
+    datos_estadisticos = models.TextField(
+        blank=True, verbose_name="Datos Estadísticos")
+    detalle_servicio = models.TextField(
+        blank=True, verbose_name="Detalle de Servicio")
+    actualizado_por = models.CharField(max_length=100, blank=True)
+    fecha_de_actualizacion = models.DateField(blank=True, default=date.today)
 
     @property
     def edad(self):
@@ -179,7 +180,7 @@ class Pago(models.Model):
         max_length=50, blank=True, choices=CUENTAS_PAGO, default='efectivo')
 
     class Meta:
-        ordering = ["-estatus", "fecha_de_pago", 'idpago']
+        ordering = ["-fecha_de_pago", "-estatus", 'idpago']
 
 
     @property

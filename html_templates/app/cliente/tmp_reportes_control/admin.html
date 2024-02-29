@@ -65,7 +65,7 @@
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_02" aria-expanded="false"
                             aria-controls="cuerpo_02">
-                        Próximo a Pensión o Modalidad 40
+                        Próximo a Pensión, Mod. 10 o Mod. 40
                         <span class="badge badge-pill badge-secondary">
                             {{ data_prox_pension_mod40|length }}
                         </span>
@@ -198,7 +198,7 @@
                 <h5>
                     <button class="btn btn-link" data-toggle="collapse" data-target="#cuerpo_04" aria-expanded="false"
                             aria-controls="cuerpo_04">
-                        Inscrito a Modalidad 40
+                        Inscrito a Mod. 10 o Mod. 40
                         <span class="badge badge-pill badge-secondary">
                             {{ data_insc_mod40|length }}
                         </span>
@@ -208,7 +208,7 @@
             <div id="cuerpo_04" class="collapse" aria-labelledby="encabezado_04" data-parent="#control-accordion">
                 <div class="card-body">
                     <button onclick="open_frm_insc_mod_40_add()" type="button" class="btn btn-outline-secondary">
-                        <i class="far fa-plus-square"></i> Agregar Inscripción a Modalidad 40
+                        <i class="far fa-plus-square"></i> Agregar Inscripción a Mod. 10 o Mod. 40
                     </button>
                     <div class="list-group">
                         {% for main_reg in data_insc_mod40 %}
@@ -226,10 +226,10 @@
                                     <input value="{{ main_reg.fecha_estimada_de_baja|date:"Y-m-d" }}" disabled="disabled" class="form-control" type="date" />
                                 </div>
                                 <div class="col-sm-2 offset-sm-1">
-                                    <button title="Actualizar Inscripción a Modalidad 40" onclick="open_frm_insc_mod_40_update({{ main_reg.pk }}, {{ main_reg.medio.pk }}, '{{ main_reg.fecha_de_alta|date:"Y-m-d" }}', `{{ main_reg.fecha_estimada_de_baja|date:"Y-m-d" }}`)" type="button" class="btn btn-outline-secondary">
+                                    <button title="Actualizar Inscripción a Mod. 10 o Mod. 40" onclick="open_frm_insc_mod_40_update({{ main_reg.pk }}, {{ main_reg.medio.pk }}, '{{ main_reg.fecha_de_alta|date:"Y-m-d" }}', `{{ main_reg.fecha_estimada_de_baja|date:"Y-m-d" }}`)" type="button" class="btn btn-outline-secondary">
                                         <i class="far fa-edit"></i>
                                     </button>
-                                    <button title="Eliminar Inscripción a Modalidad 40" onclick="open_frm_insc_mod_40_delete({{ main_reg.pk }})" type="button" class="btn btn-outline-secondary">
+                                    <button title="Eliminar Inscripción a Mod. 10 o Mod. 40" onclick="open_frm_insc_mod_40_delete({{ main_reg.pk }})" type="button" class="btn btn-outline-secondary">
                                         <i class="far fa-trash-alt"></i>
                                     </button>
                                 </div>
@@ -509,7 +509,7 @@
 
     <script type="text/javascript">
     let open_frm_prox_pension_mod40_add = () => {
-        App.openPanel($("#tpl-prox-pension-mod40-add").html(), "Captura Datos de Próximo a Pensión y/o Modalidad 40" );
+        App.openPanel($("#tpl-prox-pension-mod40-add").html(), "Captura Datos de Próximo a Pensión, Mod. 10 o Mod. 40" );
     }
     let open_frm_prox_pension_mod40_update = (id_record, fecha_del_evento, tipo) => {
         let template = Handlebars.compile($("#tpl-prox-pension-mod40-upd").html());
@@ -758,34 +758,34 @@
 
     <script type="text/javascript">
     let open_frm_insc_mod_40_add = () => {
-        App.openPanel($("#tpl-insc-mod-40-add").html(), "Captura Datos de Inscripción a Modalidad 40" );
+        App.openPanel($("#tpl-insc-mod-40-add").html(), "Captura Datos de Inscripción a Mod. 10 o Mod. 40" );
     }
     let open_frm_insc_mod_40_update = (id_record, medio, fecha_de_alta, fecha_estimada_de_baja) => {
         let template = Handlebars.compile($("#tpl-insc-mod-40-upd").html());
         let html = template({id_record, fecha_de_alta, fecha_estimada_de_baja});
-        App.openPanel( html, "Actualización de Inscripción a Modalidad 40");
+        App.openPanel( html, "Actualización de Inscripción a Mod. 10 o Mod. 40");
         $("#medio").val(medio);
     }
     let open_frm_insc_mod_40_delete = (id_record) => {
         let template = Handlebars.compile($("#tpl-insc-mod-40-del").html());
         let html = template({id_record});
-        App.openPanel( html, "Eliminar Registro de Inscripción a Modalidad 40");
+        App.openPanel( html, "Eliminar Registro de Inscripción a Mod. 10 o Mod. 40");
     }
     let open_frm_insc_mod_40_detalle_add = raiz => {
         let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-add").html());
         let html = template({raiz});
-        App.openPanel(html, "Captura Datos de Línea de Captura por Inscripción a Modalidad 40" );
+        App.openPanel(html, "Captura Datos de Línea de Captura por Inscripción a Mod. 10 o Mod. 40" );
     }
     let open_frm_insc_mod_40_detalle_update = (id_record, fecha_de_pago, estatus_de_envio) => {
         let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-upd").html());
         let html = template({id_record, fecha_de_pago});
-        App.openPanel( html, "Actualización de Línea de Captura por Inscripción a Modalidad 40");
+        App.openPanel( html, "Actualización de Línea de Captura por Inscripción a Mod. 10 o Mod. 40");
         $("#estatus_de_envio").val(estatus_de_envio);
     }
     let open_frm_insc_mod_40_detalle_delete = (id_record) => {
         let template = Handlebars.compile($("#tpl-insc-mod-40-detalle-del").html());
         let html = template({id_record});
-        App.openPanel( html, "Eliminar Registro de Línea de Captura por Inscripción a Modalidad 40");
+        App.openPanel( html, "Eliminar Registro de Línea de Captura por Inscripción a Mod. 10 o Mod. 40");
     }
     </script>
 
